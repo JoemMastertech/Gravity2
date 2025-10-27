@@ -1,11 +1,8 @@
-/**
+/**di utilist 
  * Dependency Injection Utilities - Shared utilities for DI Container access
  * Consolidates duplicated DI functions across the application
  * Part of Phase 3A: Common Logic Extraction
  */
-
-import { logError, logWarning } from './errorHandler.js';
-import Logger from './logger.js';
 
 /**
  * Gets the ProductRepository from DI Container
@@ -14,12 +11,19 @@ import Logger from './logger.js';
  * @throws {Error} If DIContainer is not initialized
  */
 export function getProductRepository() {
-  if (typeof window.DIContainer === 'undefined' && typeof window.container === 'undefined') {
-    throw new Error('DI Container not initialized. Make sure AppInit.initialize() has been called.');
-  }
-  
   // Support both naming conventions found in the codebase
   const container = window.DIContainer || window.container;
+  if (!container) {
+    console.warn('DI Container not initialized. Returning fallback ProductRepository.');
+    // Fallback repository with safe defaults to avoid runtime crashes
+    return {
+      async getLicoresCategories() { return []; },
+      async getLiquorSubcategory() { return []; },
+      async getCervezas() { return []; },
+      async getPizzas() { return []; },
+      async getRefrescos() { return []; }
+    };
+  }
   return container.resolve('ProductRepository');
 }
 
@@ -64,7 +68,7 @@ export function safeResolveService(serviceName, fallback = null) {
   try {
     return resolveService(serviceName);
   } catch (error) {
-    Logger.warn(`Failed to resolve service '${serviceName}':`, error.message);
+    console.warn(`Failed to resolve service '${serviceName}':`, error.message);
     return fallback;
   }
 }
