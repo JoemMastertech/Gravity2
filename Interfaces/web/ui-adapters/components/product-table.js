@@ -661,7 +661,23 @@ const ProductRenderer = {
     td.className = 'video-icon';
     
     if (item.video) {
-      const thumbnailUrl = this.getThumbnailUrl(item.video, item.nombre, '');
+      let thumbnailUrl;
+      
+      // Manejo especial para la sección de carnes
+      if (categoryTitle && (categoryTitle.toLowerCase() === 'carnes')) {
+        // Extraer el nombre del archivo de video sin extensión
+        const videoFilename = item.video.split('/').pop().replace('.mp4', '');
+        thumbnailUrl = `https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/thumbnail/cortes%20de%20carne/${videoFilename}.webp`;
+        
+        // Si hay una imagen directamente en el objeto item, usarla (limpiando comillas)
+        if (item.imagen) {
+          thumbnailUrl = item.imagen.replace(/[`\s]/g, '');
+        }
+      } else {
+        // Para otras categorías, usar la función existente
+        thumbnailUrl = this.getThumbnailUrl(item.video, item.nombre, '');
+      }
+      
       const thumbnailImg = document.createElement('img');
       thumbnailImg.className = 'video-thumb';
       thumbnailImg.src = thumbnailUrl;
@@ -970,6 +986,21 @@ const ProductRenderer = {
     // Let CSS handle all sizing - don't override heights
   },
 
+  getProductByName: function(productName, category) {
+    // Obtener el repositorio de productos
+    const productRepository = getProductRepository();
+    
+    // Verificar si tenemos datos en caché
+    if (this.productCache && this.productCache[category]) {
+      return this.productCache[category].find(product => 
+        product.nombre && product.nombre.trim().toLowerCase() === productName.trim().toLowerCase()
+      );
+    }
+    
+    // Si no hay caché, devolver null (se usará la ruta alternativa)
+    return null;
+  },
+
   getThumbnailUrl: function(videoUrl, productName, category) {
     // Extract category from video URL
     let extractedCategory = '';
@@ -1015,7 +1046,20 @@ const ProductRenderer = {
     // Use special case mapping if available, otherwise use the original filename
     const thumbnailFilename = specialCases[videoFilename] || videoFilename;
     
-    // Construct thumbnail URL
+    // Para la sección de carnes, usar directamente la URL de imagen almacenada en Supabase
+    if (extractedCategory === 'carnes' || category === 'carnes') {
+      // Buscar si hay una imagen directamente en los datos del producto
+      const productData = this.getProductByName(productName, 'carnes');
+      if (productData && productData.imagen) {
+        // Limpiar la URL de comillas o espacios
+        return productData.imagen.replace(/[`\s]/g, '');
+      }
+      
+      // Si no se encuentra, construir la URL basada en el nombre del archivo de video
+      return `https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/thumbnail/cortes%20de%20carne/${videoFilename}.webp`;
+    }
+    
+    // Para otras categorías, mantener la lógica original
     return `https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/imagenes/bebidas/mini-${extractedCategory}/${thumbnailFilename}.webp`;
   },
 
@@ -1055,11 +1099,12 @@ const ProductRenderer = {
     
     modalContent.appendChild(video);
     
-    // Add close button
+    // Add close button as X in top right corner
     const closeButton = document.createElement('button');
-    closeButton.textContent = 'Cerrar';
-    closeButton.className = 'nav-button modal-close-btn';
+    closeButton.textContent = '×';
+    closeButton.className = 'modal-close-btn';
     closeButton.dataset.modalId = 'video-modal';
+    closeButton.setAttribute('aria-label', 'Cerrar');
     // No individual event listener - handled by delegation
     modalContent.appendChild(closeButton);
     
