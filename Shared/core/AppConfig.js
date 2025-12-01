@@ -5,8 +5,10 @@
  */
 class AppConfig {
   constructor() {
+    console.log('[AppConfig] Constructor called');
     this.config = this.loadConfiguration();
     this.validateConfiguration();
+    console.log('[AppConfig] Initial config features:', this.config.features);
   }
 
   /**
@@ -16,13 +18,13 @@ class AppConfig {
   loadConfiguration() {
     // Environment detection
     const environment = this.detectEnvironment();
-    
+
     return {
       // Environment settings
       environment,
       isDevelopment: environment === 'development',
       isProduction: environment === 'production',
-      
+
       // Database configuration
       database: {
         supabaseUrl: this.getEnvVar('VITE_SUPABASE_URL', 'https://udtlqjmrtbcpdqknwuro.supabase.co'),
@@ -97,7 +99,8 @@ class AppConfig {
       api: {
         timeout: this.getNumberEnv('VITE_API_TIMEOUT', 10000),
         retryAttempts: this.getNumberEnv('VITE_API_RETRY_ATTEMPTS', 3),
-        retryDelay: this.getNumberEnv('VITE_API_RETRY_DELAY', 1000)
+        retryDelay: this.getNumberEnv('VITE_API_RETRY_DELAY', 1000),
+        googleTranslateApiKey: this.getEnvVar('VITE_GOOGLE_TRANSLATE_API_KEY')
       },
 
       // Logging configuration
@@ -124,16 +127,16 @@ class AppConfig {
    */
   detectEnvironment() {
     if (typeof window === 'undefined') return 'server';
-    
+
     const envVar = this.getEnvVar('VITE_ENVIRONMENT');
     if (envVar) return envVar;
-    
+
     const hostname = window.location?.hostname || '';
-    
+
     if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('local')) {
       return 'development';
     }
-    
+
     return hostname.includes('staging') || hostname.includes('test') ? 'staging' : 'production';
   }
 
@@ -146,11 +149,17 @@ class AppConfig {
   getEnvVar(key, defaultValue = null) {
     // Try common environment sources
     try {
-      return window?.importMeta?.env?.[key] || 
-             globalThis?.importMeta?.env?.[key] || 
-             process?.env?.[key] || 
-             window?.env?.[key] || 
-             defaultValue;
+      // Vite exposes env vars on import.meta.env
+      if (import.meta.env && import.meta.env[key] !== undefined) {
+        return import.meta.env[key];
+      }
+
+      const val = window?.importMeta?.env?.[key] ||
+        globalThis?.importMeta?.env?.[key] ||
+        process?.env?.[key] ||
+        window?.env?.[key];
+
+      return val || defaultValue;
     } catch {
       return defaultValue;
     }
@@ -254,7 +263,15 @@ class AppConfig {
    * @returns {boolean}
    */
   isFeatureEnabled(featureName) {
-    return this.get(`features.${featureName}`, false);
+    // Special handling for Google Translate to ensure it picks up runtime env var
+    if (featureName === 'googleTranslateEnabled') {
+      const envValue = this.getBooleanEnv('VITE_GOOGLE_TRANSLATE_ENABLED', false);
+      if (envValue) return true;
+    }
+
+    const enabled = this.get(`features.${featureName}`, false);
+    console.log(`[AppConfig] isFeatureEnabled('${featureName}') returning:`, enabled);
+    return enabled;
   }
 
   /**

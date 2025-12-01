@@ -1933,9 +1933,23 @@ const ProductRenderer = {
   renderCocktails: async function (container) {
     await this.renderFoodCategory(container, 'getCocteles', 'Coctelería');
   },
+
+  // Initialize translation listener
+  initTranslationListener: function () {
+    window.addEventListener('languageChanged', (e) => {
+      Logger.info('🌐 Language changed event received in ProductRenderer', e.detail);
+      const container = document.getElementById('content-container');
+      if (container) {
+        this._retranslateIfNeeded(container);
+      }
+    });
+  }
 };
 
 // Make ProductRenderer globally available for legacy compatibility
 window.ProductRenderer = ProductRenderer;
+
+// Initialize translation listener
+ProductRenderer.initTranslationListener();
 
 export default ProductRenderer;

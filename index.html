@@ -1,39 +1,47 @@
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Master Technology Bar - Coctelería Premium</title>
-  
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.ico">
-  
+
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Master Technology Bar - Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
+  <meta name="description"
+    content="Master Technology Bar - Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
   <meta name="keywords" content="coctelería, bar, cócteles, bebidas premium, tecnología, Master Technology Bar">
   <meta name="author" content="Master Technology Bar">
   <meta name="robots" content="index, follow">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="http://localhost:8000/">
   <meta property="og:title" content="Master Technology Bar - Coctelería Premium">
-  <meta property="og:description" content="Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
-  <meta property="og:image" content="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo5.webp">
-  
+  <meta property="og:description"
+    content="Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
+  <meta property="og:image"
+    content="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo5.webp">
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="http://localhost:8000/">
   <meta property="twitter:title" content="Master Technology Bar - Coctelería Premium">
-  <meta property="twitter:description" content="Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
-  <meta property="twitter:image" content="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo5.webp">
-  
+  <meta property="twitter:description"
+    content="Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
+  <meta property="twitter:image"
+    content="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo5.webp">
+
   <!-- Cache Control -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;900&family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
   <!-- CSS fuente para desarrollo (sin pipeline) -->
   <link rel="stylesheet" href="Shared/styles/main.css">
   <script type="importmap">
@@ -44,20 +52,25 @@
     }
   </script>
   <!-- Runtime feature flags -->
-  <script>
-    window.env = Object.assign({}, window.env, {
-      VITE_GOOGLE_TRANSLATE_ENABLED: 'true'
-    });
-  </script>
+  <!-- Runtime feature flags handled by Vite -->
   <script src="Shared/libs/purify.min.js"></script>
   <script type="module" src="Shared/config/settings-manager.js"></script>
+  <!-- DEBUG PANEL -->
+  <div id="translation-debug-panel"
+    style="position: fixed; bottom: 10px; left: 10px; width: 400px; height: 300px; background: rgba(0,0,0,0.8); color: white; overflow-y: auto; z-index: 9999; padding: 10px; font-family: monospace; font-size: 12px; border-radius: 5px; pointer-events: auto;">
+    <div style="border-bottom: 1px solid #444; padding-bottom: 5px; margin-bottom: 5px; font-weight: bold;">Translation
+      Debug Log</div>
+  </div>
 </head>
+
 <body>
   <!-- Background video -->
   <video id="background-video" autoplay muted loop playsinline>
-    <source src="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4" type="video/mp4">
+    <source
+      src="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4"
+      type="video/mp4">
   </video>
-  
+
   <div id="app">
     <div id="drawer-overlay" class="drawer-overlay"></div>
     <div id="drawer-menu" class="drawer-menu">
@@ -65,7 +78,7 @@
         <!-- Navigation buttons will be added here dynamically -->
       </div>
     </div>
-    
+
     <!-- Settings Menu -->
     <div id="settings-overlay" class="drawer-overlay"></div>
     <div id="settings-menu" class="drawer-menu">
@@ -78,7 +91,7 @@
           <button id="dark-mode-option" class="nav-button" data-translate="settings.dark_mode">Modo Oscuro</button>
           <button id="light-mode-option" class="nav-button" data-translate="settings.light_mode">Modo Claro</button>
         </div>
-        
+
         <!-- Languages Panel -->
         <div id="languages-panel" class="settings-panel screen-hidden">
           <button id="back-to-main" class="back-button">←</button>
@@ -89,31 +102,41 @@
           <button class="nav-button language-btn" data-lang="it" data-translate="languages.italian">Italiano</button>
           <button class="nav-button language-btn" data-lang="zh" data-translate="languages.chinese">Chino</button>
         </div>
-        
+
         <!-- Dark Mode Panel -->
         <div id="dark-mode-panel" class="settings-panel screen-hidden">
           <button id="back-from-dark" class="back-button">←</button>
           <h3 class="settings-title" data-translate="settings.dark_mode">Modo Oscuro</h3>
-          <button class="nav-button theme-btn" data-theme="dark-blue" data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoolasazul.mp4" data-translate="themes.dark_blue">Azul Oscuro</button>
-          <button class="nav-button theme-btn" data-theme="dark-red" data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4" data-translate="themes.dark_red">Rojo Oscuro</button>
+          <button class="nav-button theme-btn" data-theme="dark-blue"
+            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoolasazul.mp4"
+            data-translate="themes.dark_blue">Azul Oscuro</button>
+          <button class="nav-button theme-btn" data-theme="dark-red"
+            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4"
+            data-translate="themes.dark_red">Rojo Oscuro</button>
         </div>
-        
+
         <!-- Light Mode Panel -->
         <div id="light-mode-panel" class="settings-panel screen-hidden">
           <button id="back-from-light" class="back-button">←</button>
           <h3 class="settings-title" data-translate="settings.light_mode">Modo Claro</h3>
-          <button class="nav-button theme-btn" data-theme="light-blue" data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoazul.mp4" data-translate="themes.light_blue">Azul Claro</button>
-          <button class="nav-button theme-btn" data-theme="light-white" data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoblanco.mp4" data-translate="themes.white">Blanco</button>
+          <button class="nav-button theme-btn" data-theme="light-blue"
+            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoazul.mp4"
+            data-translate="themes.light_blue">Azul Claro</button>
+          <button class="nav-button theme-btn" data-theme="light-white"
+            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoblanco.mp4"
+            data-translate="themes.white">Blanco</button>
         </div>
       </div>
     </div>
-    
+
     <div class="screen welcome-screen">
       <h1 class="welcome-text" data-translate="main.welcome">¡BIENVENIDOS!</h1>
     </div>
     <div class="screen logo-screen screen-hidden">
       <div class="logo-container">
-        <img src="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo%203.jpeg" alt="Master Technology Bar Logo" class="logo">
+        <img
+          src="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo%203.jpeg"
+          alt="Master Technology Bar Logo" class="logo">
         <h2 class="title-text" data-translate="main.title">Master Technology Bar</h2>
       </div>
     </div>
@@ -152,7 +175,8 @@
               <h4><span data-translate="order.total">Total:</span> <span id="order-total-amount">$0.00</span></h4>
             </div>
             <div class="order-actions">
-              <button id="complete-order-btn" class="nav-button" data-translate="order.complete">Completar Orden</button>
+              <button id="complete-order-btn" class="nav-button" data-translate="order.complete">Completar
+                Orden</button>
               <button id="cancel-order-btn" class="nav-button" data-translate="order.cancel">Cancelar</button>
             </div>
           </div>
@@ -165,7 +189,7 @@
   <div id="drink-options-modal" class="modal modal-hidden drink-modal"></div>
   <div id="food-customization-modal" class="modal modal-hidden"></div>
   <div id="meat-customization-modal" class="modal modal-hidden"></div>
-  
+
   <!-- Modal Templates -->
   <div id="modal-templates" class="screen-hidden">
     <!-- Drink Options Modal Template -->
@@ -179,7 +203,7 @@
         </div>
       </div>
     </template>
-    
+
     <!-- Food Customization Modal Template -->
     <template id="food-customization-template">
       <div class="modal-content">
@@ -197,7 +221,7 @@
         </div>
       </div>
     </template>
-    
+
     <!-- Meat Customization Modal Template -->
     <template id="meat-customization-template">
       <div class="modal-content">
@@ -227,7 +251,7 @@
   </div>
 
   <!-- Load data providers -->
-  
+
   <script type="module" src="./Infraestructura/data-providers/product-data.js"></script>
   <!-- Load UI components -->
   <script type="module" src="./Interfaces/web/ui-adapters/components/product-table.js"></script>
@@ -237,10 +261,11 @@
   <!-- Initialize app -->
   <script type="module">
     import AppInit from './Shared/config/app-init.js';
-    
-    document.addEventListener('DOMContentLoaded', function() {
+
+    document.addEventListener('DOMContentLoaded', function () {
       AppInit.initialize();
     });
   </script>
 </body>
+
 </html>
