@@ -462,7 +462,7 @@ const ProductRenderer = {
       'brandy': (container) => this.renderBrandy(container),
       'digestivos': (container) => this.renderDigestivos(container),
       'espumosos': (container) => this.renderEspumosos(container),
-      'platos-fuertes': (container) => this.renderPlatosFuertes(container)
+      'platos fuertes': (container) => this.renderPlatosFuertes(container)
     };
   },
 
@@ -626,14 +626,19 @@ const ProductRenderer = {
     return field.includes('precio') || field === 'precioBotella' || field === 'precioLitro' || field === 'precioCopa';
   },
 
-  _formatPriceForLiquor: function (priceValue) {
-    // Check if price already has $ symbol
-    if (typeof priceValue === 'string' && priceValue.includes('$')) {
-      return priceValue;
+  _formatPrice: function (priceValue) {
+    if (!priceValue || priceValue === '--') return '--';
+
+    // Remove existing $ if present
+    let numericValue = priceValue;
+    if (typeof priceValue === 'string') {
+      numericValue = priceValue.replace('$', '').trim();
     }
 
-    // Add $ symbol for liquor prices
-    return `$${priceValue}`;
+    const floatVal = parseFloat(numericValue);
+    if (isNaN(floatVal)) return priceValue;
+
+    return `$${floatVal.toFixed(2)}`;
   },
 
   _createPriceCell: function (td, item, field) {
@@ -648,7 +653,7 @@ const ProductRenderer = {
     } else {
       priceButton.className = 'price-button';
       // Add $ symbol for liquor subcategories
-      const formattedPrice = this._formatPriceForLiquor(priceValue);
+      const formattedPrice = this._formatPrice(priceValue);
       priceButton.textContent = formattedPrice;
       priceButton.dataset.productName = item.nombre;
       priceButton.dataset.priceType = field;
@@ -764,7 +769,7 @@ const ProductRenderer = {
 
     // Determine productType based on category
     let productType;
-    const foodCategories = ['pizzas', 'alitas', 'sopas', 'ensaladas', 'carnes'];
+    const foodCategories = ['pizzas', 'alitas', 'sopas', 'ensaladas', 'carnes', 'platos fuertes'];
     const beverageCategories = ['cocteleria', 'refrescos', 'cervezas', 'cafe', 'postres'];
 
     if (foodCategories.includes(normalizedCategory)) {
@@ -868,6 +873,8 @@ const ProductRenderer = {
         card.classList.add('liquor-card');
         card.dataset.productType = 'liquor';
         card.dataset.category = normalizedCategory;
+      } else if (normalizedCategory === 'alitas') {
+        card.classList.add('variant-card');
       }
 
       // Price labels mapping for liquors
@@ -901,13 +908,36 @@ const ProductRenderer = {
               const priceButton = document.createElement('button');
               priceButton.className = 'price-button';
               // Add $ symbol for liquor subcategories
-              const formattedPrice = this._formatPriceForLiquor(priceValue);
+              const formattedPrice = this._formatPrice(priceValue);
               priceButton.textContent = formattedPrice;
               priceButton.dataset.productName = item.nombre;
               priceButton.dataset.price = priceValue;
               priceButton.dataset.field = field;
 
               // No individual event listener - handled by delegation
+
+              priceItem.appendChild(priceButton);
+              pricesContainer.appendChild(priceItem);
+            } else if (field.includes('_piezas')) {
+              // Logic for Alitas/Food variants (e.g. precio_10_piezas)
+              const pieces = field.replace('precio_', '').replace('_piezas', '');
+              const labelText = `${pieces} piezas`;
+
+              const priceItem = document.createElement('div');
+              priceItem.className = 'price-item';
+
+              const priceLabel = document.createElement('span');
+              priceLabel.className = 'price-label';
+              priceLabel.textContent = labelText + ':';
+
+              priceItem.appendChild(priceLabel);
+
+              const priceButton = document.createElement('button');
+              priceButton.className = 'price-button';
+              priceButton.textContent = this._formatPrice(priceValue);
+              priceButton.dataset.productName = item.nombre;
+              priceButton.dataset.price = priceValue;
+              priceButton.dataset.field = field;
 
               priceItem.appendChild(priceButton);
               pricesContainer.appendChild(priceItem);
@@ -1824,7 +1854,30 @@ const ProductRenderer = {
 
   // Optimized render methods using generic function
   renderAlitas: async function (container) {
-    await this.renderFoodCategory(container, 'getAlitas', 'Alitas');
+    const productRepository = getProductRepository();
+
+    try {
+      const data = await productRepository.getAlitas();
+
+      if (this.currentViewMode === 'grid') {
+        this.createProductGrid(container,
+          data,
+          ['nombre', 'ingredientes', 'video', 'precio_10_piezas', 'precio_25_piezas'],
+          'Alitas'
+        );
+      } else {
+        this.createProductTable(container,
+          ['NOMBRE', 'INGREDIENTES', 'VIDEO', '10 PIEZAS', '25 PIEZAS'],
+          data,
+          ['nombre', 'ingredientes', 'video', 'precio_10_piezas', 'precio_25_piezas'],
+          'product-table',
+          'Alitas'
+        );
+      }
+    } catch (error) {
+      logError('Error rendering Alitas:', error);
+      container.innerHTML = '<p>Error cargando Alitas. Por favor, intente de nuevo.</p>';
+    }
   },
 
   renderSopas: async function (container) {

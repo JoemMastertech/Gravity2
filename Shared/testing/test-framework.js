@@ -53,7 +53,7 @@ class TestFramework {
       beforeAll: null,
       afterAll: null
     };
-    
+
     try {
       fn();
       this.tests.push(this.currentSuite);
@@ -152,7 +152,7 @@ class TestFramework {
 
     for (const suite of this.tests) {
       console.log(`\n📋 Suite: ${suite.description}`);
-      
+
       // Run beforeAll
       if (suite.beforeAll) {
         try {
@@ -166,7 +166,7 @@ class TestFramework {
       // Run tests
       for (const test of suite.tests) {
         this.results.total++;
-        
+
         if (test.skip) {
           console.log(`  ⏭️  ${test.description} (skipped)`);
           this.results.skipped++;
@@ -181,7 +181,7 @@ class TestFramework {
 
           // Run test
           await test.fn();
-          
+
           console.log(`  ✅ ${test.description}`);
           this.results.passed++;
 
@@ -219,8 +219,8 @@ class TestFramework {
     console.log(`  ✅ Passed: ${this.results.passed}`);
     console.log(`  ❌ Failed: ${this.results.failed}`);
     console.log(`  ⏭️  Skipped: ${this.results.skipped}`);
-    
-    const successRate = this.results.total > 0 
+
+    const successRate = this.results.total > 0
       ? ((this.results.passed / this.results.total) * 100).toFixed(1)
       : 0;
     console.log(`  📈 Success Rate: ${successRate}%`);
@@ -231,13 +231,13 @@ class TestFramework {
    * @param {Function} implementation - Optional mock implementation
    * @returns {Function} Mock function
    */
-  createMock(implementation = () => {}) {
+  createMock(implementation = () => { }) {
     const mock = (...args) => {
       mock.calls.push(args);
       mock.callCount++;
       return implementation(...args);
     };
-    
+
     mock.calls = [];
     mock.callCount = 0;
     mock.mockImplementation = (newImpl) => {
@@ -256,7 +256,7 @@ class TestFramework {
       implementation = () => Promise.reject(error);
       return mock;
     };
-    
+
     return mock;
   }
 
@@ -269,12 +269,12 @@ class TestFramework {
   spyOn(object, methodName) {
     const originalMethod = object[methodName];
     const spy = this.createMock(originalMethod);
-    
+
     object[methodName] = spy;
     spy.restore = () => {
       object[methodName] = originalMethod;
     };
-    
+
     this.spies.set(`${object.constructor.name}.${methodName}`, spy);
     return spy;
   }
@@ -316,7 +316,7 @@ class Expect {
   }
 
   toEqual(expected) {
-    const passed = this.isNot 
+    const passed = this.isNot
       ? !this.deepEqual(this.actual, expected)
       : this.deepEqual(this.actual, expected);
     if (!passed) {
@@ -344,8 +344,18 @@ class Expect {
     }
   }
 
+  toHaveLength(expected) {
+    const length = this.actual ? this.actual.length : undefined;
+    const passed = this.isNot ? length !== expected : length === expected;
+    if (!passed) {
+      throw new Error(
+        `Expected length ${length} ${this.isNot ? 'not ' : ''}to be ${expected}`
+      );
+    }
+  }
+
   toContain(expected) {
-    const contains = Array.isArray(this.actual) 
+    const contains = Array.isArray(this.actual)
       ? this.actual.includes(expected)
       : this.actual.indexOf(expected) !== -1;
     const passed = this.isNot ? !contains : contains;
@@ -359,7 +369,7 @@ class Expect {
   toThrow(expectedError) {
     let threw = false;
     let actualError = null;
-    
+
     try {
       if (typeof this.actual === 'function') {
         this.actual();
@@ -368,14 +378,14 @@ class Expect {
       threw = true;
       actualError = error;
     }
-    
+
     const passed = this.isNot ? !threw : threw;
     if (!passed) {
       throw new Error(
         `Expected function ${this.isNot ? 'not ' : ''}to throw${expectedError ? ` ${expectedError}` : ''}`
       );
     }
-    
+
     if (expectedError && threw) {
       if (typeof expectedError === 'string' && !actualError.message.includes(expectedError)) {
         throw new Error(
@@ -389,19 +399,19 @@ class Expect {
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (typeof a !== typeof b) return false;
-    
+
     if (typeof a === 'object') {
       const keysA = Object.keys(a);
       const keysB = Object.keys(b);
       if (keysA.length !== keysB.length) return false;
-      
+
       for (const key of keysA) {
         if (!keysB.includes(key)) return false;
         if (!this.deepEqual(a[key], b[key])) return false;
       }
       return true;
     }
-    
+
     return false;
   }
 }
@@ -432,4 +442,5 @@ export function expect(actual) {
 }
 
 // Export the framework instance for advanced usage
+export const jest = { fn: createMock, spyOn: spyOn };
 export default testFramework;
