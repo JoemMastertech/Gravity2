@@ -1,24 +1,26 @@
 /* ITCSS Architecture */
 
 /* 1. Settings: Variables, Config (No emitted CSS) */
-/* @import "settings/variables.css"; */
+@import "settings/variables.css";
 
 /* 2. Base: Resets, Typography */
 /* @import "base/reset.css"; */
 @import "base/typography.css";
+@import "base/animations.css";
 
 /* 3. Layout: Grid, Containers, Structure */
 /* @import "layout/grid.css"; */
-/* @import "layout/containers.css"; */
+@import "layout/containers.css";
 
 /* 4. Components: UI Elements */
 @import "components/buttons.css";
 @import "components/cards.css";
 @import "components/modals.css";
-/* @import "components/forms.css"; */
+@import "components/forms.css";
+@import "components/tables.css";
 
 /* 5. Utilities: Helpers */
-/* @import "utilities/helpers.css"; */
+@import "utilities/helpers.css";
 
 /* 6. Legacy: The Monolith (To be refactored) */
 @import "_legacy.css";

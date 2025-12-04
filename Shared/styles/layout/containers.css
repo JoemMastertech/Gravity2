@@ -1,0 +1,98 @@
+/* =================================================================
+   LAYOUT CONTAINERS - STRUCTURE
+   ================================================================= */
+
+/* Main App Container */
+#app {
+    width: 100%;
+    max-width: var(--table-max-width);
+    min-height: 100vh;
+    position: relative;
+    margin: 0 auto;
+    padding: 0 max(20px, calc((100vw - var(--table-max-width)) / 2));
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+/* Adjust padding when sidebar is active */
+body.order-mode-active #app {
+    padding-right: calc(max(20px, calc((100vw - var(--table-max-width)) / 2)) + 284px);
+}
+
+/* Adjust main content when top nav is visible */
+.top-nav-visible~#app .main-content-screen,
+.main-content-screen.with-top-nav {
+    padding-top: 72px;
+}
+
+/* Screen Container */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* Main Content Screen */
+.main-content-screen {
+    position: relative;
+    padding: 20px;
+    justify-content: flex-start;
+    background-color: transparent;
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: var(--table-width);
+    max-width: var(--table-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    display: flex;
+    width: 100%;
+    gap: 0px;
+    position: relative;
+    margin-top: 0;
+    padding-right: 0px;
+}
+
+/* Content Container */
+#content-container {
+    flex: 1;
+    padding: 0;
+    margin-right: 0;
+}
+
+/* Flex Container for Content + Sidebar */
+.content-container-flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 20px;
+}
+
+/* Hamburger Button Positioning */
+.content-container-flex .hamburger-btn {
+    position: relative;
+    top: unset;
+    left: unset;
+    margin-right: 20px;
+    margin-top: 20px;
+    position: sticky;
+    top: 20px;
+    z-index: 1000;
+}

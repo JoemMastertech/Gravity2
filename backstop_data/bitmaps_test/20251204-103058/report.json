@@ -1,15 +1,15 @@
-report({
+{
   "testSuite": "BackstopJS",
   "tests": [
     {
       "pair": {
         "reference": "..\\bitmaps_reference\\backstop_default_Homepage_0_document_0_phone.png",
-        "test": "..\\bitmaps_test\\20251204-120106\\backstop_default_Homepage_0_document_0_phone.png",
+        "test": "..\\bitmaps_test\\20251204-103058\\backstop_default_Homepage_0_document_0_phone.png",
         "selector": "document",
         "fileName": "backstop_default_Homepage_0_document_0_phone.png",
         "label": "Homepage",
         "requireSameDimensions": true,
-        "misMatchThreshold": 1,
+        "misMatchThreshold": 0.1,
         "url": "http://localhost:8080/",
         "referenceUrl": "",
         "expect": 0,
@@ -20,23 +20,23 @@ report({
             "width": 0,
             "height": 0
           },
-          "rawMisMatchPercentage": 24.229166666666664,
-          "misMatchPercentage": "24.23",
-          "analysisTime": 38
+          "rawMisMatchPercentage": 23.833984375,
+          "misMatchPercentage": "23.83",
+          "analysisTime": 43
         },
-        "diffImage": "..\\bitmaps_test\\20251204-120106\\failed_diff_backstop_default_Homepage_0_document_0_phone.png"
+        "diffImage": "..\\bitmaps_test\\20251204-103058\\failed_diff_backstop_default_Homepage_0_document_0_phone.png"
       },
       "status": "fail"
     },
     {
       "pair": {
         "reference": "..\\bitmaps_reference\\backstop_default_Homepage_0_document_1_tablet.png",
-        "test": "..\\bitmaps_test\\20251204-120106\\backstop_default_Homepage_0_document_1_tablet.png",
+        "test": "..\\bitmaps_test\\20251204-103058\\backstop_default_Homepage_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "backstop_default_Homepage_0_document_1_tablet.png",
         "label": "Homepage",
         "requireSameDimensions": true,
-        "misMatchThreshold": 1,
+        "misMatchThreshold": 0.1,
         "url": "http://localhost:8080/",
         "referenceUrl": "",
         "expect": 0,
@@ -47,11 +47,14 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.00"
-        }
+          "rawMisMatchPercentage": 8.281580607096355,
+          "misMatchPercentage": "8.28",
+          "analysisTime": 95
+        },
+        "diffImage": "..\\bitmaps_test\\20251204-103058\\failed_diff_backstop_default_Homepage_0_document_1_tablet.png"
       },
-      "status": "pass"
+      "status": "fail"
     }
   ],
   "id": "backstop_default"
-});
+}

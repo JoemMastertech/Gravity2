@@ -1,0 +1,109 @@
+/* =============================================================================
+   1. VARIABLES CSS - SISTEMA DE TEMAS COMPLETO
+   ============================================================================= */
+
+:root {
+    /* Default theme (dark-blue) */
+    --primary-color: #f3f6f6;
+    --accent-color: #00f7ff;
+    --background-color: #000;
+    --text-color: #ECE9D8;
+    --price-color: #00f7ff;
+
+    /* Component Colors */
+    --card-bg: rgba(0, 0, 0, 0.7);
+    --border-color: #00f7ff40;
+    --glow-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(0, 247, 255, 0.6);
+
+    /* Layout Variables */
+    --transition-time: 0.3s;
+    --table-width: 95%;
+    --table-max-width: 1400px;
+    --table-margin: 20px;
+
+    /* Mobile Sidebar Variables */
+    --sidebar-width-mobile: 140px;
+    --sidebar-height-portrait: 180px;
+    --sidebar-padding-mobile: 12px;
+    --sidebar-z-index: 1000;
+    --sidebar-transition: transform 0.3s ease, width 0.3s ease;
+
+    /* Legacy support */
+    --primary: var(--primary-color);
+    --accent: var(--accent-color);
+    --bg: var(--background-color);
+    --text: var(--text-color);
+    --card: var(--card-bg);
+    --border: var(--border-color);
+    --transition: var(--transition-time);
+}
+
+/* Tema Dark Blue (por defecto) */
+[data-theme="dark-blue"] {
+    --primary-color: #f3f6f6;
+    --accent-color: #00f7ff;
+    --background-color: #000;
+    --text-color: #ECE9D8;
+    --price-color: #00f7ff;
+    --card-bg: rgba(0, 0, 0, 0.7);
+    --border-color: #00f7ff40;
+    --glow-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(0, 247, 255, 0.6);
+}
+
+/* Tema Dark Red */
+[data-theme="dark-red"] {
+    --primary-color: #f3f6f6;
+    --accent-color: #ff4d4d;
+    --background-color: #000;
+    --text-color: #ECE9D8;
+    --price-color: #ff4d4d;
+    --card-bg: rgba(0, 0, 0, 0.7);
+    --border-color: #ff4d4d40;
+    --glow-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(255, 77, 77, 0.6);
+}
+
+/* Light Blue Theme - now uses bright blue color */
+[data-theme="light-blue"] {
+    --primary-color: #f3f6f6;
+    --accent-color: #85C7FF;
+    --background-color: #000;
+    --text-color: #ECE9D8;
+    --price-color: #85C7FF;
+    --card-bg: rgba(0, 0, 0, 0.7);
+    --border-color: #85C7FF40;
+    --glow-shadow: 0 0 10px rgba(133, 199, 255, 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(133, 199, 255, 0.6);
+}
+
+/* Light White Theme */
+[data-theme="light-white"] {
+    --primary-color: #1e293b;
+    --accent-color: #3b82f6;
+    --background-color: #ffffff;
+    --text-color: #1e293b;
+    --price-color: #1e40af;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --border-color: #1e40af40;
+    --glow-shadow: 0 0 10px rgba(30, 64, 175, 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(30, 64, 175, 0.6);
+    /* Variables nuevas para degradado y color de ingredientes */
+    --gradient-overlay: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(30, 64, 175, 0.2) 100%);
+    --color-ingredientes: #1a1a1a;
+    /* Aumentar tamaÃ±o mÃ¡ximo del contenedor padre para reducir el espacio con el sidebar */
+    --table-max-width: 1520px;
+}
+
+/* Background video styles */
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 1;
+}

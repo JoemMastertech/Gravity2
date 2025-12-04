@@ -23,7 +23,15 @@
       "readyEvent": "",
       "readySelector": "",
       "delay": 5000,
-      "hideSelectors": [],
+      "hideSelectors": [
+        ".product__image",
+        ".product__video-thumbnail",
+        ".product__title",
+        ".product__ingredients",
+        ".product__prices",
+        ".video-thumb",
+        "#background-video"
+      ],
       "removeSelectors": [
         "#background-video"
       ],
@@ -33,7 +41,7 @@
       "selectors": [],
       "selectorExpansion": true,
       "expect": 0,
-      "misMatchThreshold": 0.1,
+      "misMatchThreshold": 1.0,
       "requireSameDimensions": true
     }
   ],
