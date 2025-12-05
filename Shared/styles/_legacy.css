@@ -1119,11 +1119,6 @@ body.order-mode-active #order-sidebar {
 
 
 
-  .modal {
-    padding: 5px;
-    align-items: flex-start;
-    padding-top: 20px;
-  }
 
   .content-wrapper.order-active {
     gap: 2px;
@@ -1171,17 +1166,7 @@ body.order-mode-active #order-sidebar {
 }
 
 /* Optimized disabled states and selection modes */
-.price-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
 
-.price-button.non-selectable:hover,
-.price-button:disabled:hover {
-  background: transparent;
-  transform: none;
-  box-shadow: none;
-}
 
 .price-selection-mode .price-button.non-selectable,
 .price-selection-mode .price-button:disabled {
@@ -1264,10 +1249,6 @@ body.order-mode-active #order-sidebar {
     gap: 5px;
   }
 
-  .nav-button {
-    font-size: 0.9rem;
-    padding: 10px 12px;
-  }
 
   /* Product table styles consolidated in main section */
   #content-container {
@@ -1680,9 +1661,6 @@ body.order-mode-active #order-sidebar {
   }
 
   /* Modal adjustments for landscape */
-  .modal-content {
-    max-height: 85vh;
-  }
 
   /* Ensure proper scrolling in landscape */
   .modal-content .options-grid {
@@ -2669,18 +2647,6 @@ body.order-mode-active #order-sidebar {
   }
 
   /* Botones de precio optimizados para portrait */
-  .price-button {
-    width: auto;
-    max-width: 80px !important;
-    min-width: 44px !important;
-    padding: 4px 8px !important;
-    font-size: 0.7rem !important;
-    margin: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 
   /* Filas de tabla con flexbox para mejor distribuciÃ³n */
   .product-table tr,
@@ -2716,9 +2682,6 @@ body.order-mode-active #order-sidebar {
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
 
   /* Modal adjustments for landscape tablets */
-  .modal-content {
-    max-height: 80vh;
-  }
 
   /* Ensure proper scrolling in landscape tablets */
   .modal-content .options-grid {
@@ -2900,21 +2863,7 @@ body.order-mode-active #order-sidebar {
    TOUCH TARGETS - TABLETS (max-width: 1024px)
    ================================================================= */
 @media (max-width: 1024px) {
-  .nav-button {
-    min-height: 40px;
-    padding: 12px 18px;
-  }
 
-  .price-button {
-    min-height: 44px;
-    min-width: 44px;
-    max-width: 80px;
-    padding: 8px 6px;
-    font-size: 0.8rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 
   .view-toggle-btn {
     min-height: 50px;
@@ -2931,9 +2880,6 @@ body.order-mode-active #order-sidebar {
     min-width: 50px;
   }
 
-  .price-button:not(.product-card.liquor-card .price-button) {
-    min-height: 44px;
-  }
 
   .counter-btn {
     width: 36px;
