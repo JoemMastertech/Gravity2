@@ -54,3 +54,23 @@
   background-color: var(--primary-color);
   color: var(--background-color);
 }
+
+
+/* ===== MIGRATED FROM LEGACY ===== */
+/* Nav buttons, IDs */
+#create-order-btn,
+#orders-btn {
+  position: relative;
+  z-index: 1;
+  min-width: 120px;
+}
+
+#create-order-btn {
+  margin-left: auto;
+}
+
+.nav-buttons-container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
