@@ -34,19 +34,7 @@ Contenido:
     background-color: transparent;
 }
 
-.screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    overflow-y: auto;
-}
+/* .screen moved to legacy/screens.css */
 
 /* =============================================================================
    2. CONTENEDORES PRINCIPALES (Migrado de main.css)

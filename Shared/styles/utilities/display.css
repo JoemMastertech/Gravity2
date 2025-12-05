@@ -1,49 +1,9 @@
 /* =================================================================
    DISPLAY UTILITIES
-   Migrated from _legacy.css - Phase 2
+   Note: screen-* classes loaded via legacy for now
    ================================================================= */
 
-/* Screen display states */
-.screen-hidden {
-    display: none !important;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.screen-visible {
-    display: flex !important;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    z-index: 100;
-}
-
-.screen-flex {
-    display: flex !important;
-}
-
-.screen-block {
-    display: block !important;
-}
-
-/* Hamburger menu visibility */
-.hamburger-hidden {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateX(-20px);
-}
-
-.hamburger-visible {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(0);
-}
-
+/* Sidebar display states */
 /* Sidebar display states */
 .sidebar-hidden {
     display: none !important;
