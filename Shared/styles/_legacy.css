@@ -1361,37 +1361,11 @@ body.order-mode-active #order-sidebar {
     padding: 10px;
   }
 
-  .product-card {
-    min-height: 260px;
-    height: auto;
-    /* max-height removido */
-  }
 
-  .product-card .product-name {
-    font-size: 0.775rem;
-    height: clamp(1.386rem, 2.07vw + 0.576rem, 1.845rem);
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    overflow: visible;
-    text-overflow: unset;
-    display: block;
-  }
 
-  .product-card .product-ingredients {
-    font-size: 0.7rem;
-  }
 
-  .product-card .product-media {
-    min-height: 120px;
-  }
 
-  .product-card .video-thumbnail {
-    height: clamp(80px, 12vh, 120px);
-  }
 
-  .product-card:has(.video-thumbnail) .product-media {
-    min-height: clamp(80px, 12vh, 120px);
-  }
 
   .product-grid .product-card.liquor-card .price-button,
   .product-grid .product-card.liquor-card .price-button:not(.non-selectable),
@@ -1655,9 +1629,6 @@ body.order-mode-active #order-sidebar {
     padding: 18px;
   }
 
-  .product-card {
-    min-height: 320px;
-  }
 }
 
 /* =================================================================
@@ -1879,19 +1850,8 @@ body.order-mode-active #order-sidebar {
     max-width: 100%;
   }
 
-  .product-card {
-    min-height: 200px;
-    padding: 8px;
-  }
 
-  .product-card .product-name {
-    font-size: 0.75rem;
-    margin-bottom: 4px;
-  }
 
-  .product-card .product-ingredients {
-    font-size: 0.7rem;
-  }
 
   .category-image {
     width: clamp(50px, 8vw, 80px);
@@ -2888,26 +2848,8 @@ body.order-mode-active #order-sidebar {
     height: clamp(70px, 9vw, 100px);
   }
 
-  .product-card {
-    min-height: 240px;
-    height: auto;
-    padding: 10px;
-  }
 
-  .product-card .product-name {
-    font-size: 0.78rem;
-    height: clamp(1.2rem, 1.8vw + 0.5rem, 1.6rem);
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    overflow: visible;
-    text-overflow: unset;
-    display: block;
-    margin-bottom: 6px;
-  }
 
-  .product-card .product-ingredients {
-    font-size: 0.75rem;
-  }
 
   /* CONFIGURACIÃ“N ESPECÃFICA PARA TABLET LANDSCAPE (768â€“1024) - LIQUOR TABLE */
   :root {
@@ -3062,25 +3004,8 @@ body.order-mode-active #order-sidebar {
     height: clamp(110px, 13vw, 150px);
   }
 
-  .product-card {
-    min-height: 350px;
-    height: auto;
-    /* max-height removido para permitir expansiÃ³n */
-  }
 
-  .product-card .product-name {
-    font-size: 0.975rem;
-    height: clamp(1.386rem, 2.07vw + 0.576rem, 1.845rem);
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    overflow: visible;
-    text-overflow: unset;
-    display: block;
-  }
 
-  .product-card .product-ingredients {
-    font-size: 0.9rem;
-  }
 }
 
 .password-input {
@@ -4446,33 +4371,9 @@ body.order-mode-active #app {
 /* =================================================================
    VARIANT CARD LAYOUT STYLES (ALITAS, ETC)
    ================================================================= */
-.product-card.variant-card .product-prices {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  padding: 0 10px;
-}
 
-.product-card.variant-card .price-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 4px 8px;
-  border-radius: 4px;
-}
 
-.product-card.variant-card .price-label {
-  font-size: 0.9rem;
-  color: var(--text-color);
-  opacity: 0.9;
-}
 
-.product-card.variant-card .price-button {
-  min-width: 80px;
-}
 
 /* =================================================================
    LEGACY SUPPORT & FIXES (ALITAS & OTHERS)
@@ -4497,33 +4398,9 @@ body.order-mode-active #app {
 
 /* Mobile optimizations for Alitas (variant-card) */
 @media (max-width: 480px) {
-  .product-card.variant-card .product-prices {
-    padding: 0 5px;
-    gap: 6px;
-  }
 
-  .product-card.variant-card .price-item {
-    padding: 3px 6px;
-    gap: 8px;
-  }
 
-  .product-card.variant-card .price-label {
-    font-size: 0.8rem;
-    line-height: 1.2;
-  }
 
-  .product-card.variant-card .price-button {
-    min-width: 60px !important;
-    max-width: none !important;
-    width: auto !important;
-    padding: 4px 12px !important;
-    font-size: 0.85rem !important;
-    height: auto !important;
-    min-height: 32px !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    white-space: nowrap !important;
-  }
 }
 
 /* DUPLICATED BLOCK REMOVED (lines 4529-4798) - originals at 4330-4527 */
