@@ -6,13 +6,12 @@ PRODUCT TABLE & GRID COMPONENT
 
 /* Fix for Header Overlap - High Specificity Override */
 #app .main-content-screen.with-top-nav {
-    padding-top: 0 !important;
+    padding-top: 0;
 }
 
 #app .main-content-screen.with-top-nav .content-wrapper,
 #app .main-content-screen.with-top-nav .product-grid {
-    margin-top: 0 !important;
-    /* Reset margin as we use padding on parent */
+    margin-top: 0;
 }
 
 /* Grid Layout - Mobile First (2 columns) */
