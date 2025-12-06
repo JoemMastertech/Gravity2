@@ -341,3 +341,8 @@
 .product-table[data-category="cervezas"] td:nth-child(3) {
   width: 30%;
 }
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.product-table td.image-icon {
+  text-align: center;
+}

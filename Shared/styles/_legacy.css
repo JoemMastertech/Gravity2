@@ -700,29 +700,7 @@ body.order-mode-active #order-sidebar {
   transform: translateY(100%) !important;
 }.sidebar-landscape-hidden {
   transform: translateX(100%) !important;
-}/* Estilos para los bloques organizados de refrescos *//* Estilos para los bloques organizados de cervezas */.cervezas-botella-section,
-.tarros-section,
-.vasos-cerveza-section {
-  margin-bottom: 2rem;
-}.cervezas-botella-section:not(:last-child),
-.tarros-section:not(:last-child),
-.vasos-cerveza-section:not(:last-child) {
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 1.5rem;
-}.cervezas-botella-section h2,
-.tarros-section h2,
-.vasos-cerveza-section h2 {
-  color: #333;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  padding: 0.5rem 0;
-  border-left: 4px solid #dc3545;
-  padding-left: 1rem;
-}.tarros-section h2 {
-  border-left-color: #17a2b8;
-}.vasos-cerveza-section h2 {
-  border-left-color: #6f42c1;
-}/* Display Utilities - CONSOLIDADAS */.hidden,
+}/* Estilos para los bloques organizados de refrescos *//* Estilos para los bloques organizados de cervezas *//* Display Utilities - CONSOLIDADAS */.hidden,
 .content-hidden,
 .input-container-hidden,
 .choice-hidden,
@@ -766,11 +744,7 @@ body.order-mode-active #order-sidebar {
   height: auto !important;
 }.min-height-auto {
   min-height: auto !important;
-}/* Modal subtitle styling */.modal-subtitle {
-  font-size: 0.85em;
-  font-weight: normal;
-  color: var(--text-color);
-}/* Custom Scrollbar Styles - TEMA OSCURO OPTIMIZADO *//* Webkit browsers (Chrome, Safari, Edge) */::-webkit-scrollbar {
+}/* Modal subtitle styling *//* Custom Scrollbar Styles - TEMA OSCURO OPTIMIZADO *//* Webkit browsers (Chrome, Safari, Edge) */::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }/* Scrollbar vertical - mÃ¡s sutil */::-webkit-scrollbar:vertical {
@@ -831,20 +805,7 @@ body.order-mode-active #order-sidebar {
 }/* Firefox */* {
   scrollbar-width: thin;
   scrollbar-color: rgba(243, 246, 246, 0.6) rgba(0, 0, 0, 0.4);
-}/* Estilos especÃ­ficos para elementos con scroll en tema oscuro */.orders-list-container::-webkit-scrollbar,
-.order-history-container::-webkit-scrollbar,
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}.orders-list-container::-webkit-scrollbar-thumb,
-.order-history-container::-webkit-scrollbar-thumb,
-.modal-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 247, 255, 0.4);
-  border-radius: 4px;
-}.orders-list-container::-webkit-scrollbar-thumb:hover,
-.order-history-container::-webkit-scrollbar-thumb:hover,
-.modal-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 247, 255, 0.7);
-}/* =================================================================
+}/* Estilos especÃ­ficos para elementos con scroll en tema oscuro *//* =================================================================
    CORRECCIÃ“N ESPECÃFICA PARA ENCABEZADOS DE DOS PALABRAS EN MÃ“VIL PORTRAIT
    ================================================================= *//* =================================================================
    REGLAS LANDSCAPE UNIFICADAS - PREVENCIÃ“N DE SALTOS DE LÃNEA
@@ -852,9 +813,7 @@ body.order-mode-active #order-sidebar {
    REGLAS LANDSCAPE CONSOLIDADAS - ANCHOS DE COLUMNA OPTIMIZADOS
    ================================================================= *//* Reglas base consolidadas para todas las orientaciones landscape *//* ===== MÃ“VIL LANDSCAPE (max-width: 768px) ===== *//* ===== TABLET LANDSCAPE (768px - 1024px) ===== *//* =================================================================
    ALINEACIÃ“N PORTRAIT CONSOLIDADA - ESPECIFICIDAD OPTIMIZADA
-   ================================================================= *//* Reglas base para portrait - especificidad reducida y consolidada *//* Ajustes especÃ­ficos de padding por resoluciÃ³n *//* Mantener imÃ¡genes centradas */.product-table td.image-icon {
-  text-align: center;
-}.product-table td.image-icon img {
+   ================================================================= *//* Reglas base para portrait - especificidad reducida y consolidada *//* Ajustes especÃ­ficos de padding por resoluciÃ³n *//* Mantener imÃ¡genes centradas */.product-table td.image-icon img {
   display: block;
   margin: 0 auto;
 }/* =================================================================
