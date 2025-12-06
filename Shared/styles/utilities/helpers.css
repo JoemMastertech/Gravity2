@@ -366,26 +366,3 @@
         min-width: 45px;
     }
 }
-
-/* ===== MIGRATED FROM LEGACY ===== */
-/* Visibility utilities */
-.top-nav-bar.top-nav-visible {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.body-no-scroll {
-  overflow: hidden;
-}
-
-.body-scroll {
-  overflow: auto;
-}
-
-.opacity-0 {
-  opacity: 0;
-}
-
-.opacity-1 {
-  opacity: 1;
-}

@@ -303,3 +303,15 @@
 .video-hidden {
     display: none;
 }
+
+/* ===== MIGRATED FROM LEGACY (Decorative) ===== */
+.product-table[data-category="refrescos"] th,
+.product-table[data-category="cervezas"] th,
+.product-table[data-category="refrescos"] td,
+.product-table[data-category="cervezas"] td {
+  text-align: center;
+}
+
+.product-table td.image-icon {
+  text-align: center;
+}

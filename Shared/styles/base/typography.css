@@ -91,24 +91,3 @@
   margin: 0;
   white-space: nowrap;
 }
-
-/* ===== MIGRATED FROM LEGACY ===== */
-/* Page titles */
-.hidden,
-.content-hidden,
-.input-container-hidden,
-.choice-hidden,
-.error-hidden,
-.modal-hidden,
-.page-title-hidden {
-  display: none;
-}
-
-.visible,
-.content-visible,
-.input-container-visible,
-.choice-visible,
-.error-visible,
-.page-title-visible {
-  display: block;
-}
