@@ -541,3 +541,11 @@
 
 
 
+
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.modal-content[data-category="refrescos"],
+.modal-content[data-category="cervezas"] {
+  width: 33.6%;
+  max-width: 336px;
+}

@@ -303,3 +303,41 @@
 .video-hidden {
     display: none;
 }
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.product-table[data-category="refrescos"],
+.product-table[data-category="cervezas"] {
+  width: calc(var(--table-width) * 0.75);
+  max-width: calc(var(--table-max-width) * 0.75);
+  table-layout: fixed;
+}
+
+.product-table[data-category="refrescos"] th,
+.product-table[data-category="cervezas"] th,
+.product-table[data-category="refrescos"] td,
+.product-table[data-category="cervezas"] td {
+  text-align: center;
+}
+
+.product-table[data-category="refrescos"] th:first-child,
+.product-table[data-category="cervezas"] th:first-child,
+.product-table[data-category="refrescos"] td.product-name,
+.product-table[data-category="cervezas"] td.product-name {
+  text-align: left;
+  padding-left: 15px;
+  width: 45%;
+}
+
+.product-table[data-category="refrescos"] th:nth-child(2),
+.product-table[data-category="cervezas"] th:nth-child(2),
+.product-table[data-category="refrescos"] td:nth-child(2),
+.product-table[data-category="cervezas"] td:nth-child(2) {
+  width: 25%;
+}
+
+.product-table[data-category="refrescos"] th:nth-child(3),
+.product-table[data-category="cervezas"] th:nth-child(3),
+.product-table[data-category="refrescos"] td:nth-child(3),
+.product-table[data-category="cervezas"] td:nth-child(3) {
+  width: 30%;
+}

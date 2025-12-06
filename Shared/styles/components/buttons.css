@@ -88,3 +88,21 @@
   left: 8px;
   top: 96px;
 }
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.clear-history-btn {
+  background: rgba(255, 99, 71, 0.2);
+  border-color: rgba(255, 99, 71, 0.5);
+  color: rgba(255, 99, 71, 1);
+  margin-left: auto;
+}
+
+.clear-history-btn:hover {
+  background: rgba(255, 99, 71, 0.8);
+  color: white;
+}
+
+.back-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}

@@ -469,14 +469,6 @@ body.order-mode-active #order-sidebar {
   margin: 15px 0;
   font-family: 'Montserrat', sans-serif;
   transition: all var(--transition-time) ease;
-}.clear-history-btn {
-  background: rgba(255, 99, 71, 0.2);
-  border-color: rgba(255, 99, 71, 0.5);
-  color: rgba(255, 99, 71, 1);
-  margin-left: auto;
-}.clear-history-btn:hover {
-  background: rgba(255, 99, 71, 0.8);
-  color: white;
 }/* =================================================================
    TOP NAVIGATION BAR
    ================================================================= */.top-nav-bar {
@@ -511,12 +503,6 @@ body.order-mode-active #order-sidebar {
   display: flex;
   gap: 10px;
   align-items: center;
-}.nav-center {
-  flex: 1;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--text-color);
 }.back-btn-hidden {
   display: none !important;
 }.nav-buttons-container {
@@ -608,9 +594,6 @@ body.order-mode-active #order-sidebar {
   backdrop-filter: blur(10px);
   font-weight: bold;
   border-radius: 8px;
-}.back-button:hover {
-  background-color: var(--primary-color);
-  color: var(--background-color);
 }/* Centrar el botÃ³n Volver en el menÃº lateral derecho */#settings-menu .back-button {
   margin: 0 auto;
   display: block;
@@ -629,38 +612,7 @@ body.order-mode-active #order-sidebar {
   margin-right: -1.5px;
 }/* =================================================================
    CATEGORY-SPECIFIC STYLES
-   ================================================================= */.product-table[data-category="refrescos"],
-.product-table[data-category="cervezas"] {
-  width: calc(var(--table-width) * 0.75);
-  max-width: calc(var(--table-max-width) * 0.75);
-  table-layout: fixed;
-}.product-table[data-category="refrescos"] th,
-.product-table[data-category="cervezas"] th,
-.product-table[data-category="refrescos"] td,
-.product-table[data-category="cervezas"] td {
-  text-align: center;
-}.product-table[data-category="refrescos"] th:first-child,
-.product-table[data-category="cervezas"] th:first-child,
-.product-table[data-category="refrescos"] td.product-name,
-.product-table[data-category="cervezas"] td.product-name {
-  text-align: left;
-  padding-left: 15px;
-  width: 45%;
-}.product-table[data-category="refrescos"] th:nth-child(2),
-.product-table[data-category="cervezas"] th:nth-child(2),
-.product-table[data-category="refrescos"] td:nth-child(2),
-.product-table[data-category="cervezas"] td:nth-child(2) {
-  width: 25%;
-}.product-table[data-category="refrescos"] th:nth-child(3),
-.product-table[data-category="cervezas"] th:nth-child(3),
-.product-table[data-category="refrescos"] td:nth-child(3),
-.product-table[data-category="cervezas"] td:nth-child(3) {
-  width: 30%;
-}.modal-content[data-category="refrescos"],
-.modal-content[data-category="cervezas"] {
-  width: 33.6%;
-  max-width: 336px;
-}.exclusive-option-group {
+   ================================================================= */.exclusive-option-group {
   background: rgba(0, 247, 255, 0.05);
   border: 1px solid rgba(0, 247, 255, 0.2);
   border-radius: 8px;
