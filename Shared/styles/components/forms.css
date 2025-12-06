@@ -398,3 +398,20 @@ textarea:focus {
   outline: none;
   border-color: var(--price-color);
 }
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.settings-title {
+  font: 700 1.2rem 'Playfair Display', serif;
+  color: var(--primary-color);
+  margin: 15px 0 25px 0;
+  text-align: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.language-btn.active,
+.theme-btn.active {
+  background-color: rgba(0, 247, 255, 0.1);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
