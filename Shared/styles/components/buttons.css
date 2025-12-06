@@ -167,3 +167,49 @@
   color: #ffffff;
   box-shadow: 0 0 10px #85C7FF;
 }
+
+/* ===== MIGRATED FROM LEGACY (Round 3 - Structural) ===== */
+.back-button {
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button-container {
+  left: 8px;
+  top: 96px;
+}
+
+.back-btn-hidden {
+  display: none !important;
+}
+
+.back-button-container {
+  display: none !important;
+}
+
+.back-button {
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  font-size: 1.1rem;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition-time) ease;
+  backdrop-filter: blur(10px);
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+#settings-menu .back-button {
+  margin: 0 auto;
+  display: block;
+}
