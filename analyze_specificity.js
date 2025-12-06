@@ -90,7 +90,8 @@ function calculateRiskLevel(specificity, hasImportant) {
 
 // Main analysis
 try {
-    console.log('🔍 Analyzing CSS specificity...\n');
+    const targetSelector = '.product-grid';
+    console.log(`🔍 Analyzing CSS specificity for selector: "${targetSelector}"...\n`);
 
     let allResults = [];
 
@@ -101,13 +102,24 @@ try {
             const results = parseCSSSelectors(css);
             // Add filename to results
             results.forEach(r => r.file = file.split('\\').pop().split('/').pop());
-            allResults = allResults.concat(results);
+            // Filter
+            const matches = results.filter(r => r.selector.includes(targetSelector));
+            allResults = allResults.concat(matches);
         } catch (e) {
             console.error(`Error reading ${file}: ${e.message}`);
         }
     }
 
     const results = allResults;
+
+    console.log(`\n🔎 Found ${results.length} matches for "${targetSelector}":`);
+    results.forEach(r => {
+        console.log(`  [${r.file}:${r.line}] ${r.selector} (Specificity: ${r.specificity.score})`);
+    });
+
+    // Skip the rest of the report logic for now
+    process.exit(0);
+
 
     // Group by risk level
     const critical = results.filter(r => r.riskLevel === 'CRITICAL');

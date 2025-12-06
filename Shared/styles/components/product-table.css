@@ -18,21 +18,47 @@ PRODUCT TABLE & GRID COMPONENT
 .product-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: var(--spacing-md);
     width: 100%;
-    padding: 12px;
+    padding: var(--spacing-md);
     margin-top: 0;
+    box-sizing: border-box;
+}
+
+/* Tablet Portrait (3 columns) */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+}
+
+/* Landscape Mobile/Tablet (3 columns) & Desktop */
+@media (orientation: landscape),
+(min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Large Desktop (optional 4 cols if needed, but keeping 3 as requested) */
+@media (min-width: 1200px) {
+    .product-grid {
+        gap: var(--spacing-xl);
+        padding: var(--spacing-xl);
+    }
 }
 
 /* Product Card */
 .product-card {
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 15px;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: var(--spacing-lg);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -87,7 +113,7 @@ PRODUCT TABLE & GRID COMPONENT
 .product-prices {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--spacing-sm);
     margin-top: auto;
 }
 
@@ -95,8 +121,8 @@ PRODUCT TABLE & GRID COMPONENT
     background: transparent;
     border: 1px solid var(--accent-color);
     color: var(--accent-color);
-    padding: 8px;
-    border-radius: 6px;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
@@ -110,20 +136,8 @@ PRODUCT TABLE & GRID COMPONENT
     box-shadow: 0 0 10px var(--accent-color);
 }
 
-/* Responsive Grid - Tablet Portrait & up (3 columns) */
-@media (min-width: 768px) {
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        padding: 16px;
-    }
-}
-
-/* Landscape & Desktop (3 columns with more gap) */
-@media (min-width: 1024px) {
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        padding: 20px;
-    }
+/* Legacy Liquor Card Button Styles (Migrated) */
+.product-card.liquor-card .price-button {
+    padding: 2px 5px;
+    font-size: 0.75rem;
 }

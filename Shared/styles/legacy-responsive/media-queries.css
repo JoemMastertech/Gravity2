@@ -375,21 +375,7 @@
 
 @media (min-width: 481px) and (max-width: 768px) {
 
-  .product-grid .product-card.liquor-card .price-button,
-  .product-grid .product-card.liquor-card .price-button:not(.non-selectable),
-  .product-grid .product-card.liquor-card .price-button:not(:disabled) {
-    /* ConfiguraciÃ³n compacta como thumbnails */
-    padding: 3px 6px;
-    font-size: 0.7rem;
-    min-width: 45px;
-    background: var(--button-bg);
-    border: 1px solid var(--border-color);
-    transform: none;
-    animation: none;
-    /* Mantener flexibilidad */
-    flex: 1;
-    max-width: 100%;
-  }
+  /* DELETED - Buttons migrated to product-table.css */
 
   /* Image modal responsive for tablet */
   .modal-content.image-modal {
@@ -531,30 +517,6 @@
     padding: 10px;
   }
 
-
-
-
-
-
-
-  .product-grid .product-card.liquor-card .price-button,
-  .product-grid .product-card.liquor-card .price-button:not(.non-selectable),
-  .product-grid .product-card.liquor-card .price-button:not(:disabled) {
-    padding: 2px 5px;
-    font-size: 0.65rem;
-    min-width: 40px;
-    background: var(--button-bg);
-    border: 1px solid var(--border-color);
-    transform: none;
-    animation: none;
-    flex: 1;
-    max-width: 100%;
-    min-height: 26px;
-  }
-
-  .view-toggle-container {
-    padding: 0 15px;
-  }
 
   .options-grid:not(.drink-modal .options-grid) {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -995,14 +957,7 @@
     font-size: 0.8rem;
   }
 
-  /* MIGRATED TO components/product-table.css
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    padding: 6px;
-    width: 100%;
-    max-width: 100%;
-  } */
+  /* DELETED - Migrated to product-table.css */
 
   .category-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1549,15 +1504,7 @@
     box-sizing: border-box;
   }
 
-  /* MIGRATED TO components/product-table.css
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-    padding: 6px 2px;
-    width: 98%;
-    max-width: 98%;
-    margin: 0 auto;
-  } */
+  /* DELETED - Migrated to product-table.css */
 
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1933,154 +1880,7 @@
     font-size: 0.9rem;
   }
 
-  .order-total h4 {
-    font-size: 1.15rem;
-  }
 
-  /* MIGRATED TO components/product-table.css
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 12px;
-  } */
-
-  .category-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 12px;
-  }
-
-  .category-image {
-    width: clamp(70px, 9vw, 100px);
-    height: clamp(70px, 9vw, 100px);
-  }
-
-
-
-
-  /* CONFIGURACIÃ“N ESPECÃFICA PARA TABLET LANDSCAPE (768â€“1024) - LIQUOR TABLE */
-  :root {
-    --liquor-col-name: 27%;
-    --liquor-col-image: 18%;
-    --liquor-col-bottle: 18%;
-    --liquor-col-liter: 18%;
-    --liquor-col-glass: 19%;
-  }
-
-  .liquor-table {
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .liquor-table th:nth-child(1),
-  .liquor-table td:nth-child(1) {
-    width: var(--liquor-col-name);
-  }
-
-  .liquor-table th:nth-child(2),
-  .liquor-table td:nth-child(2) {
-    width: var(--liquor-col-image);
-  }
-
-  .liquor-table th:nth-child(3),
-  .liquor-table td:nth-child(3) {
-    width: var(--liquor-col-bottle);
-  }
-
-  .liquor-table th:nth-child(4),
-  .liquor-table td:nth-child(4) {
-    width: var(--liquor-col-liter);
-  }
-
-  .liquor-table th:nth-child(5),
-  .liquor-table td:nth-child(5) {
-    width: var(--liquor-col-glass);
-  }
-
-  /* Reglas de tabla movidas al bloque unificado landscape al final del archivo */
-}
-
-@media (max-width: 1024px) {
-
-
-  .view-toggle-btn {
-    min-height: 50px;
-    min-width: 50px;
-  }
-
-  .hamburger-btn {
-    min-height: 40px;
-    min-width: 40px;
-  }
-
-  .back-button {
-    min-height: 50px;
-    min-width: 50px;
-  }
-
-
-  .counter-btn {
-    width: 36px;
-    height: 36px;
-  }
-}
-
-@media (min-width: 1200px) {
-  /* Order sidebar - consolidated in main section */
-
-  .order-sidebar h3 {
-    font-size: 1.6rem;
-    margin-bottom: 18px;
-  }
-
-  .order-item {
-    padding: 12px 0;
-    margin-bottom: 12px;
-  }
-
-  .order-item-name {
-    font-size: 1rem;
-    margin-bottom: 6px;
-  }
-
-  .order-item-price {
-    font-size: 0.95rem;
-  }
-
-  .order-item-customization {
-    font-size: 0.9rem;
-    margin-top: 6px;
-  }
-
-  .order-total {
-    margin-top: 25px;
-    padding-top: 12px;
-  }
-
-  .order-total h4 {
-    font-size: 1.3rem;
-  }
-
-  .order-actions {
-    margin-top: 25px;
-    gap: 12px;
-  }
-
-  /* MIGRATED TO components/product-table.css
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 1400px;
-    gap: 25px;
-    padding: 25px;
-  } */
-
-  .category-grid {
-    grid-template-columns: repeat(5, 1fr);
-    max-width: 1400px;
-    gap: 25px;
-    padding: 25px;
-  }
 
   .category-image {
     width: clamp(110px, 13vw, 150px);
