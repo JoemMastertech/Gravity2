@@ -26,7 +26,6 @@ import ScreenManager from '../../Interfaces/web/ui-adapters/screens/screen-manag
  */
 
 import ProductRenderer from '../../Interfaces/web/ui-adapters/components/product-table.js';
-import SafeModal from '../../Interfaces/web/ui-adapters/components/SafeModal.js';
 import DIContainer from '../core/DIContainer.js';
 import ProductDataAdapter from '../../Infraestructura/adapters/ProductDataAdapter.js';
 import AppConfig from '../core/AppConfig.js';
