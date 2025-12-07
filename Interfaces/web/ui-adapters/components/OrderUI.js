@@ -227,8 +227,10 @@ export class OrderUI {
             sidebar.classList.toggle('is-open', shouldBeVisible);
 
             if (shouldBeVisible) {
+                document.body.classList.add('sidebar-open');
                 this._handleMobileOrientation(sidebar);
             } else {
+                document.body.classList.remove('sidebar-open');
                 this._handleMobileHiding(sidebar);
             }
 

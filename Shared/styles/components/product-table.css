@@ -4,32 +4,33 @@ PRODUCT TABLE & GRID COMPONENT
 =============================================================================
 */
 
-/* Fix for Header Overlap - High Specificity Override */
-.app-container .main-content-screen.with-top-nav {
-    padding-top: 0;
-}
-
-.app-container .main-content-screen.with-top-nav .content-wrapper,
-.app-container .main-content-screen.with-top-nav .product-grid {
-    margin-top: 0;
-}
+/* Fix for Header Overlap - Removed destructive override */
+/* .app-container .main-content-screen.with-top-nav rules removed to allow containers.css to handle padding */
 
 /* Grid Layout - Mobile First (2 columns) */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /* Use minmax(0, 1fr) to prevent overflow issues with images */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Fallback for variables */
+    gap: 12px;
     gap: var(--spacing-md);
     width: 100%;
+    /* Fallback for variables */
+    padding: 12px;
     padding: var(--spacing-md);
     margin-top: 0;
     box-sizing: border-box;
+    justify-content: center;
 }
 
-/* Tablet Portrait (3 columns) */
+/* Tablet Portrait (3 columns) - Enforce structure */
 @media (min-width: 768px) {
     .product-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
         gap: var(--spacing-lg);
+        padding: 16px;
         padding: var(--spacing-lg);
     }
 }
@@ -38,16 +39,102 @@ PRODUCT TABLE & GRID COMPONENT
 @media (orientation: landscape),
 (min-width: 1024px) {
     .product-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
 /* Large Desktop (optional 4 cols if needed, but keeping 3 as requested) */
 @media (min-width: 1200px) {
     .product-grid {
+        gap: 20px;
         gap: var(--spacing-xl);
+        padding: 20px;
         padding: var(--spacing-xl);
+        /* Ensure max-width doesn't stretch items too much */
+        max-width: var(--table-max-width, 1400px);
+        margin-left: auto;
+        margin-right: auto;
     }
+}
+
+/* Category Grid - Licores (5 cols on desktop) */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (min-width: 1200px) {
+
+    /* Special 5-column layout for Liquor Categories (2 rows x 5 items) */
+    .category-grid[data-category="licores"] {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: var(--spacing-lg);
+        max-width: var(--table-max-width, 1400px);
+        margin: 0 auto;
+    }
+}
+
+.category-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 200px;
+    justify-content: center;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+}
+
+.category-image {
+    width: 80%;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+}
+
+.category-name {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.subcategory-prompt {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-color);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    opacity: 0.8;
 }
 
 /* Product Card */

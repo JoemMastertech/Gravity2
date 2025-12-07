@@ -8,9 +8,14 @@
 @import "base/typography.css";
 @import "base/animations.css";
 
+/* 2b. Legacy: The Monolith (Loaded EARLY to allow overrides) */
+@import "_legacy.css";
+@import "legacy-responsive/media-queries.css";
+
 /* 3. Layout: Grid, Containers, Structure */
 /* @import "layout/grid.css"; */
 @import "layout/containers.css";
+@import "layout/sidebar.css";
 
 /* 4. Components: UI Elements */
 @import "components/buttons.css";
@@ -18,9 +23,12 @@
 @import "components/modals.css";
 @import "components/forms.css";
 @import "components/tables.css";
+@import "components/product-table.css";
 
 /* 5. Utilities: Helpers */
 @import "utilities/helpers.css";
+@import "utilities/display.css";
 
-/* 6. Legacy: The Monolith (To be refactored) */
-@import "_legacy.css";
+/* 6. Legacy: MOVED TO TOP (2b) */
+/* @import "_legacy.css"; */
+/* @import "legacy-responsive/media-queries.css"; */

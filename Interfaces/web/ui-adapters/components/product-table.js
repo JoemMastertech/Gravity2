@@ -750,11 +750,9 @@ const ProductRenderer = {
       const isLiquorSubcategory = categoryTitle && liquorCategories.includes(categoryTitle.toLowerCase());
 
       img.className = 'product-image';
-      if (isBeverage || isLiquorSubcategory) {
-        img.classList.add('product-image-large');
-      } else {
-        img.classList.add('product-image-small');
-      }
+      // Legacy sizing classes removed to rely on pure CSS (tables.css)
+      // if (isBeverage || isLiquorSubcategory) { ... }
+
       // No individual event listener - handled by delegation
       td.appendChild(img);
     } else {
@@ -802,7 +800,8 @@ const ProductRenderer = {
       titleElement.setAttribute('data-original-text', categoryTitle);
       titleElement.setAttribute('data-namespace', 'category.title');
     }
-    grid.appendChild(titleElement);
+    // FIX: Append title to container instead of grid to avoid it becoming a grid item
+    container.appendChild(titleElement);
 
     // Create product cards
     data.forEach(item => {
@@ -1313,8 +1312,8 @@ const ProductRenderer = {
     const licoresCategoriesHTML = await this.createLicoresCategories();
 
     const licoresHTML = `
+      <h2 class="page-title" data-translate="category.title.licores" data-original-text="Licores" data-namespace="categories">Licores</h2>
       <div class="category-grid" data-product-type="liquor" data-category="licores">
-        <h2 class="page-title" data-translate="category.title.licores" data-original-text="Licores" data-namespace="categories">Licores</h2>
         ${licoresCategoriesHTML}
         <div class="subcategory-prompt">
           <h3 data-translate="category.prompt.choose" data-original-text="Elige una categoría" data-namespace="categories">Elige una categoría</h3>
@@ -1839,6 +1838,9 @@ const ProductRenderer = {
     const finalFields = fields || defaultFields;
     const finalHeaders = headers || defaultHeaders;
 
+    // LIMPIEZA CRÍTICA: Asegurar que el contenedor esté vacío antes de renderizar
+    container.innerHTML = '';
+
     try {
       const data = await productRepository[methodName]();
 
@@ -1962,6 +1964,9 @@ const ProductRenderer = {
             ['nombre', 'ruta_archivo', 'precio'],
             'Refrescos'
           );
+          // Asegurar category para estilos CSS
+          const grid = refrescosContainer.querySelector('.product-grid');
+          if (grid) grid.setAttribute('data-category', 'refrescos');
         } else {
           this.createProductTable(refrescosContainer,
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
@@ -1970,6 +1975,9 @@ const ProductRenderer = {
             'product-table',
             'Refrescos'
           );
+          // Asegurar category para estilos CSS
+          const table = refrescosContainer.querySelector('table');
+          if (table) table.setAttribute('data-category', 'refrescos');
         }
         container.appendChild(refrescosContainer);
       }
@@ -1984,6 +1992,9 @@ const ProductRenderer = {
             ['nombre', 'ruta_archivo', 'precio'],
             'Jarras de jugo'
           );
+          // Asegurar category para estilos CSS (Heredar de refrescos)
+          const grid = jarrasContainer.querySelector('.product-grid');
+          if (grid) grid.setAttribute('data-category', 'refrescos');
         } else {
           this.createProductTable(jarrasContainer,
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
@@ -1992,6 +2003,9 @@ const ProductRenderer = {
             'product-table',
             'Jarras de jugo'
           );
+          // Asegurar category para estilos CSS (Heredar de refrescos)
+          const table = jarrasContainer.querySelector('table');
+          if (table) table.setAttribute('data-category', 'refrescos');
         }
         container.appendChild(jarrasContainer);
       }
@@ -2006,6 +2020,9 @@ const ProductRenderer = {
             ['nombre', 'ruta_archivo', 'precio'],
             'Vasos de jugo'
           );
+          // Asegurar category para estilos CSS (Heredar de refrescos)
+          const grid = vasosContainer.querySelector('.product-grid');
+          if (grid) grid.setAttribute('data-category', 'refrescos');
         } else {
           this.createProductTable(vasosContainer,
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
@@ -2014,6 +2031,9 @@ const ProductRenderer = {
             'product-table',
             'Vasos de jugo'
           );
+          // Asegurar category para estilos CSS (Heredar de refrescos)
+          const table = vasosContainer.querySelector('table');
+          if (table) table.setAttribute('data-category', 'refrescos');
         }
         container.appendChild(vasosContainer);
       }

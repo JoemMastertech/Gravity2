@@ -1,6 +1,7 @@
 /*
  LEGACY ROOT: Only root-level rules (no @media) 
-*//*
+*/
+/*
 =============================================================================
 MASTER TECHNOLOGY BAR - OPTIMIZED FUNCTIONAL STYLESHEET
 =============================================================================
@@ -18,7 +19,8 @@ Archivo CSS funcional optimizado con mejoras organizacionales:
 - Scrollbars personalizados completos âœ“
 - Funcionalidad 100% preservada âœ“
 =============================================================================
-*//* =============================================================================
+*/
+/* =============================================================================
    TABLA DE CONTENIDOS Y GUÃA DE EDICIÃ“N
    =============================================================================
    - 1. Variables (temas y colores)
@@ -40,11 +42,14 @@ Archivo CSS funcional optimizado con mejoras organizacionales:
      MOBILE â‰¤480, TABLET 481â€“767, LAPTOP 768â€“1023, DESKTOP â‰¥1024
    - Marcadores de regiÃ³n: === REGION: NOMBRE ===
    - Busque por â€œREGION:â€ para saltar a secciones rÃ¡pidamente
-   ============================================================================= *//* =============================================================================
+   ============================================================================= */
+/* =============================================================================
    1. VARIABLES CSS - SISTEMA DE TEMAS COMPLETO
-   ============================================================================= *//* =============================================================================
+   ============================================================================= */
+/* =============================================================================
    2. ESTILOS BASE Y LAYOUT PRINCIPAL
-   ============================================================================= *//* MIGRATED TO base/reset.css
+   ============================================================================= */
+/* MIGRATED TO base/reset.css
 * {
   margin: 0;
   padding: 0;
@@ -63,9 +68,15 @@ html.no-scrollbars,
 body.no-scrollbars {
   overflow: hidden !important;
 }
-*//* Ajustar padding cuando el sidebar estÃ¡ activo en escritorio *//* Adjust main content when top nav is visible *//* TYPOGRAPHY MOVED TO base/typography.css *//* BUTTONS MOVED TO components/buttons.css *//* =================================================================
+*/
+/* Ajustar padding cuando el sidebar estÃ¡ activo en escritorio */
+/* Adjust main content when top nav is visible */
+/* TYPOGRAPHY MOVED TO base/typography.css */
+/* BUTTONS MOVED TO components/buttons.css */
+/* =================================================================
    LAYOUT COMPONENTS - HEADERS & CONTAINERS
-   ================================================================= *//* MIGRATED TO base/typography.css
+   ================================================================= */
+/* MIGRATED TO base/typography.css
 .page-title {
   font-family: 'Playfair Display', serif;
   color: var(--text-color);
@@ -78,12 +89,15 @@ body.no-scrollbars {
   border-bottom: 2px solid var(--border-color);
   margin-bottom: 15px;
 }
-*/#create-order-btn,
+*/
+#create-order-btn,
 #orders-btn {
   position: relative;
   z-index: 1;
   min-width: 120px;
-}.orders-screen {
+}
+
+.orders-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -95,14 +109,18 @@ body.no-scrollbars {
   background-color: var(--background-color);
   z-index: 1000;
   overflow-y: auto;
-}.orders-screen-header {
+}
+
+.orders-screen-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
   width: 100%;
   position: relative;
-}/* MIGRATED TO base/typography.css
+}
+
+/* MIGRATED TO base/typography.css
 .orders-screen-title {
   font-family: 'Playfair Display', serif;
   color: var(--text-color);
@@ -115,42 +133,68 @@ body.no-scrollbars {
   margin: 0;
   white-space: nowrap;
 }
-*/.orders-back-btn,
+*/
+.orders-back-btn,
 .history-btn {
   position: relative;
   z-index: 1;
-}/* Media queries para evitar sobreposiciÃ³n en pantallas pequeÃ±as *//* REGLAS ESPECÃFICAS PARA TABLET EN LANDSCAPE Y PORTRAIT - MODO BLANCO *//* REGLAS ESPECÃFICAS PARA MÃ“VIL EN LANDSCAPE - MODO BLANCO */.video-icon,
+}
+
+/* Media queries para evitar sobreposiciÃ³n en pantallas pequeÃ±as */
+/* REGLAS ESPECÃFICAS PARA TABLET EN LANDSCAPE Y PORTRAIT - MODO BLANCO */
+/* REGLAS ESPECÃFICAS PARA MÃ“VIL EN LANDSCAPE - MODO BLANCO */
+.video-icon,
 .image-icon {
   cursor: pointer;
   text-align: center;
   opacity: 0.8;
   transition: all 0.3s ease;
   /* backdrop-filter: blur(5px); */
-}.video-thumb {
+}
+
+.video-thumb {
   width: 80px;
   height: 56px;
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease;
-}.video-thumb:hover {
+}
+
+.video-thumb:hover {
   transform: scale(1.05);
-}[data-category="postres"] .video-thumb:hover {
+}
+
+[data-category="postres"] .video-thumb:hover {
   transform: rotate(-2deg) scale(1.05);
-}/* Consolidated responsive styles for video thumbnails *//* =================================================================
+}
+
+/* Consolidated responsive styles for video thumbnails */
+/* =================================================================
    RESPONSIVE BREAKPOINTS - CONSOLIDATED MEDIA QUERIES
-   ================================================================= *//* TABLET AND MOBILE (â‰¤768px) - Consolidated Rules *//* === REGION: BREAKPOINT MOBILE â‰¤480 === *//* MOBILE (â‰¤480px) - Consolidated Rules *//* ===== BEM METHODOLOGY IMPLEMENTATION ===== *//* === REGION: NAV (BEM) === *//* Navigation Component - BEM Structure */.nav {
+   ================================================================= */
+/* TABLET AND MOBILE (â‰¤768px) - Consolidated Rules */
+/* === REGION: BREAKPOINT MOBILE â‰¤480 === */
+/* MOBILE (â‰¤480px) - Consolidated Rules */
+/* ===== BEM METHODOLOGY IMPLEMENTATION ===== */
+/* === REGION: NAV (BEM) === */
+/* Navigation Component - BEM Structure */
+.nav {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
-}.nav__row {
+}
+
+.nav__row {
   display: flex;
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
-}.nav__button {
+}
+
+.nav__button {
   background: transparent;
   border: 2px solid var(--primary-color);
   color: var(--text-color);
@@ -158,7 +202,9 @@ body.no-scrollbars {
   font: 600 1rem 'Montserrat', sans-serif;
   cursor: pointer;
   transition: all var(--transition-time) ease;
-}.nav__button--toggle {
+}
+
+.nav__button--toggle {
   font-size: 1.2rem;
   width: 40px;
   height: 40px;
@@ -168,9 +214,16 @@ body.no-scrollbars {
   border-radius: 8px;
   backdrop-filter: blur(10px);
   font-weight: bold;
-}.nav__button--toggle:hover {
+}
+
+.nav__button--toggle:hover {
   transform: scale(1.05);
-}/* PRODUCT (BEM) MOVED TO components/cards.css *//* MODALS (BEM) MOVED TO components/modals.css *//* Sidebar Component - BEM Structure */.sidebar {
+}
+
+/* PRODUCT (BEM) MOVED TO components/cards.css */
+/* MODALS (BEM) MOVED TO components/modals.css */
+/* Sidebar Component - BEM Structure */
+.sidebar {
   position: fixed;
   top: 0;
   left: -300px;
@@ -181,9 +234,13 @@ body.no-scrollbars {
   transition: left 0.3s ease;
   z-index: 999;
   overflow-y: auto;
-}.sidebar--open {
+}
+
+.sidebar--open {
   left: 0;
-}.sidebar__nav-link {
+}
+
+.sidebar__nav-link {
   display: block;
   padding: 10px 15px;
   color: var(--text-color);
@@ -191,9 +248,13 @@ body.no-scrollbars {
   border-radius: 5px;
   transition: all 0.3s ease;
   font: 500 0.9rem 'Montserrat', sans-serif;
-}/* =================================================================
+}
+
+/* =================================================================
    SIDEBAR SYSTEM - NAVIGATION, ORDERS & SETTINGS
-   ================================================================= *//* ===== SIDEBAR 1: NAVIGATION MENU (Left Side - Hamburger) ===== */.drawer-menu {
+   ================================================================= */
+/* ===== SIDEBAR 1: NAVIGATION MENU (Left Side - Hamburger) ===== */
+.drawer-menu {
   position: fixed;
   top: 70px;
   left: -300px;
@@ -205,31 +266,47 @@ body.no-scrollbars {
   transition: left 0.3s ease-in-out;
   overflow-y: auto;
   border-right: 1px solid var(--border-color);
-}.drawer-menu.open {
+}
+
+.drawer-menu.open {
   left: 0;
-}/* Navigation drawer closed state: hide fully to avoid seam */.drawer-menu {
+}
+
+/* Navigation drawer closed state: hide fully to avoid seam */
+.drawer-menu {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-}.drawer-menu.open {
+}
+
+.drawer-menu.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-}/* Responsive adjustments for navigation sidebar */.drawer-content {
+}
+
+/* Responsive adjustments for navigation sidebar */
+.drawer-content {
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-}.drawer-logo-container {
+}
+
+.drawer-logo-container {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-}.drawer-logo {
+}
+
+.drawer-logo {
   width: 100px;
   height: auto;
   object-fit: contain;
   margin-bottom: 10px;
-}.drawer-menu .nav-button {
+}
+
+.drawer-menu .nav-button {
   width: 100%;
   text-align: left;
   padding: 8px 10px;
@@ -240,21 +317,28 @@ body.no-scrollbars {
   box-shadow: var(--glow-shadow);
   background: transparent;
   border-radius: 5px;
-}.drawer-menu .nav-button:hover,
+}
+
+.drawer-menu .nav-button:hover,
 .drawer-menu .nav-button.active {
   background-color: transparent;
   transform: scale(1.02);
   border-color: var(--price-color);
   color: var(--price-color);
   box-shadow: var(--glow-shadow-hover);
-}.drawer-footer {
+}
+
+.drawer-footer {
   margin-top: 20px;
   text-align: center;
   font-size: 0.9rem;
   color: var(--primary-color);
   opacity: 0.8;
   font-style: italic;
-}/* === REGION: OVERLAYS (Drawer Overlay) === */.drawer-overlay {
+}
+
+/* === REGION: OVERLAYS (Drawer Overlay) === */
+.drawer-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -265,10 +349,16 @@ body.no-scrollbars {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-}.drawer-overlay.active {
+}
+
+.drawer-overlay.active {
   opacity: 1;
   pointer-events: all;
-}/* === REGION: ORDER SIDEBAR (Right) === *//* ===== SIDEBAR 2: ORDERS SIDEBAR (Right Side - Create Order) ===== */.order-sidebar {
+}
+
+/* === REGION: ORDER SIDEBAR (Right) === */
+/* ===== SIDEBAR 2: ORDERS SIDEBAR (Right Side - Create Order) ===== */
+.order-sidebar {
   /* Base properties */
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -291,20 +381,36 @@ body.no-scrollbars {
   max-height: 70vh;
   overflow-y: auto;
   z-index: 900;
-}/* === REGION: BREAKPOINT TABLET 481â€“767 === *//* Responsive adjustments for orders sidebar *//* === REGION: BREAKPOINT MOBILE LANDSCAPE â‰¤480 === *//* === REGION: BREAKPOINT DESKTOP â‰¥1200 === *//* Active states - Show sidebar */.order-sidebar.active,
+}
+
+/* === REGION: BREAKPOINT TABLET 481â€“767 === */
+/* Responsive adjustments for orders sidebar */
+/* === REGION: BREAKPOINT MOBILE LANDSCAPE â‰¤480 === */
+/* === REGION: BREAKPOINT DESKTOP â‰¥1200 === */
+/* Active states - Show sidebar */
+.order-sidebar.active,
 body.order-mode-active .order-sidebar {
   display: flex;
-}/* Semantic open state for BEM-friendly toggling */.order-sidebar.is-open,
+}
+
+/* Semantic open state for BEM-friendly toggling */
+.order-sidebar.is-open,
 .order-sidebar.is-open {
   display: flex;
-}/* Order sidebar title - Responsive */.order-sidebar h3 {
+}
+
+/* Order sidebar title - Responsive */
+.order-sidebar h3 {
   color: var(--primary-color);
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
   margin-bottom: 15px;
   text-align: center;
   order: 1;
-}/* Order content and items */#order-content {
+}
+
+/* Order content and items */
+#order-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -312,9 +418,13 @@ body.order-mode-active .order-sidebar {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column-reverse;
-}#order-items {
+}
+
+#order-items {
   order: 2;
-}.order-item-header {
+}
+
+.order-item-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -322,7 +432,10 @@ body.order-mode-active .order-sidebar {
   gap: 5px;
   width: 100%;
   box-sizing: border-box;
-}/* ===== SIDEBAR 3: SETTINGS MENU (Right Side - Settings Panel) ===== */.settings-menu {
+}
+
+/* ===== SIDEBAR 3: SETTINGS MENU (Right Side - Settings Panel) ===== */
+.settings-menu {
   position: fixed;
   top: 70px;
   right: -270px;
@@ -339,20 +452,28 @@ body.order-mode-active .order-sidebar {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-}.settings-menu.open {
+}
+
+.settings-menu.open {
   right: 0;
   left: auto;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-}/* Responsive adjustments for settings sidebar *//* =============================
+}
+
+/* Responsive adjustments for settings sidebar */
+/* =============================
    RANGE FIX: 481pxâ€“768px HEIGHT STABILITY
-   ============================= */.settings-panel {
+   ============================= */
+.settings-panel {
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-}.back-button {
+}
+
+.back-button {
   background: var(--card-bg);
   border: 2px solid var(--primary-color);
   color: var(--text-color);
@@ -360,7 +481,10 @@ body.order-mode-active .order-sidebar {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
-}/* Theme and language buttons */.language-btn,
+}
+
+/* Theme and language buttons */
+.language-btn,
 .theme-btn {
   width: 100%;
   text-align: left;
@@ -373,16 +497,22 @@ body.order-mode-active .order-sidebar {
   background: transparent;
   border-radius: 5px;
   margin-bottom: 8px;
-}.language-btn:hover,
+}
+
+.language-btn:hover,
 .theme-btn:hover {
   transform: translateX(5px);
   background-color: transparent;
   border-color: var(--price-color);
   color: var(--price-color);
   box-shadow: var(--glow-shadow-hover);
-}/* Responsive settings menu *//* =================================================================
+}
+
+/* Responsive settings menu */
+/* =================================================================
    TABLES & GRID CONTAINERS - CONSOLIDATED
-   ================================================================= */.container,
+   ================================================================= */
+.container,
 .category-grid,
 .product-grid {
   width: var(--table-width);
@@ -392,17 +522,25 @@ body.order-mode-active .order-sidebar {
   border-radius: 15px;
   box-shadow: 0 0 20px var(--border-color);
   position: relative;
-}/* === REGION: HISTORIAL Y LISTA DE Ã“RDENES === *//* Contenedores de Ã³rdenes con scroll vertical */.orders-list-container {
+}
+
+/* === REGION: HISTORIAL Y LISTA DE Ã“RDENES === */
+/* Contenedores de Ã³rdenes con scroll vertical */
+.orders-list-container {
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;
   margin-top: 20px;
-}.orders-list {
+}
+
+.orders-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
-}.order-history-container {
+}
+
+.order-history-container {
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -410,57 +548,91 @@ body.order-mode-active .order-sidebar {
   display: flex;
   flex-direction: column;
   gap: 15px;
-}/* Estilos para la barra de scroll - CONSOLIDADOS *//* Removidos estilos especÃ­ficos redundantes - los globales al final manejan todos los scrollbars */.saved-order {
+}
+
+/* Estilos para la barra de scroll - CONSOLIDADOS */
+/* Removidos estilos especÃ­ficos redundantes - los globales al final manejan todos los scrollbars */
+.saved-order {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
   padding: 15px;
   margin-bottom: 15px;
   transition: all var(--transition-time) ease;
-}.delete-order-btn {
+}
+
+.delete-order-btn {
   background: rgba(255, 99, 71, 0.2);
   border-color: rgba(255, 99, 71, 0.5);
   color: rgba(255, 99, 71, 1);
   margin: 0 auto;
   display: block;
-}/* Consolidated tablet responsive styles *//* Optimized disabled states and selection modes */.price-selection-mode .price-button.non-selectable,
+}
+
+/* Consolidated tablet responsive styles */
+/* Optimized disabled states and selection modes */
+.price-selection-mode .price-button.non-selectable,
 .price-selection-mode .price-button:disabled {
   animation: none;
   background: transparent;
   transform: none;
-}.price-selection-mode .product-grid .product-card.liquor-card .price-button {
+}
+
+.price-selection-mode .product-grid .product-card.liquor-card .price-button {
   transform: scale(1.02);
   box-shadow: 0 0 15px var(--price-color);
-}/* =================================================================
+}
+
+/* =================================================================
    RESPONSIVE DESIGN - TABLET (481px - 768px)
-   ================================================================= *//* Consolidated mobile responsive styles *//* =================================================================
+   ================================================================= */
+/* Consolidated mobile responsive styles */
+/* =================================================================
    RESPONSIVE DESIGN - PORTRAIT TABLETS (768px - 1024px)
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    RESPONSIVE DESIGN - MOBILE LANDSCAPE (max-width: 480px)
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    RESPONSIVE DESIGN - MOBILE PORTRAIT (max-width: 480px)
-   ================================================================= *//* Ajustar contenido principal para barra mÃ¡s compacta */.top-nav-visible~.app-container .main-content-screen,
+   ================================================================= */
+/* Ajustar contenido principal para barra mÃ¡s compacta */
+.top-nav-visible~.app-container .main-content-screen,
 .main-content-screen.with-top-nav {
   padding-top: 56px;
-}/* Botones hamburguesa y volver superpuestos - ajustados */.hamburger-btn,
+}
+
+/* Botones hamburguesa y volver superpuestos - ajustados */
+.hamburger-btn,
 .back-button-container {
   position: fixed;
   z-index: 900;
-}.hamburger-btn {
+}
+
+.hamburger-btn {
   left: 8px;
   top: 56px;
   width: 36px;
   height: 36px;
   font-size: 1.3rem;
-}/* ORDER SIDEBAR - MOBILE PORTRAIT (parte inferior) - SOLO EN PORTRAIT *//* Sidebar visible cuando estÃ¡ activo en portrait - SOLO EN PORTRAIT *//* =================================================================
+}
+
+/* ORDER SIDEBAR - MOBILE PORTRAIT (parte inferior) - SOLO EN PORTRAIT */
+/* Sidebar visible cuando estÃ¡ activo en portrait - SOLO EN PORTRAIT */
+/* =================================================================
    REGLAS ESPECÃFICAS PARA PORTRAIT - TABLAS COMPLETAS
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    RESPONSIVE DESIGN - LANDSCAPE TABLETS (768px - 1024px)
-   ================================================================= *//* (revert) Bloque de correcciÃ³n landscape tablet eliminado por solicitud *//* =================================================================
+   ================================================================= */
+/* (revert) Bloque de correcciÃ³n landscape tablet eliminado por solicitud */
+/* =================================================================
    TOUCH TARGETS - TABLETS (max-width: 1024px)
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    RESPONSIVE DESIGN - LARGE DESKTOP (min-width: 1200px)
-   ================================================================= */.password-input {
+   ================================================================= */
+.password-input {
   width: 100%;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid var(--border-color);
@@ -469,9 +641,12 @@ body.order-mode-active .order-sidebar {
   margin: 15px 0;
   font-family: 'Montserrat', sans-serif;
   transition: all var(--transition-time) ease;
-}/* =================================================================
+}
+
+/* =================================================================
    TOP NAVIGATION BAR
-   ================================================================= */.top-nav-bar {
+   ================================================================= */
+.top-nav-bar {
   position: fixed;
   top: 0;
   left: 0;
@@ -485,13 +660,19 @@ body.order-mode-active .order-sidebar {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateY(-100%);
   opacity: 0;
-}.top-nav-bar.top-nav-visible {
+}
+
+.top-nav-bar.top-nav-visible {
   transform: translateY(0);
   opacity: 1;
-}.top-nav-bar.top-nav-hidden {
+}
+
+.top-nav-bar.top-nav-hidden {
   transform: translateY(-100%);
   opacity: 0;
-}.top-nav-content {
+}
+
+.top-nav-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -499,17 +680,25 @@ body.order-mode-active .order-sidebar {
   max-width: var(--table-max-width);
   margin: 0 auto;
   padding: 0 20px;
-}.nav-left {
+}
+
+.nav-left {
   display: flex;
   gap: 10px;
   align-items: center;
-}.back-btn-hidden {
+}
+
+.back-btn-hidden {
   display: none !important;
-}.nav-buttons-container {
+}
+
+.nav-buttons-container {
   display: flex;
   gap: 15px;
   align-items: center;
-}.top-nav-btn {
+}
+
+.top-nav-btn {
   background: var(--card-bg);
   border: 2px solid var(--primary-color);
   color: var(--text-color);
@@ -524,15 +713,20 @@ body.order-mode-active .order-sidebar {
   display: flex;
   justify-content: center;
   align-items: center;
-}.top-nav-btn:hover {
+}
+
+.top-nav-btn:hover {
   background-color: transparent;
   transform: scale(1.02);
   border-color: var(--price-color);
   color: var(--price-color);
   box-shadow: 0 0 15px var(--price-color);
-}/* =================================================================
+}
+
+/* =================================================================
    NAVIGATION DRAWER & HAMBURGER MENU
-   ================================================================= */.top-nav-bar .hamburger-btn {
+   ================================================================= */
+.top-nav-bar .hamburger-btn {
   position: relative;
   top: unset;
   left: unset;
@@ -549,13 +743,17 @@ body.order-mode-active .order-sidebar {
   z-index: 1000;
   transition: all var(--transition-time) ease;
   border-radius: 8px;
-}.top-nav-bar .hamburger-btn:hover {
+}
+
+.top-nav-bar .hamburger-btn:hover {
   background-color: transparent;
   transform: scale(1.02);
   border-color: var(--price-color);
   color: var(--price-color);
   box-shadow: 0 0 15px var(--price-color);
-}.hamburger-btn {
+}
+
+.hamburger-btn {
   position: fixed;
   top: 72px;
   left: calc((100vw - var(--table-width)) / 2 + 20px);
@@ -571,15 +769,22 @@ body.order-mode-active .order-sidebar {
   cursor: pointer;
   z-index: 900;
   transition: all var(--transition-time) ease;
-}.hamburger-btn:hover {
+}
+
+.hamburger-btn:hover {
   background-color: transparent;
   transform: scale(1.02);
   border-color: var(--price-color);
   color: var(--price-color);
   box-shadow: 0 0 15px var(--price-color);
-}/* Back button container - OCULTO: ahora estÃ¡ en la barra superior */.back-button-container {
+}
+
+/* Back button container - OCULTO: ahora estÃ¡ en la barra superior */
+.back-button-container {
   display: none !important;
-}.back-button {
+}
+
+.back-button {
   background: var(--card-bg);
   border: 2px solid var(--primary-color);
   color: var(--text-color);
@@ -594,25 +799,42 @@ body.order-mode-active .order-sidebar {
   backdrop-filter: blur(10px);
   font-weight: bold;
   border-radius: 8px;
-}/* Centrar el botÃ³n Volver en el menÃº lateral derecho */.settings-menu .back-button {
+}
+
+/* Centrar el botÃ³n Volver en el menÃº lateral derecho */
+.settings-menu .back-button {
   margin: 0 auto;
   display: block;
-}.title-row {
+}
+
+.title-row {
   background: transparent;
-}.title-row td {
+}
+
+.title-row td {
   padding: 0;
   background: transparent;
-}/* Cuando el modo orden estÃ¡ activo en desktop, ajustar padding para el sidebar */body.order-mode-active .app-container {
+}
+
+/* Cuando el modo orden estÃ¡ activo en desktop, ajustar padding para el sidebar */
+body.order-mode-active .app-container {
   padding-right: calc(max(20px, calc((100vw - var(--table-max-width)) / 2)) + 284px);
-}.content-wrapper.order-active {
+}
+
+.content-wrapper.order-active {
   gap: 1px;
   justify-content: flex-start;
   transition: gap 0.2s ease-in-out;
-}.content-container-flex {
+}
+
+.content-container-flex {
   margin-right: -1.5px;
-}/* =================================================================
+}
+
+/* =================================================================
    CATEGORY-SPECIFIC STYLES
-   ================================================================= */.exclusive-option-group {
+   ================================================================= */
+.exclusive-option-group {
   background: rgba(0, 247, 255, 0.05);
   border: 1px solid rgba(0, 247, 255, 0.2);
   border-radius: 8px;
@@ -621,12 +843,16 @@ body.order-mode-active .order-sidebar {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}.exclusive-option-group h4 {
+}
+
+.exclusive-option-group h4 {
   color: var(--primary-color);
   margin: 0 0 10px 0;
   font-size: 1rem;
   text-align: center;
-}.jager-option-container {
+}
+
+.jager-option-container {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -635,36 +861,61 @@ body.order-mode-active .order-sidebar {
   transition: background-color 0.3s ease;
   cursor: pointer;
   font-size: 1rem;
-}.jager-option-container.selected {
+}
+
+.jager-option-container.selected {
   background: rgba(0, 247, 255, 0.2);
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 247, 255, 0.3);
-}/* =================================================================
+}
+
+/* =================================================================
    INLINE STYLE REFACTORING - UTILITY CLASSES
-   ================================================================= *//* Screen display utilities */.screen-hidden {
+   ================================================================= */
+/* Screen display utilities */
+.screen-hidden {
   display: none !important;
-}.screen-visible {
+}
+
+.screen-visible {
   display: flex !important;
   opacity: 1;
   visibility: visible;
-}.screen-flex {
+}
+
+.screen-flex {
   display: flex !important;
-}.screen-block {
+}
+
+.screen-block {
   display: block !important;
-}/* Hamburger menu visibility */.hamburger-hidden {
+}
+
+/* Hamburger menu visibility */
+.hamburger-hidden {
   display: none;
-}/* =================================================================
+}
+
+/* =================================================================
    SETTINGS MENU STYLES
-   ================================================================= *//* Settings panel styles */.settings-panel {
+   ================================================================= */
+/* Settings panel styles */
+.settings-panel {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
   /* SeparaciÃ³n entre botones igual que en el menÃº lateral izquierdo */
-}/* Settings title *//* Fade in animation for panels */.fade-in {
+}
+
+/* Settings title */
+/* Fade in animation for panels */
+.fade-in {
   animation: fadeIn 0.3s ease-in-out;
-}@keyframes fadeIn {
+}
+
+@keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateX(20px);
@@ -674,33 +925,66 @@ body.order-mode-active .order-sidebar {
     opacity: 1;
     transform: translateX(0);
   }
-}/* Language and theme buttons - using existing nav-button styles but adding some specificities */.language-btn,
+}
+
+/* Language and theme buttons - using existing nav-button styles but adding some specificities */
+.language-btn,
 .theme-btn {
   transition: all 0.3s ease;
-}.language-btn:hover,
+}
+
+.language-btn:hover,
 .theme-btn:hover {
   transform: translateX(5px);
-}/* Active state for selected options *//* =================================================================
+}
+
+/* Active state for selected options */
+/* =================================================================
    RESPONSIVE SETTINGS MENU STYLES
-   ================================================================= *//* Tablet styles *//* Mobile phone styles *//* Duplicate portrait media query removed - consolidated above *//* Landscape orientation styles for smaller devices */.hamburger-visible {
+   ================================================================= */
+/* Tablet styles */
+/* Mobile phone styles */
+/* Duplicate portrait media query removed - consolidated above */
+/* Landscape orientation styles for smaller devices */
+.hamburger-visible {
   display: block;
-}/* === REGION: SIDEBAR STATES (Visibility) === *//* Sidebar and container display states */.sidebar-hidden {
+}
+
+/* === REGION: SIDEBAR STATES (Visibility) === */
+/* Sidebar and container display states */
+.sidebar-hidden {
   display: none !important;
-}.sidebar-visible {
+}
+
+.sidebar-visible {
   display: flex !important;
-}/* Mobile Sidebar Control Classes */.sidebar-mobile-portrait {
+}
+
+/* Mobile Sidebar Control Classes */
+.sidebar-mobile-portrait {
   position: fixed !important;
   bottom: 0 !important;
   transform: translateY(0) !important;
-}.sidebar-mobile-landscape {
+}
+
+.sidebar-mobile-landscape {
   position: fixed !important;
   right: 0 !important;
   transform: translateX(0) !important;
-}.sidebar-mobile-hidden {
+}
+
+.sidebar-mobile-hidden {
   transform: translateY(100%) !important;
-}.sidebar-landscape-hidden {
+}
+
+.sidebar-landscape-hidden {
   transform: translateX(100%) !important;
-}/* Estilos para los bloques organizados de refrescos *//* Estilos para los bloques organizados de cervezas *//* Display Utilities - CONSOLIDADAS */.hidden,
+}
+
+/* Estilos para los bloques organizados de refrescos */
+/* Estilos para los bloques organizados de cervezas */
+/* Display Utilities - CONSOLIDADAS */
+.hidden,
 .content-hidden,
 .input-container-hidden,
 .choice-hidden,
@@ -708,55 +992,105 @@ body.order-mode-active .order-sidebar {
 .modal-hidden,
 .page-title-hidden {
   display: none;
-}.visible,
+}
+
+.visible,
 .content-visible,
 .input-container-visible,
 .choice-visible,
 .error-visible,
 .page-title-visible {
   display: block;
-}.modal-flex {
+}
+
+.modal-flex {
   display: flex;
-}/* Semantic state for drink modal open (BEM-friendly) */.drink-modal.is-open,
+}
+
+/* Semantic state for drink modal open (BEM-friendly) */
+.drink-modal.is-open,
 .drink-modal.is-open {
   display: flex;
-}/* Body overflow control */.body-no-scroll {
+}
+
+/* Body overflow control */
+.body-no-scroll {
   overflow: hidden;
-}.body-scroll {
+}
+
+.body-scroll {
   overflow: auto;
-}/* Error display utilities */.error-red {
+}
+
+/* Error display utilities */
+.error-red {
   color: red;
-}/* Opacity utilities */.opacity-0 {
+}
+
+/* Opacity utilities */
+.opacity-0 {
   opacity: 0;
-}.opacity-1 {
+}
+
+.opacity-1 {
   opacity: 1;
-}/* Left positioning utilities */.left-0 {
+}
+
+/* Left positioning utilities */
+.left-0 {
   left: 0;
-}.left-auto {
+}
+
+.left-auto {
   left: auto;
-}/* Product image size utilities */.product-image-small {
+}
+
+/* Product image size utilities - DEPRECATED/DISABLED to allow tables.css to control sizing */
+/* 
+.product-image-small {
   width: 40px !important;
   height: 40px !important;
-}.product-image-large {
+}
+.product-image-large {
   width: 70px !important;
   height: 70px !important;
-}/* Height and min-height utilities */.height-auto {
+} 
+*/
+/* Height and min-height utilities */
+.height-auto {
   height: auto !important;
-}.min-height-auto {
+}
+
+.min-height-auto {
   min-height: auto !important;
-}/* Modal subtitle styling *//* Custom Scrollbar Styles - TEMA OSCURO OPTIMIZADO *//* Webkit browsers (Chrome, Safari, Edge) */::-webkit-scrollbar {
+}
+
+/* Modal subtitle styling */
+/* Custom Scrollbar Styles - TEMA OSCURO OPTIMIZADO */
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
   width: 12px;
   height: 12px;
-}/* Scrollbar vertical - mÃ¡s sutil */::-webkit-scrollbar:vertical {
+}
+
+/* Scrollbar vertical - mÃ¡s sutil */
+::-webkit-scrollbar:vertical {
   width: 8px;
-}::-webkit-scrollbar-track {
+}
+
+::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   border: none;
-}/* Track vertical - casi invisible */::-webkit-scrollbar-track:vertical {
+}
+
+/* Track vertical - casi invisible */
+::-webkit-scrollbar-track:vertical {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-}::-webkit-scrollbar-thumb {
+}
+
+::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg,
       rgba(243, 246, 246, 0.6) 0%,
       rgba(243, 246, 246, 0.4) 50%,
@@ -764,78 +1098,137 @@ body.order-mode-active .order-sidebar {
   border-radius: 6px;
   border: 1px solid rgba(0, 247, 255, 0.2);
   transition: all 0.3s ease;
-}/* Thumb vertical - mÃ¡s discreto */::-webkit-scrollbar-thumb:vertical {
+}
+
+/* Thumb vertical - mÃ¡s discreto */
+::-webkit-scrollbar-thumb:vertical {
   background: linear-gradient(180deg,
       rgba(243, 246, 246, 0.25) 0%,
       rgba(243, 246, 246, 0.15) 50%,
       rgba(243, 246, 246, 0.25) 100%);
   border: 1px solid rgba(0, 247, 255, 0.1);
   border-radius: 4px;
-}::-webkit-scrollbar-thumb:hover {
+}
+
+::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg,
       rgba(0, 247, 255, 0.8) 0%,
       rgba(0, 247, 255, 0.6) 50%,
       rgba(0, 247, 255, 0.8) 100%);
   border-color: rgba(0, 247, 255, 0.5);
   box-shadow: 0 0 8px rgba(0, 247, 255, 0.3);
-}/* Hover vertical - sutil pero visible */::-webkit-scrollbar-thumb:vertical:hover {
+}
+
+/* Hover vertical - sutil pero visible */
+::-webkit-scrollbar-thumb:vertical:hover {
   background: linear-gradient(180deg,
       rgba(0, 247, 255, 0.4) 0%,
       rgba(0, 247, 255, 0.3) 50%,
       rgba(0, 247, 255, 0.4) 100%);
   border-color: rgba(0, 247, 255, 0.3);
   box-shadow: 0 0 4px rgba(0, 247, 255, 0.2);
-}::-webkit-scrollbar-thumb:active {
+}
+
+::-webkit-scrollbar-thumb:active {
   background: linear-gradient(180deg,
       rgba(0, 247, 255, 1) 0%,
       rgba(0, 247, 255, 0.8) 50%,
       rgba(0, 247, 255, 1) 100%);
   border-color: rgba(0, 247, 255, 0.8);
   box-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
-}/* Active vertical - mÃ¡s visible al usar */::-webkit-scrollbar-thumb:vertical:active {
+}
+
+/* Active vertical - mÃ¡s visible al usar */
+::-webkit-scrollbar-thumb:vertical:active {
   background: linear-gradient(180deg,
       rgba(0, 247, 255, 0.6) 0%,
       rgba(0, 247, 255, 0.5) 50%,
       rgba(0, 247, 255, 0.6) 100%);
   border-color: rgba(0, 247, 255, 0.5);
   box-shadow: 0 0 6px rgba(0, 247, 255, 0.3);
-}::-webkit-scrollbar-corner {
+}
+
+::-webkit-scrollbar-corner {
   background: rgba(0, 0, 0, 0.1);
   border: none;
-}/* Firefox */* {
+}
+
+/* Firefox */
+* {
   scrollbar-width: thin;
   scrollbar-color: rgba(243, 246, 246, 0.6) rgba(0, 0, 0, 0.4);
-}/* Estilos especÃ­ficos para elementos con scroll en tema oscuro *//* =================================================================
+}
+
+/* Estilos especÃ­ficos para elementos con scroll en tema oscuro */
+/* =================================================================
    CORRECCIÃ“N ESPECÃFICA PARA ENCABEZADOS DE DOS PALABRAS EN MÃ“VIL PORTRAIT
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    REGLAS LANDSCAPE UNIFICADAS - PREVENCIÃ“N DE SALTOS DE LÃNEA
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    REGLAS LANDSCAPE CONSOLIDADAS - ANCHOS DE COLUMNA OPTIMIZADOS
-   ================================================================= *//* Reglas base consolidadas para todas las orientaciones landscape *//* ===== MÃ“VIL LANDSCAPE (max-width: 768px) ===== *//* ===== TABLET LANDSCAPE (768px - 1024px) ===== *//* =================================================================
+   ================================================================= */
+/* Reglas base consolidadas para todas las orientaciones landscape */
+/* ===== MÃ“VIL LANDSCAPE (max-width: 768px) ===== */
+/* ===== TABLET LANDSCAPE (768px - 1024px) ===== */
+/* =================================================================
    ALINEACIÃ“N PORTRAIT CONSOLIDADA - ESPECIFICIDAD OPTIMIZADA
-   ================================================================= *//* Reglas base para portrait - especificidad reducida y consolidada *//* Ajustes especÃ­ficos de padding por resoluciÃ³n *//* Mantener imÃ¡genes centradas */.product-table td.image-icon img {
+   ================================================================= */
+/* Reglas base para portrait - especificidad reducida y consolidada */
+/* Ajustes especÃ­ficos de padding por resoluciÃ³n */
+/* Mantener imÃ¡genes centradas */
+.product-table td.image-icon img {
   display: block;
   margin: 0 auto;
-}/* =================================================================
+}
+
+/* =================================================================
    SOLUCIÃ“N DEFINITIVA PARA ALINEACIÃ“N DE NOMBRES EN PORTRAIT
-   ================================================================= *//* Estas reglas tienen mÃ¡xima especificidad para sobrescribir 
-   las reglas generales de portrait que centran todas las celdas *//* ===== CONFIGURACIONES ESPECÃFICAS DEL MENÃš LATERAL DE NAVEGACIÃ“N ===== *//* DESKTOP - Aumentar texto 30% y reducir ancho 20% *//* TABLET PORTRAIT - Aumentar texto 15% y reducir ancho 10% *//* TABLET LANDSCAPE - Aumentar texto 15% y reducir ancho 10% *//* ===== TEMA LIGHT-WHITE CONSOLIDADO ===== *//* Reglas base con especificidad optimizada - sin !important *//* Botones de tema con especificidad optimizada *//* Botones especÃ­ficos con texto azul permanente *//* === REGION: BREAKPOINT LAPTOP/DESKTOP â‰¥769 === *//* Desktop spacing when order mode is active (avoid overlap with fixed sidebar) *//* === REGION: MOBILE LANDSCAPE â‰¤768 === *//* Sidebar fijo a la derecha y espacio reservado vÃ­a ancho del wrapper *//* =================================================================
+   ================================================================= */
+/* Estas reglas tienen mÃ¡xima especificidad para sobrescribir 
+   las reglas generales de portrait que centran todas las celdas */
+/* ===== CONFIGURACIONES ESPECÃFICAS DEL MENÃš LATERAL DE NAVEGACIÃ“N ===== */
+/* DESKTOP - Aumentar texto 30% y reducir ancho 20% */
+/* TABLET PORTRAIT - Aumentar texto 15% y reducir ancho 10% */
+/* TABLET LANDSCAPE - Aumentar texto 15% y reducir ancho 10% */
+/* ===== TEMA LIGHT-WHITE CONSOLIDADO ===== */
+/* Reglas base con especificidad optimizada - sin !important */
+/* Botones de tema con especificidad optimizada */
+/* Botones especÃ­ficos con texto azul permanente */
+/* === REGION: BREAKPOINT LAPTOP/DESKTOP â‰¥769 === */
+/* Desktop spacing when order mode is active (avoid overlap with fixed sidebar) */
+/* === REGION: MOBILE LANDSCAPE â‰¤768 === */
+/* Sidebar fijo a la derecha y espacio reservado vÃ­a ancho del wrapper */
+/* =================================================================
    RANGE PORTRAIT: 481pxâ€“768px (phablet / tablet pequeÃ±a)
    Replicar comportamiento de mÃ³vil portrait: ancho completo y sidebar inferior
-   ================================================================= *//* ConfiguraciÃ³n especÃ­fica para resoluciones 768â€“1024 de ancho y 641px de alto *//* Responsive logos: solo mÃ³viles â‰¤480px *//* Reset en â‰¥481px para evitar escala en tablet/escritorio *//* =================================================================
+   ================================================================= */
+/* ConfiguraciÃ³n especÃ­fica para resoluciones 768â€“1024 de ancho y 641px de alto */
+/* Responsive logos: solo mÃ³viles â‰¤480px */
+/* Reset en â‰¥481px para evitar escala en tablet/escritorio */
+/* =================================================================
    VARIANT CARD LAYOUT STYLES (ALITAS, ETC)
-   ================================================================= *//* =================================================================
+   ================================================================= */
+/* =================================================================
    LEGACY SUPPORT & FIXES (ALITAS & OTHERS)
-   ================================================================= *//* Base styles for legacy classes if not covered by variant-card */.price-item {
+   ================================================================= */
+/* Base styles for legacy classes if not covered by variant-card */
+.price-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   width: 100%;
-}.price-label {
+}
+
+.price-label {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
   color: var(--text-color);
   text-align: left;
-}/* Mobile optimizations for Alitas (variant-card) *//* DUPLICATED BLOCK REMOVED (lines 4529-4798) - originals at 4330-4527 */
+}
+
+/* Mobile optimizations for Alitas (variant-card) */
+/* DUPLICATED BLOCK REMOVED (lines 4529-4798) - originals at 4330-4527 */
