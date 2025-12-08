@@ -1,5 +1,3 @@
-// ProductData is now accessed through DI Container
-// Version: Modularized-Fix-v2
 import { getProductRepository } from '../../../../Shared/utils/diUtils.js';
 import { setSafeInnerHTML } from '../../../../Shared/utils/domUtils.js';
 import { logError, logWarning } from '../../../../Shared/utils/errorHandler.js';
@@ -8,15 +6,17 @@ import TranslationService from '../../../../Shared/services/TranslationService.j
 import DOMTranslator from '../../../../Shared/services/DOMTranslator.js';
 import {
   simpleHash,
-  formatPrice,
+  formatPrice
+} from '../../../../Shared/modules/common/utils.js';
+import {
   normalizeCategory,
   determineProductType,
   getCategoryForModal,
   isPriceField
-} from './modules/utils.js';
-import { eventHandlers } from './modules/events.js';
-import { actions, state } from './modules/state.js';
-import { api } from './modules/api.js';
+} from '../../../../Shared/modules/product-table/utils.js';
+import { eventHandlers } from '../../../../Shared/modules/product-table/events.js';
+import { actions, state } from '../../../../Shared/modules/product-table/state.js';
+import { api } from '../../../../Shared/modules/product-table/api.js';
 
 const DEFAULT_IMAGE = '/assets/no-image.png';
 

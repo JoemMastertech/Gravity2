@@ -1,0 +1,28 @@
+/* =================================================================
+   LIST COMPONENTS - ORDER HISTORY & LISTS
+   ================================================================= */
+
+/* Container for lists with vertical scroll */
+.orders-list-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    margin-top: 20px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-history-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

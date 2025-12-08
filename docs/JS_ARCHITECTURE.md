@@ -1,74 +1,31 @@
-# Arquitectura del Sistema (Clean Architecture)
+# Arquitectura JavaScript
 
-Este documento describe la arquitectura global del proyecto, basada en principios de **Clean Architecture** y Modularidad.
+Este documento describe la arquitectura modular implementada para el manejo de productos y UI.
 
-## 🏗️ Estructura Global
+## Estructura de Directorios (`Shared/modules/`)
 
-El sistema se divide en capas concéntricas con reglas de dependencia estrictas:
+La lógica de negocio se ha extraído de los componentes UI y se organiza en:
 
-```mermaid
-graph TD
-    Domain[Dominio]
-    App[Aplicación]
-    Interfaces[Interfaces / Web]
-    Infra[Infraestructura]
+### 1. Common (`Shared/modules/common/`)
+Utilidades genéricas reutilizables en toda la aplicación.
+- **`utils.js`**: `simpleHash`, `formatPrice`, `slugify`.
 
-    Interfaces --> App
-    Infra --> App
-    App --> Domain
-    Interfaces --> Infra
-```
+### 2. Product Table (`Shared/modules/product-table/`)
+Módulos específicos del dominio de la tabla de productos.
+- **`utils.js`**: Lógica de negocio específica (`determineProductType`, `normalizeCategory`).
+- **`state.js`**: Gestión del estado de la vista (`currentViewMode`, `productCache`).
+- **`events.js`**: Manejadores de eventos y delegación (`click` en tablas y grids).
+- **`api.js`**: Capa de abstracción sobre `ProductRepository` y Supabase.
 
-### 1. Capa de Infraestructura (`Infraestructura/`)
-Contiene las implementaciones técnicas concretas y adaptadores a servicios externos.
-- **Adapters** (`Infraestructura/adapters/`):
-    - `SupabaseAdapter.js`: Comunicación directa con la BD Supabase.
-    - `ProductDataAdapter.js`: Normalización de datos crudos a entidades de dominio.
-    - `BaseAdapter.js`: Clase base para manejo de errores y conexión.
+## Componentes UI (`Interfaces/web/ui-adapters/components/`)
+- **`product-table.js`**: 
+  - Actúa como **Orquestador UI**.
+  - Importa lógica de los módulos compartidos.
+  - Se encarga EXCLUSIVAMENTE de manipular el DOM y renderizar HTML.
+  - No contiene lógica de negocio ni llamadas directas a APIs (usa `api.js`).
 
-### 2. Capa de Interfaces (`Interfaces/`)
-Maneja la interacción con el usuario y la presentación (UI).
-- **Web UI Adapters** (`Interfaces/web/ui-adapters/`):
-    - **Components**: Lógica de widgets (`product-table.js`, `OrderUI.js`).
-    - **Screens**: Gestión de pantallas (`screen-manager.js`).
-    - **Modules**: Subsistemas lógicos (`modules/state.js`, `api.js`).
-
-### 3. Capa de Aplicación (`Aplicacion/`)
-(En desarrollo) Contiene los Casos de Uso puros y Servicios de aplicación.
-
----
-
-## 🧩 Subsistema: Product Table
-Ubicación: `Interfaces/web/ui-adapters/components/product-table.js`
-
-Este componente sigue un patrón de **Orquestador Modular Interno** para manejar la complejidad de la visualización mixta (Grid/Table).
-
-### Diagrama Interno
-```mermaid
-graph TD
-    Orchestrator[ProductTable.js]
-    State[modules/state.js]
-    API[modules/api.js]
-    Events[modules/events.js]
-    Utils[modules/utils.js]
-
-    Orchestrator --> State
-    Orchestrator --> API
-    Orchestrator --> Events
-    Orchestrator --> Utils
-```
-
-### Roles de Módulos
-1.  **Orquestador (`product-table.js`)**: Punto de entrada. Renderiza HTML y coordina.
-2.  **API (`modules/api.js`)**: Abstrae la llamada a `ProductDataAdapter`.
-3.  **State (`modules/state.js`)**: Gestiona `viewMode` (Grid/Table) y estado de carga.
-4.  **Events (`modules/events.js`)**: Delegación de eventos (clics en productos, filtros).
-5.  **Utils (`modules/utils.js`)**: Helpers puros de formateo.
-
----
-
-## 🔌 Sistema de Legacy Integration
-
-Algunos componentes antiguos conviven con la nueva arquitectura mediante adaptadores o ubicación en `Interfaces`:
-- `order-system.js`: Lógica legacy del carrito de compras (Activo, en migración a `OrderLogic.js`).
-- `_legacy.css`: Estilos antiguos encapsulados para no romper la UI mientras se migra a BEM.
+## Flujo de Datos
+1. **Eventos**: `events.js` captura interacciones del usuario.
+2. **Acciones**: Invoca métodos en `state.js` o `product-table.js` (rendering).
+3. **Datos**: `api.js` obtiene datos del repositorio.
+4. **Render**: `product-table.js` recibe datos y actualiza el DOM.

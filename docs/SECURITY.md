@@ -179,6 +179,30 @@ describe('setSafeInnerHTML', () => {
 });
 ```
 
+### 7. Seguridad en el Build (Vite)
+
+El proyecto utiliza **Vite** como herramienta de construcción, incorporando prácticas de seguridad modernas en el proceso de empaquetado.
+
+#### 7.1 Manejo de Variables de Entorno (.env)
+Vite implementa un control estricto sobre las variables de entorno para prevenir fugas de credenciales.
+
+- **Prefijo `VITE_`**: Solo las variables que comienzan con `VITE_` son expuestas al cliente (navegador).
+  - ✅ `VITE_SUPABASE_URL` (Expuesta: Necesaria para el cliente)
+  - ❌ `DB_ADMIN_PASSWORD` (Oculta: Nunca llegará al bundle final)
+- **Modo Producción**: Las variables se inyectan estáticamente en tiempo de build, eliminando referencias al proceso del sistema.
+
+#### 7.2 Minificación y Ofuscación
+El comando `npm run build` genera código optimizado para producción:
+- **Terser/Esbuild**: Minificación agresiva que dificulta la ingeniería inversa casual.
+- **Tree Shaking**: Eliminación de código muerto (como librerías de debug no usadas) para reducir la superficie de ataque.
+
+#### 7.3 Seguridad en CSS (PostCSS)
+El pipeline de CSS incluye herramientas de limpieza y validación:
+- **Autoprefixer**: Previene vulnerabilidades por hacks de navegadores antiguos.
+- **Stylelint**: Auditoría estática que previene inyecciones o malas prácticas en estilos.
+
+---
+
 ## Medidas de Seguridad Implementadas
 
 ### ✅ Protecciones Activas

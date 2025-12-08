@@ -123,6 +123,72 @@
   box-shadow: var(--glow-shadow-hover);
 }
 
+#create-order-btn {
+  margin-left: auto;
+}
+
+.history-btn {
+  margin-left: auto;
+}
+
+.nav__button--active,
+.nav__button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.back-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  box-shadow: var(--glow-shadow-hover);
+}
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.delete-order-btn:hover {
+  background: rgba(255, 99, 71, 0.8);
+  color: white;
+}
+
+.back-button-container {
+  left: 8px;
+  top: 96px;
+}
+
+/* ===== MIGRATED FROM LEGACY ===== */
+.clear-history-btn {
+  background: rgba(255, 99, 71, 0.2);
+  border-color: rgba(255, 99, 71, 0.5);
+  color: rgba(255, 99, 71, 1);
+  margin-left: auto;
+}
+
+.clear-history-btn:hover {
+  background: rgba(255, 99, 71, 0.8);
+  color: white;
+}
+
+.back-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}
+
+/* ===== MIGRATED FROM LEGACY ===== */
+[data-theme="light-white"] .drawer-menu .nav-button {
+  background: rgba(30, 64, 175, 0.05);
+  border: 1.4px solid var(--border-color);
+  color: var(--text-color);
+  box-shadow: var(--glow-shadow);
+}
+
+[data-theme="light-white"] .drawer-menu .nav-button:hover,
+[data-theme="light-white"] .drawer-menu .nav-button.active {
+  background-color: transparent;
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+}
+
 [data-theme="light-white"] .back-button {
   background: var(--card-bg);
   border: 2px solid var(--primary-color);
@@ -133,4 +199,208 @@
   background-color: #85C7FF;
   color: var(--color-white);
   box-shadow: 0 0 10px #85C7FF;
+}
+
+/* =================================================================
+   MIGRATED FROM _LEGACY.CSS (To be Consolidated)
+   ================================================================= */
+
+/* --- BEM Navigation Buttons --- */
+.nav__button {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  padding: 8px 15px;
+  font: 600 1rem 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition-time) ease;
+}
+
+.nav__button--toggle {
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  font-weight: bold;
+}
+
+.nav__button--toggle:hover {
+  transform: scale(1.05);
+}
+
+/* --- Top Navigation Buttons --- */
+.top-nav-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  padding: 8px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-time) ease;
+  backdrop-filter: blur(10px);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-nav-btn:hover {
+  background-color: transparent;
+  transform: scale(1.02);
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: 0 0 15px var(--price-color);
+}
+
+/* --- Hamburger Menu Button --- */
+.hamburger-btn {
+  position: fixed;
+  top: 72px;
+  left: calc((100vw - var(--table-width)) / 2 + 20px);
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 900;
+  transition: all var(--transition-time) ease;
+}
+
+.hamburger-btn:hover {
+  background-color: transparent;
+  transform: scale(1.02);
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: 0 0 15px var(--price-color);
+}
+
+.top-nav-bar .hamburger-btn {
+  position: relative;
+  top: unset;
+  left: unset;
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all var(--transition-time) ease;
+  border-radius: 8px;
+}
+
+.top-nav-bar .hamburger-btn:hover {
+  background-color: transparent;
+  transform: scale(1.02);
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: 0 0 15px var(--price-color);
+}
+
+/* --- Back Button --- */
+.back-button {
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  font-size: 1.1rem;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition-time) ease;
+  backdrop-filter: blur(10px);
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* Settings menu specific back button override */
+.settings-menu .back-button {
+  margin: 0 auto;
+  display: block;
+}
+
+/* --- Language & Theme Buttons --- */
+.language-btn,
+.theme-btn {
+  transition: all 0.3s ease;
+}
+
+.language-btn:hover,
+.theme-btn:hover {
+  transform: translateX(5px);
+}
+
+/* --- Drawer Menu Navigation Buttons --- */
+.drawer-menu .nav-button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font: 700 0.77rem 'Playfair Display', serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  border: 1.4px solid var(--border-color);
+  box-shadow: var(--glow-shadow);
+  background: transparent;
+  border-radius: 5px;
+}
+
+.drawer-menu .nav-button:hover,
+.drawer-menu .nav-button.active {
+  background-color: transparent;
+  transform: scale(1.02);
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+}
+
+/* =================================================================
+   RESPONSIVE (Migrated from legacy-responsive/media-queries.css)
+   ================================================================= */
+@media (max-width: 768px) {
+  .top-nav-content {
+    padding: 0 15px;
+  }
+
+  .nav-buttons-container {
+    gap: 10px;
+  }
+
+  .top-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    padding: 6px;
+  }
+
+  .top-nav-bar .hamburger-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+  }
+
+  .hamburger-btn {
+    left: calc((100vw - var(--table-width)) / 2 + 15px);
+  }
+
+  .back-button-container {
+    left: calc((100vw - var(--table-width)) / 2 + 10px);
+    top: 80px;
+  }
 }

@@ -7,23 +7,27 @@
 @import "base/reset.css";
 @import "base/typography.css";
 @import "base/animations.css";
+@import "base/scrollbars.css";
 
 /* 2b. Legacy: The Monolith (Loaded EARLY to allow overrides) */
-@import "_legacy.css";
+/* _legacy.css DELETED */
 @import "legacy-responsive/media-queries.css";
 
 /* 3. Layout: Grid, Containers, Structure */
 /* @import "layout/grid.css"; */
 @import "layout/containers.css";
 @import "layout/sidebar.css";
+@import "layout/navigation.css";
 
 /* 4. Components: UI Elements */
 @import "components/buttons.css";
 @import "components/cards.css";
 @import "components/modals.css";
 @import "components/forms.css";
+@import "components/drink-options.css";
 @import "components/tables.css";
 @import "components/product-table.css";
+@import "components/lists.css";
 
 /* 5. Utilities: Helpers */
 @import "utilities/helpers.css";

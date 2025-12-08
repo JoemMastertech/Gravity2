@@ -267,6 +267,23 @@
     display: block;
 }
 
+/* Base Video Thumbnail Style (Legacy 80x56) */
+.video-thumb,
+.product-table td .video-thumb {
+    width: 80px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.video-thumb:hover {
+    transform: scale(1.05);
+}
+
 /* Corrected sizing for Beverages subsections - STANDARD LARGE SIZE */
 /* Removed specific block as base rule now handles 70px for all */
 
@@ -334,4 +351,32 @@
 /* ===== MIGRATED FROM LEGACY ===== */
 .product-table td.image-icon {
     text-align: center;
+}
+
+/* =================================================================
+   CATEGORY SPECIFIC THUMBNAIL SIZES (Legacy Restoration)
+   ================================================================= */
+.product-table[data-category="carnes"] .video-thumb,
+.product-table[data-category="carnes"] td.image-icon img {
+    width: 100px !important;
+    height: 56px !important;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.product-table[data-category="cafe"] .video-thumb,
+.product-table[data-category="cafe"] td.image-icon img {
+    width: 90px !important;
+    height: 60px !important;
+    object-fit: cover;
+}
+
+.product-table[data-category="sopas"] .video-thumb,
+.product-table[data-category="sopas"] td.image-icon img {
+    border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.product-table[data-category="postres"] .video-thumb:hover,
+.product-table[data-category="postres"] td.image-icon img:hover {
+    transform: rotate(-2deg) scale(1.05);
 }

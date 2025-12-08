@@ -167,3 +167,29 @@ body.order-mode-active .order-sidebar {
 .order-sidebar.sidebar-hidden {
   display: none !important;
 }
+
+/* ===== RESPONSIVE STATE CLASSES (Migrated from _legacy.css) ===== */
+.sidebar-visible {
+  display: flex !important;
+}
+
+/* Mobile Sidebar Control Classes */
+.sidebar-mobile-portrait {
+  position: fixed !important;
+  bottom: 0 !important;
+  transform: translateY(0) !important;
+}
+
+.sidebar-mobile-landscape {
+  position: fixed !important;
+  right: 0 !important;
+  transform: translateX(0) !important;
+}
+
+.sidebar-mobile-hidden {
+  transform: translateY(100%) !important;
+}
+
+.sidebar-landscape-hidden {
+  transform: translateX(100%) !important;
+}

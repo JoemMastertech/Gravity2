@@ -227,11 +227,30 @@ body.sidebar-open .app-container {
 .cervezas-botella-section h2,
 .tarros-section h2,
 .vasos-cerveza-section h2 {
-  color: var(--primary-color);
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  padding: 0.5rem 0;
   text-align: center;
   border-left: none;
   padding-left: 0;
+}
+
+/* =================================================================
+   GRIDS - MIGRATED FROM LEGACY
+   ================================================================= */
+.category-grid,
+.product-grid {
+  width: var(--table-width);
+  max-width: 100%;
+  margin: var(--table-margin) auto;
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 0 20px var(--border-color);
+  position: relative;
+}
+
+.category-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  pointer-events: none;
 }
