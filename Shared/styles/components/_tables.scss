@@ -1,0 +1,213 @@
+/* ==========================================================================
+   Component: Tables (Product & Liquor)
+   ========================================================================== */
+
+/* Shared Base Styles */
+%table-base {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    padding: 20px;
+    width: var(--table-width, 100%);
+    max-width: var(--table-max-width, 1400px);
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 0 20px var(--border-color);
+    position: relative;
+    margin: var(--table-margin, 20px) auto;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        pointer-events: none;
+    }
+}
+
+.product-table,
+.liquor-table {
+    @extend %table-base;
+
+    /* --- HEADERS --- */
+    th {
+        font: 600 1rem 'Montserrat', sans-serif;
+        color: var(--primary-color);
+        text-align: center;
+        padding: 15px 10px;
+        border-bottom: 2px solid var(--border-color);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        &:first-child {
+            text-align: left;
+            padding-left: 15px;
+        }
+    }
+
+    /* --- BODY & CELLS --- */
+    td {
+        padding: 15px 10px;
+        background: transparent;
+        transition: all 0.3s ease;
+        text-align: center;
+        vertical-align: middle;
+
+        &:first-child {
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        &.product-name {
+            font: 600 1rem 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        &.product-ingredients {
+            text-align: left;
+            color: var(--color-ingredientes, var(--text-color));
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+
+        &.image-icon img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            background: white;
+            cursor: pointer;
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto;
+            animation: glow 2s infinite;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.2);
+                box-shadow: var(--glow-shadow-hover);
+            }
+        }
+
+        .video-thumb {
+            width: 80px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    /* Hover Effects */
+    tr:hover td {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    /* --- RESPONSIVE LOGIC --- */
+
+    /* Tablet / Mobile Common */
+    @include respond-to('mobile') {
+
+        /* Actually max-width 768px in legacy logic */
+        @media (max-width: 768px) {
+            padding: 8px 4px;
+            font-size: 0.8rem;
+            table-layout: fixed;
+            width: 100%;
+            /* Ensure it fits container but NO 100vw force */
+            max-width: 100%;
+
+            th,
+            td {
+                padding: 6px 3px;
+                font-size: 0.75rem;
+            }
+
+            td.product-name {
+                font-size: 0.7rem;
+                word-break: break-word;
+                white-space: normal;
+            }
+        }
+    }
+
+    /* Mobile Portrait (Cards View) */
+    @media (max-width: 480px) and (orientation: portrait) {
+        /* Logic to stack rows if needed, or keeping table layout but small */
+        width: 100%;
+        margin: 0;
+
+        td.image-icon img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+}
+
+/* Category Specific Overrides */
+.product-table[data-category="refrescos"],
+.product-table[data-category="cervezas"] {
+
+    /* Specific width logic from legacy, but adaptable */
+    th,
+    td {
+        text-align: center;
+    }
+
+    th:first-child,
+    td.product-name {
+        text-align: left;
+        width: 45%;
+    }
+}
+
+// ==========================================================================
+// RESCUED LEGACY LOGIC (Liquor Tables)
+// Migrated from media-queries.css
+// ==========================================================================
+
+.liquor-table {
+
+    // Exact column proportions to maintain layout stability
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 25%; // Nombre
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 20%; // Imagen (o ingrediente)
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 18%; // Botella
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 18%; // Litro
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+        width: 19%; // Copa
+    }
+
+    // Prevent price wrapping
+    td.product-price,
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5) {
+        white-space: nowrap;
+        word-break: keep-all;
+        hyphens: none;
+    }
+}

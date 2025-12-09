@@ -87,10 +87,17 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.8);
-  display: flex;
+  display: none;
+  /* Changed from flex to none */
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+/* Helper class to show modal */
+.modal.active,
+.modal.is-open {
+  display: flex;
 }
 
 .modal-backdrop {
@@ -574,4 +581,27 @@
 .order-history-container::-webkit-scrollbar-thumb:hover,
 .modal-content::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 247, 255, 0.7);
+}
+
+/* =================================================================
+   RESCUED LEGACY LOGIC (Media Queries)
+   Migrated from media-queries.css
+   ================================================================= */
+
+@include respond-to('tablet-landscape') {
+  @media (min-width: 768px) and (max-width: 1024px) {
+
+    /* Ensure proper scrolling in landscape tablets */
+    .modal-content .options-grid {
+      max-height: none;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Adjustment for meat modal in landscape */
+    #meat-customization-modal .modal-content {
+      max-height: 85vh;
+      width: 80%;
+    }
+  }
 }

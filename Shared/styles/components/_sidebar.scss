@@ -1,0 +1,127 @@
+/* ==========================================================================
+   Component: Order Sidebar
+   ========================================================================== */
+
+.order-sidebar {
+    /* Base Layout (Desktop/Default) */
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    width: 264px;
+    height: auto;
+    max-height: 70vh;
+    padding: 15px;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--glow-shadow);
+    z-index: 900;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+    /* Hidden by default, toggled by .active */
+    flex-direction: column;
+    transition: all 0.3s ease;
+
+    /* State: Open */
+    &.active,
+    &.is-open {
+        display: flex;
+    }
+
+    /* --- Tablet Portrait Override (Migrated from legacy media-queries.css) --- */
+    @include respond-to('tablet-portrait') {
+        @media (orientation: portrait) and (max-width: 1024px) {
+            /* Reset desktop positioning */
+            top: auto;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            /* Full width bottom sheet */
+            width: 100vw;
+            height: auto;
+            max-height: 50vh;
+            min-height: 200px;
+            border-radius: 15px 15px 0 0;
+            border-top: 2px solid var(--border-color);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            padding: 16px;
+            margin: 0;
+
+            /* Animation state (Hidden) */
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+
+            /* Animation state (Active) */
+            &.active,
+            &.is-open {
+                transform: translateY(0);
+                display: flex;
+                visibility: visible;
+                pointer-events: auto;
+            }
+        }
+    }
+
+    /* --- Mobile Override (Migrated from sidebar.css) --- */
+    @include mobile-only {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        transform: translateY(100%);
+
+        &.active,
+        &.is-open {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* =================================================================
+   RESCUED LEGACY LOGIC (Details & Components)
+   Migrated from media-queries.css
+   ================================================================= */
+
+.order-item {
+    padding: 8px 0;
+    margin-bottom: 8px;
+
+    .order-item-name {
+        font-size: 0.9rem;
+    }
+
+    .order-item-price {
+        font-size: 0.85rem;
+    }
+}
+
+/* Settings Sidebar (Legacy Adaptation) */
+.settings-menu {
+    @include respond-to('mobile') {
+        width: 240px;
+        right: -240px;
+
+        &.open {
+            right: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        width: 250px;
+        right: -250px;
+
+        &.open {
+            right: 0;
+        }
+    }
+}
+
+.settings-title {
+    @include respond-to('mobile') {
+        font-size: 1rem;
+        margin: 8px 0 15px 0;
+    }
+}

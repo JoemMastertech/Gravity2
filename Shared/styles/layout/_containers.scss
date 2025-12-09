@@ -1,0 +1,163 @@
+/* ==========================================================================
+   Layout: Containers
+   ========================================================================== */
+
+/* Main App Container */
+.app-container {
+    width: 100%;
+    max-width: var(--table-max-width, 1400px);
+    min-height: 100vh;
+    position: relative;
+    margin: 0 auto;
+    /* Smart centered padding */
+    padding: 0 max(20px, calc((100vw - var(--table-max-width, 1400px)) / 2));
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+
+    /* Adjust padding when top nav is visible */
+    .top-nav-visible~& .main-content-screen,
+    .main-content-screen.with-top-nav {
+        padding-top: 100px;
+    }
+}
+
+/* Screen Container */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* Main Content Screen */
+.main-content-screen {
+    position: relative;
+    padding: 20px;
+    justify-content: flex-start;
+    background-color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Content Wrapper - THE UNIFICATION ENGINE */
+.content-wrapper {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    position: relative;
+    margin-top: 0;
+    padding-right: 0;
+    /* Default */
+    transition: padding-right 0.3s ease;
+    /* Smooth layout shift */
+    box-sizing: border-box;
+
+    /* --- LAYOUT SHIFT LOGIC (Hit #3) --- */
+    &.with-sidebar {
+        /* 
+       When JS detects sidebar is open in Landscape:
+       Add padding equal to Sidebar Width (264px) + Gap (~36px) = 300px.
+       This forces content to shrink, preventing overlap on ANY screen.
+     */
+        padding-right: 300px;
+    }
+}
+
+/* Content Container */
+.content-container {
+    flex: 1;
+    padding: 0;
+    margin-right: 0;
+    width: 100%;
+    /* Ensure it takes available space */
+}
+
+/* Flex Container for Content + Sidebar */
+.content-container-flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 20px;
+
+    .hamburger-btn {
+        left: unset;
+        margin-right: 20px;
+        margin-top: 20px;
+        position: sticky;
+        top: 20px;
+        z-index: 1000;
+    }
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* Relative to container */
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+/* ===== MIGRATED SECTIONS ===== */
+.saved-orders {
+    width: 100%;
+    margin-bottom: 20px;
+
+    h3 {
+        color: var(--primary-color);
+        font: 1.3rem 'Playfair Display', serif;
+        margin-bottom: 10px;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 5px;
+    }
+}
+
+.saved-order-items {
+    margin-bottom: 10px;
+}
+
+.saved-order-item {
+    padding: 5px 0;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgb(0 247 255 / 10%);
+}
+
+.section-wrapper {
+    margin-bottom: 2rem;
+
+    &:not(:last-child) {
+        border-bottom: 2px solid var(--color-gray-300);
+        padding-bottom: 1.5rem;
+    }
+
+    h2 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0;
+        text-align: center;
+        border-left: none;
+        padding-left: 0;
+    }
+}
+
+/* Apply wrapper to legacy classes */
+.refrescos-section,
+.jarras-section,
+.vasos-section,
+.cervezas-botella-section,
+.tarros-section,
+.vasos-cerveza-section {
+    @extend .section-wrapper;
+}
