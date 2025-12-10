@@ -13,14 +13,10 @@
 @import "base/scrollbars.css";
 
 /* 4. Legacy (The Monolith) - DISSOLVED */
-/* 4. Legacy (The Monolith) - DISSOLVED */
 /* All legacy imports removed */
 
 /* 5. Layout */
-/* 5. Layout */
 @import "layout/containers";
-/* SASS Refactor (Hit #3) */
-/* @import "layout/sidebar.css"; MIGRATED & DELETED */
 @import "layout/navigation.css";
 
 /* 6. Components */
@@ -30,6 +26,7 @@
 @import "components/forms.css";
 @import "components/drink-options.css";
 @import "components/tables";
+
 /* SASS Refactor */
 @import "components/product-table.css";
 @import "components/lists.css";

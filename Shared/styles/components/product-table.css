@@ -24,6 +24,48 @@ PRODUCT TABLE & GRID COMPONENT
     justify-content: center;
 }
 
+/* Responsive Design - Legacy "Squish" Protocol (Hit #4) */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Prevent button blowout on mobile tables */
+    .product-table .price-button,
+    .liquor-table .price-button {
+        width: auto;
+        max-width: 60px;
+        /* Legacy Clamp */
+        min-width: 35px;
+        padding: 2px 4px;
+        /* Tight padding */
+        font-size: 0.7rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* Mobile Landscape Specifics (Legacy) */
+@media (max-width: 768px) and (orientation: landscape) {
+
+    .product-table th,
+    .liquor-table th {
+        font-size: 0.75rem;
+        padding: 6px 4px;
+        white-space: normal;
+        /* Allow wrap */
+    }
+
+    /* Ensure button consistency in landscape */
+    .product-table .price-button,
+    .liquor-table .price-button {
+        font-size: 0.62rem;
+        /* Variable reduction */
+        transform: scale(1.02);
+    }
+}
+
 /* Tablet Portrait (3 columns) - Enforce structure */
 @media (min-width: 768px) {
     .product-grid {
