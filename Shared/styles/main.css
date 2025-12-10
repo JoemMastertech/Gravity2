@@ -1,16 +1,339 @@
 @charset "UTF-8";
 /* ITCSS Architecture (SASS) */
-/* 1. Settings */
+/* HOTFIX: Imported here to bypass ghost-swallowing in Components section */
+/* 
+=============================================================================
+PRODUCT TABLE & GRID COMPONENT
+=============================================================================
+*/
+/* Fix for Header Overlap - Removed destructive override */
+/* .app-container .main-content-screen.with-top-nav rules removed to allow containers.css to handle padding */
+/* Grid Layout - Mobile First (2 columns) */
 @import "settings/variables.css";
+@import "base/reset.css";
+@import "base/typography.css";
+@import "base/animations.css";
+@import "base/scrollbars.css";
+@import "layout/navigation.css";
+@import "components/buttons.css";
+@import "components/cards.css";
+@import "components/forms.css";
+@import "components/drink-options.css";
+@import "components/lists.css";
+@import "utilities/display.css";
+.product-grid {
+  display: grid;
+  /* Use minmax(0, 1fr) to prevent overflow issues with images */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Fallback for variables */
+  gap: 12px;
+  gap: var(--spacing-md);
+  width: 100%;
+  /* Fallback for variables */
+  padding: 12px;
+  padding: var(--spacing-md);
+  margin-top: 0;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+/* Responsive Design - Legacy "Squish" Protocol (Hit #4) */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* Prevent button blowout on mobile tables */
+  .product-table .price-button,
+  .liquor-table .price-button {
+    width: auto;
+    max-width: 60px;
+    /* Legacy Clamp */
+    min-width: 35px;
+    padding: 2px 4px;
+    /* Tight padding */
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+/* Mobile Landscape Specifics (Legacy) */
+@media (max-width: 768px) and (orientation: landscape) {
+  .product-table th,
+  .liquor-table th {
+    font-size: 0.75rem;
+    padding: 6px 4px;
+    white-space: normal;
+    /* Allow wrap */
+  }
+  /* Ensure button consistency in landscape */
+  .product-table .price-button,
+  .liquor-table .price-button {
+    font-size: 0.62rem;
+    /* Variable reduction */
+    transform: scale(1.02);
+  }
+}
+/* Tablet Portrait (3 columns) - Enforce structure */
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    gap: var(--spacing-lg);
+    padding: 16px;
+    padding: var(--spacing-lg);
+  }
+}
+/* Landscape Mobile/Tablet (3 columns) & Desktop */
+@media (orientation: landscape), (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* Large Desktop (optional 4 cols if needed, but keeping 3 as requested) */
+@media (min-width: 1200px) {
+  .product-grid {
+    gap: 20px;
+    gap: var(--spacing-xl);
+    padding: 20px;
+    padding: var(--spacing-xl);
+    /* Ensure max-width doesn't stretch items too much */
+    max-width: var(--table-max-width, 1400px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/* Category Grid - Licores (5 cols on desktop) */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+  }
+}
+@media (min-width: 1200px) {
+  /* Special 5-column layout for Liquor Categories (2 rows x 5 items) */
+  .category-grid[data-category=licores] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+    max-width: var(--table-max-width, 1400px);
+    margin: 0 auto;
+  }
+}
+.category-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 200px;
+  justify-content: center;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+}
+
+.category-image {
+  width: 80%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+}
+
+.category-name {
+  font-family: "Montserrat", sans-serif;
+  color: var(--text-color);
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.subcategory-prompt {
+  grid-column: 1/-1;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--text-color);
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Product Card */
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 350px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  border-color: var(--accent-color);
+}
+
+.product-name {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.product-ingredients {
+  font-size: 0.9rem;
+  color: var(--color-gray-400);
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.product-media {
+  width: 100%;
+  height: 180px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.video-thumbnail,
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .video-thumbnail,
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Price Buttons */
+.product-prices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: auto;
+}
+
+.price-button {
+  background: transparent;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.price-button:hover {
+  background: var(--accent-color);
+  color: var(--color-black);
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Legacy Liquor Card Button Styles (Migrated) */
+.product-card.liquor-card .price-button {
+  padding: 2px 5px;
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   MOBILE OVERRIDES (The Nuclear Option) - REINTEGRATED
+   ========================================================================== */
+/* Mobile Portrait (Cards View) - LEGACY SQUISH PROTOCOL */
+@media (max-width: 480px) and (orientation: portrait) {
+  .product-table,
+  .liquor-table {
+    width: 100% !important;
+    margin: 0 !important;
+    table-layout: fixed !important;
+    /* FORCE FIXED LAYOUT */
+  }
+  /* Squished Cells */
+  .product-table th,
+  .product-table td,
+  .liquor-table th,
+  .liquor-table td {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    font-size: 0.75rem !important;
+  }
+  /* Specific alignment override from legacy */
+  .product-table td:first-child,
+  .product-table td.product-name,
+  .liquor-table td:first-child {
+    padding-left: 10px !important;
+  }
+  .product-table td:nth-child(2),
+  .product-table td.product-ingredients,
+  .liquor-table td:nth-child(2) {
+    padding-left: 6px !important;
+  }
+  /* Tiny Images */
+  .product-table td.image-icon img,
+  .liquor-table td:nth-child(2) img {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 0 !important;
+  }
+}
+/* === FINAL MOBILE OVERRIDES (The Nuclear Option) === */
+@media (max-width: 480px) {
+  .liquor-table td.product-price,
+  .liquor-table th:nth-child(3),
+  .liquor-table th:nth-child(4),
+  .liquor-table th:nth-child(5) {
+    white-space: normal !important;
+    /* Allow wrapping */
+    word-break: break-all !important;
+    /* Break words if needed */
+    font-size: 0.65rem !important;
+    /* Tiny font */
+    padding: 2px 1px !important;
+    min-width: 0 !important;
+  }
+}
+/* 1. Settings */
 /* 2. Tools */
 /* ==========================================================================
    Responsive Mixins (The Factory)
    ========================================================================== */
 /* 3. Base */
-@import "base/reset.css";
-@import "base/typography.css";
-@import "base/animations.css";
-@import "base/scrollbars.css";
 /* 4. Legacy (The Monolith) - DISSOLVED */
 /* All legacy imports removed */
 /* 5. Layout */
@@ -18,15 +341,6 @@
    Layout: Containers
    ========================================================================== */
 /* Main App Container */
-@import "layout/navigation.css";
-@import "components/buttons.css";
-@import "components/cards.css";
-@import "components/forms.css";
-@import "components/drink-options.css";
-@import "mobile_overrides.css";
-@import "components/product-table.css";
-@import "components/lists.css";
-@import "utilities/display.css";
 .app-container {
   width: 100%;
   max-width: var(--table-max-width, 1400px);
@@ -801,11 +1115,6 @@
     width: 80%;
   }
 }
-/* TABLES: Import original (for desktop) + Bypass (for mobile/overrides) */
-.DEBUG_MARKER {
-  content: "I AM HERE";
-}
-
 /* ==========================================================================
    Component: Tables (Product & Liquor)
    ========================================================================== */

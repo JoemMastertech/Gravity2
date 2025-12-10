@@ -1,4 +1,6 @@
 /* ITCSS Architecture (SASS) */
+/* HOTFIX: Imported here to bypass ghost-swallowing in Components section */
+@import "components/product-table-v2";
 
 /* 1. Settings */
 @import "settings/variables.css";
@@ -28,7 +30,6 @@
 @import "components/tables";
 
 /* SASS Refactor */
-@import "components/product-table.css";
 @import "components/lists.css";
 @import "components/sidebar";
 @import "components/header";
