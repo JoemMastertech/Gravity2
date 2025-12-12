@@ -19,7 +19,9 @@
 @import "base/typography.css";
 @import "base/animations.css";
 @import "base/scrollbars.css";
+@import "utilities/display.css";
 @import "layout/navigation.css";
+
 .modal {
   position: fixed;
   top: 0;
@@ -201,14 +203,17 @@
     max-width: none;
     padding: 0;
   }
+
   .modal--meat-customization .modal-content {
     width: 90%;
     max-width: none;
     max-height: 85vh;
   }
+
   .modal--meat-customization .modal-scrollable-content {
     padding: 17px;
   }
+
   /* Centrar botones de confirmar y cancelar en dispositivos mÃ³viles landscape */
   .modal--meat-customization .modal-content .modal-actions.garnish-actions.input-container-visible {
     display: flex;
@@ -218,27 +223,33 @@
     padding: 15px;
   }
 }
+
 @media (max-width: 480px) {
   .modal {
     padding: 5px;
     padding-top: 15px;
   }
+
   .modal-content {
     width: 98%;
     padding: 0;
     border-radius: 10px;
   }
+
   .modal-content h3 {
     font-size: 1.1rem;
   }
+
   .modal--meat-customization .modal-content {
     width: 98%;
     max-width: none;
     max-height: 90vh;
   }
+
   .modal--meat-customization .modal-scrollable-content {
     padding: 13px;
   }
+
   /* Centrar botones de confirmar y cancelar en dispositivos mÃ³viles portrait */
   .modal--meat-customization .modal-content .modal-actions.garnish-actions.input-container-visible {
     display: flex;
@@ -248,6 +259,7 @@
     padding: 15px;
   }
 }
+
 /* Image modals exception */
 .modal-content.image-modal {
   width: auto;
@@ -279,6 +291,7 @@
     /* 92vh * 1.10 */
     overflow-y: auto;
   }
+
   .modal-content.image-modal.video-modal video {
     /* Keep aspect ratio, avoid clipping bottom controls */
     width: 100%;
@@ -288,6 +301,7 @@
     object-fit: contain;
   }
 }
+
 /* Modal content elements */
 .modal-content h3 {
   color: var(--primary-color);
@@ -367,13 +381,17 @@
 }
 
 @keyframes modalGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: var(--glow-shadow);
   }
+
   50% {
     box-shadow: var(--glow-shadow-hover);
   }
 }
+
 /* Product table and image styles */
 .modal-actions {
   margin-top: 0;
@@ -397,45 +415,56 @@
     display: flex;
     flex-direction: column;
   }
+
   /* Ensure proper scrolling in portrait */
   .modal-content .options-grid {
     max-height: none;
     flex: 1;
     overflow-y: auto;
   }
+
   .modal-content img {
     max-height: 40vh;
   }
+
   /* Drink options modal specific adjustments for portrait - Mobile & Tablet */
 }
+
 /* Optimized animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 @keyframes fadeOut {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
 }
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(0, 247, 255, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(0, 247, 255, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(0, 247, 255, 0);
   }
 }
+
 .fade-in {
   animation: fadeIn 1s ease-in-out forwards;
 }
@@ -535,18 +564,21 @@
    Migrated from media-queries.css
    ================================================================= */
 @media (min-width: 1024px) and (min-width: 768px) and (max-width: 1024px) {
+
   /* Ensure proper scrolling in landscape tablets */
   .modal-content .options-grid {
     max-height: none;
     flex: 1;
     overflow-y: auto;
   }
+
   /* Adjustment for meat modal in landscape */
   .modal--meat-customization .modal-content {
     max-height: 85vh;
     width: 80%;
   }
 }
+
 /* ==========================================================================
    Component: Order Sidebar
    ========================================================================== */
@@ -573,18 +605,24 @@
   transition: all 0.3s ease;
   /* State: Open */
 }
-.order-sidebar.active, .order-sidebar.is-open {
+
+.order-sidebar.active,
+.order-sidebar.is-open {
   display: flex;
 }
+
 .order-sidebar {
   /* Legacy JS Support */
 }
+
 body.order-mode-active .order-sidebar {
   display: flex;
 }
+
 .order-sidebar {
   /* --- Tablet Portrait Override (Migrated from legacy media-queries.css) --- */
 }
+
 @media (min-width: 768px) and (orientation: portrait) and (max-width: 1024px) {
   .order-sidebar {
     /* Reset desktop positioning */
@@ -607,17 +645,21 @@ body.order-mode-active .order-sidebar {
     transition: transform 0.3s ease;
     /* Animation state (Active) */
   }
-  .order-sidebar.active, .order-sidebar.is-open {
+
+  .order-sidebar.active,
+  .order-sidebar.is-open {
     transform: translateY(0);
     display: flex;
     visibility: visible;
     pointer-events: auto;
   }
 }
+
 .order-sidebar {
   /* --- Mobile Override (Migrated from sidebar.css) --- */
   /* --- Mobile Override (Standardized Media Query) --- */
 }
+
 @media (max-width: 768px) {
   .order-sidebar {
     position: fixed !important;
@@ -636,12 +678,16 @@ body.order-mode-active .order-sidebar {
     /* Hide initially */
     transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   }
-  .order-sidebar.active, .order-sidebar.is-open {
+
+  .order-sidebar.active,
+  .order-sidebar.is-open {
     transform: translateY(0);
   }
+
   .order-sidebar {
     /* NESTED FLEX REPAIR for #order-content Wrapper */
   }
+
   .order-sidebar #order-content {
     flex: 1 1 0px;
     /* Grow to fill space above footer */
@@ -651,11 +697,13 @@ body.order-mode-active .order-sidebar {
     /* Allow shrinking */
     overflow: hidden;
   }
+
   .order-sidebar .order-sidebar__header {
     flex: 0 0 auto;
     text-align: center;
     padding: 10px;
   }
+
   .order-sidebar .order-sidebar__items {
     flex: 1 1 auto;
     /* Scrollable area */
@@ -670,9 +718,11 @@ body.order-mode-active .order-sidebar {
     gap: 10px;
     align-content: start;
   }
+
   .order-sidebar {
     /* Pin Footer to Bottom */
   }
+
   .order-sidebar .order-total,
   .order-sidebar .order-actions {
     flex: 0 0 auto;
@@ -698,12 +748,14 @@ body.order-mode-active .order-sidebar {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
 .order-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
 }
+
 .order-item-name {
   font-weight: 600;
   color: var(--primary-color);
@@ -714,12 +766,14 @@ body.order-mode-active .order-sidebar {
   hyphens: auto;
   font-size: 0.9rem;
 }
+
 .order-item-price {
   color: var(--price-color);
   font-weight: 500;
   white-space: nowrap;
   font-size: 0.85rem;
 }
+
 .order-item-customization {
   color: var(--color-gray-400);
   font-size: 0.85rem;
@@ -740,6 +794,7 @@ body.order-mode-active .order-sidebar {
   cursor: pointer;
   padding: 4px;
 }
+
 .remove-order-item:hover {
   opacity: 0.8;
 }
@@ -750,6 +805,7 @@ body.order-mode-active .order-sidebar {
   border-top: 2px solid var(--border-color);
   flex-shrink: 0;
 }
+
 .order-total h4 {
   font: 1.2rem "Montserrat", sans-serif;
   color: var(--price-color);
@@ -767,6 +823,7 @@ body.order-mode-active .order-sidebar {
   flex-direction: row;
   flex-shrink: 0;
 }
+
 .order-actions .nav-button {
   flex: 1;
   min-width: 0;
@@ -784,15 +841,18 @@ body.order-mode-active .order-sidebar {
     width: 240px;
     right: -240px;
   }
+
   .settings-menu.open {
     right: 0;
   }
 }
+
 @media (max-width: 768px) {
   .settings-menu {
     width: 250px;
     right: -250px;
   }
+
   .settings-menu.open {
     right: 0;
   }
@@ -820,6 +880,7 @@ body.order-mode-active .order-sidebar {
     flex-direction: column;
     align-items: center;
   }
+
   .orders-screen-title {
     font-size: 1.2rem;
     position: static;
@@ -830,6 +891,7 @@ body.order-mode-active .order-sidebar {
     width: 100%;
     text-align: center;
   }
+
   .orders-back-btn {
     position: absolute;
     top: 45px;
@@ -839,6 +901,7 @@ body.order-mode-active .order-sidebar {
     padding: 6px 10px;
     font-size: 0.8rem;
   }
+
   .history-btn {
     position: absolute;
     top: 45px;
@@ -850,6 +913,7 @@ body.order-mode-active .order-sidebar {
     font-size: 0.8rem;
   }
 }
+
 /* Tablet (max-width: 768px) Override */
 /* Tablet (max-width: 768px) Override */
 @media (max-width: 768px) {
@@ -857,9 +921,11 @@ body.order-mode-active .order-sidebar {
     min-height: 120px;
     gap: 20px;
   }
+
   .orders-screen-title {
     font-size: 1.5rem;
   }
+
   .orders-back-btn,
   .history-btn {
     top: 60px;
@@ -868,6 +934,7 @@ body.order-mode-active .order-sidebar {
     min-width: 100px;
   }
 }
+
 /* 
 =============================================================================
 PRODUCT TABLE & GRID COMPONENT
@@ -897,6 +964,7 @@ PRODUCT TABLE & GRID COMPONENT
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
   /* Prevent button blowout on mobile tables */
   .product-table .price-button,
   .liquor-table .price-button {
@@ -912,8 +980,10 @@ PRODUCT TABLE & GRID COMPONENT
     text-overflow: ellipsis;
   }
 }
+
 /* Mobile Landscape Specifics (Legacy) */
 @media (max-width: 768px) and (orientation: landscape) {
+
   .product-table th,
   .liquor-table th {
     font-size: 0.75rem;
@@ -921,6 +991,7 @@ PRODUCT TABLE & GRID COMPONENT
     white-space: normal;
     /* Allow wrap */
   }
+
   /* Ensure button consistency in landscape */
   .product-table .price-button,
   .liquor-table .price-button {
@@ -929,6 +1000,7 @@ PRODUCT TABLE & GRID COMPONENT
     transform: scale(1.02);
   }
 }
+
 /* Tablet Portrait (3 columns) - Enforce structure */
 @media (min-width: 768px) {
   .product-grid {
@@ -939,12 +1011,15 @@ PRODUCT TABLE & GRID COMPONENT
     padding: var(--spacing-lg);
   }
 }
+
 /* Landscape Mobile/Tablet (3 columns) & Desktop */
-@media (orientation: landscape), (min-width: 1024px) {
+@media (orientation: landscape),
+(min-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
 /* Large Desktop (optional 4 cols if needed, but keeping 3 as requested) */
 @media (min-width: 1200px) {
   .product-grid {
@@ -958,6 +1033,7 @@ PRODUCT TABLE & GRID COMPONENT
     margin-right: auto;
   }
 }
+
 /* Category Grid - Licores (5 cols on desktop) */
 .category-grid {
   display: grid;
@@ -976,7 +1052,9 @@ PRODUCT TABLE & GRID COMPONENT
     padding: var(--spacing-lg);
   }
 }
+
 @media (min-width: 1200px) {
+
   /* Special 5-column layout for Liquor Categories (2 rows x 5 items) */
   .category-grid[data-category=licores] {
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -985,6 +1063,7 @@ PRODUCT TABLE & GRID COMPONENT
     margin: 0 auto;
   }
 }
+
 .category-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -1132,6 +1211,7 @@ PRODUCT TABLE & GRID COMPONENT
    ========================================================================== */
 /* Mobile Portrait (Cards View) - LEGACY SQUISH PROTOCOL */
 @media (max-width: 480px) and (orientation: portrait) {
+
   .product-table,
   .liquor-table {
     width: 100% !important;
@@ -1139,6 +1219,7 @@ PRODUCT TABLE & GRID COMPONENT
     table-layout: fixed !important;
     /* FORCE FIXED LAYOUT */
   }
+
   /* Squished Cells */
   .product-table th,
   .product-table td,
@@ -1148,17 +1229,20 @@ PRODUCT TABLE & GRID COMPONENT
     padding-right: 2px !important;
     font-size: 0.75rem !important;
   }
+
   /* Specific alignment override from legacy */
   .product-table td:first-child,
   .product-table td.product-name,
   .liquor-table td:first-child {
     padding-left: 10px !important;
   }
+
   .product-table td:nth-child(2),
   .product-table td.product-ingredients,
   .liquor-table td:nth-child(2) {
     padding-left: 6px !important;
   }
+
   /* Tiny Images */
   .product-table td.image-icon img,
   .liquor-table td:nth-child(2) img {
@@ -1167,8 +1251,10 @@ PRODUCT TABLE & GRID COMPONENT
     min-width: 0 !important;
   }
 }
+
 /* === FINAL MOBILE OVERRIDES (The Nuclear Option) === */
 @media (max-width: 480px) {
+
   .liquor-table td.product-price,
   .liquor-table th:nth-child(3),
   .liquor-table th:nth-child(4),
@@ -1183,6 +1269,7 @@ PRODUCT TABLE & GRID COMPONENT
     min-width: 0 !important;
   }
 }
+
 /* ==========================================================================
    Component: Tables (Product & Liquor)
    ========================================================================== */
@@ -1200,6 +1287,7 @@ PRODUCT TABLE & GRID COMPONENT
   position: relative;
   margin: var(--table-margin, 20px) auto;
 }
+
 .product-table::before,
 .liquor-table::before {
   content: "";
@@ -1214,6 +1302,7 @@ PRODUCT TABLE & GRID COMPONENT
 .liquor-table {
   /* --- HEADERS --- */
 }
+
 .product-table th,
 .liquor-table th {
   font: 600 1rem "Montserrat", sans-serif;
@@ -1224,15 +1313,18 @@ PRODUCT TABLE & GRID COMPONENT
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
 .product-table th:first-child,
 .liquor-table th:first-child {
   text-align: left;
   padding-left: 15px;
 }
+
 .product-table,
 .liquor-table {
   /* --- BODY & CELLS --- */
 }
+
 .product-table td,
 .liquor-table td {
   padding: 15px 10px;
@@ -1241,11 +1333,13 @@ PRODUCT TABLE & GRID COMPONENT
   text-align: center;
   vertical-align: middle;
 }
+
 .product-table td:first-child,
 .liquor-table td:first-child {
   text-align: left;
   padding-left: 15px;
 }
+
 .product-table td.product-name,
 .liquor-table td.product-name {
   font: 600 1rem "Montserrat", sans-serif;
@@ -1253,12 +1347,14 @@ PRODUCT TABLE & GRID COMPONENT
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
 .product-table td.product-ingredients,
 .liquor-table td.product-ingredients {
   text-align: left;
   color: var(--color-ingredientes, var(--text-color));
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
+
 .product-table td.image-icon img,
 .liquor-table td.image-icon img {
   width: 70px;
@@ -1272,11 +1368,13 @@ PRODUCT TABLE & GRID COMPONENT
   animation: glow 2s infinite;
   transition: transform 0.3s ease;
 }
+
 .product-table td.image-icon img:hover,
 .liquor-table td.image-icon img:hover {
   transform: scale(1.2);
   box-shadow: var(--glow-shadow-hover);
 }
+
 .product-table td .video-thumb,
 .liquor-table td .video-thumb {
   width: 80px;
@@ -1288,30 +1386,38 @@ PRODUCT TABLE & GRID COMPONENT
   margin: 0 auto;
   transition: transform 0.3s ease;
 }
+
 .product-table td .video-thumb:hover,
 .liquor-table td .video-thumb:hover {
   transform: scale(1.05);
 }
+
 .product-table,
 .liquor-table {
   /* Hover Effects */
 }
+
 .product-table tr:hover td,
 .liquor-table tr:hover td {
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 .product-table,
 .liquor-table {
   /* --- RESPONSIVE LOGIC --- */
   /* Tablet / Mobile Common */
 }
+
 @media (min-width: 480px) {
+
   .product-table,
   .liquor-table {
     /* Actually max-width 768px in legacy logic */
   }
 }
+
 @media (min-width: 480px) and (max-width: 768px) {
+
   .product-table,
   .liquor-table {
     padding: 8px 4px;
@@ -1321,6 +1427,7 @@ PRODUCT TABLE & GRID COMPONENT
     /* Ensure it fits container but NO 100vw force */
     max-width: 100%;
   }
+
   .product-table th,
   .product-table td,
   .liquor-table th,
@@ -1328,6 +1435,7 @@ PRODUCT TABLE & GRID COMPONENT
     padding: 6px 3px;
     font-size: 0.75rem;
   }
+
   .product-table td.product-name,
   .liquor-table td.product-name {
     font-size: 0.7rem;
@@ -1335,11 +1443,14 @@ PRODUCT TABLE & GRID COMPONENT
     white-space: normal;
   }
 }
+
 .product-table,
 .liquor-table {
   /* Mobile Portrait (Cards View) - LEGACY SQUISH PROTOCOL */
 }
+
 @media (max-width: 480px) and (orientation: portrait) {
+
   .product-table,
   .liquor-table {
     width: 100% !important;
@@ -1348,6 +1459,7 @@ PRODUCT TABLE & GRID COMPONENT
     /* FORCE FIXED LAYOUT */
     /* Squished Cells */
   }
+
   .product-table th,
   .product-table td,
   .liquor-table th,
@@ -1356,26 +1468,31 @@ PRODUCT TABLE & GRID COMPONENT
     padding-right: 2px !important;
     font-size: 0.75rem;
   }
+
   .product-table,
   .liquor-table {
     /* Specific alignment override from legacy */
   }
+
   .product-table td:first-child,
   .product-table td.product-name,
   .liquor-table td:first-child,
   .liquor-table td.product-name {
     padding-left: 10px !important;
   }
+
   .product-table td:nth-child(2),
   .product-table td.product-ingredients,
   .liquor-table td:nth-child(2),
   .liquor-table td.product-ingredients {
     padding-left: 6px !important;
   }
+
   .product-table,
   .liquor-table {
     /* Tiny Images */
   }
+
   .product-table td.image-icon img,
   .liquor-table td.image-icon img {
     width: 30px;
@@ -1388,12 +1505,14 @@ PRODUCT TABLE & GRID COMPONENT
 .product-table[data-category=cervezas] {
   /* Specific width logic from legacy, but adaptable */
 }
+
 .product-table[data-category=refrescos] th,
 .product-table[data-category=refrescos] td,
 .product-table[data-category=cervezas] th,
 .product-table[data-category=cervezas] td {
   text-align: center;
 }
+
 .product-table[data-category=refrescos] th:first-child,
 .product-table[data-category=refrescos] td.product-name,
 .product-table[data-category=cervezas] th:first-child,
@@ -1406,22 +1525,27 @@ PRODUCT TABLE & GRID COMPONENT
 .liquor-table td:nth-child(1) {
   width: 25%;
 }
+
 .liquor-table th:nth-child(2),
 .liquor-table td:nth-child(2) {
   width: 20%;
 }
+
 .liquor-table th:nth-child(3),
 .liquor-table td:nth-child(3) {
   width: 18%;
 }
+
 .liquor-table th:nth-child(4),
 .liquor-table td:nth-child(4) {
   width: 18%;
 }
+
 .liquor-table th:nth-child(5),
 .liquor-table td:nth-child(5) {
   width: 19%;
 }
+
 .liquor-table td.product-price,
 .liquor-table th:nth-child(3),
 .liquor-table th:nth-child(4),
@@ -1434,6 +1558,7 @@ PRODUCT TABLE & GRID COMPONENT
 /* === FINAL MOBILE OVERRIDES (The Nuclear Option) === */
 /* Must be at the end to override specific liquor-table rules */
 @media (max-width: 480px) {
+
   .liquor-table td.product-price,
   .liquor-table th:nth-child(3),
   .liquor-table th:nth-child(4),
@@ -1447,6 +1572,7 @@ PRODUCT TABLE & GRID COMPONENT
     padding: 2px 1px !important;
     min-width: 0 !important;
   }
+
   /* Ensure images can shrink */
   .liquor-table td:nth-child(2) img,
   .product-table td.image-icon img {
@@ -1455,6 +1581,7 @@ PRODUCT TABLE & GRID COMPONENT
     min-width: 0 !important;
   }
 }
+
 /* 4. Base */
 /* 5. Legacy (The Monolith) - DISSOLVED */
 /* All legacy imports removed */
@@ -1475,13 +1602,16 @@ PRODUCT TABLE & GRID COMPONENT
   box-sizing: border-box;
   /* Adjust padding when top nav is visible */
 }
-.top-nav-visible ~ .app-container .main-content-screen,
+
+.top-nav-visible~.app-container .main-content-screen,
 .app-container .main-content-screen.with-top-nav {
   padding-top: 100px;
 }
+
 .app-container {
   /* === MIGRATED LEGACY RULE: EDGE-TO-EDGE MOBILE === */
 }
+
 @media (max-width: 768px) {
   .app-container {
     padding: 0 !important;
@@ -1490,9 +1620,11 @@ PRODUCT TABLE & GRID COMPONENT
     overflow-x: hidden;
   }
 }
+
 .app-container {
   /* Screen Container */
 }
+
 .app-container .screen {
   position: absolute;
   top: 0;
@@ -1505,9 +1637,11 @@ PRODUCT TABLE & GRID COMPONENT
   align-items: center;
   z-index: 1;
 }
+
 .app-container {
   /* Main Content Screen */
 }
+
 .app-container .main-content-screen {
   position: relative;
   padding: 20px;
@@ -1517,6 +1651,7 @@ PRODUCT TABLE & GRID COMPONENT
   box-sizing: border-box;
   /* === MIGRATED LEGACY RULE: FULL WIDTH CONTENT === */
 }
+
 @media (max-width: 768px) {
   .app-container .main-content-screen {
     padding: 0 !important;
@@ -1524,9 +1659,11 @@ PRODUCT TABLE & GRID COMPONENT
     max-width: 100% !important;
   }
 }
+
 .app-container {
   /* Content Wrapper - THE UNIFICATION ENGINE */
 }
+
 .app-container .content-wrapper {
   display: flex;
   width: 100%;
@@ -1540,6 +1677,7 @@ PRODUCT TABLE & GRID COMPONENT
   box-sizing: border-box;
   /* --- LAYOUT SHIFT LOGIC (Hit #3) --- */
 }
+
 .app-container .content-wrapper.with-sidebar {
   /* 
     When JS detects sidebar is open in Landscape:
@@ -1548,9 +1686,11 @@ PRODUCT TABLE & GRID COMPONENT
   */
   padding-right: 300px;
 }
+
 .app-container {
   /* Content Container */
 }
+
 .app-container .content-container {
   flex: 1;
   padding: 0;
@@ -1563,7 +1703,8 @@ PRODUCT TABLE & GRID COMPONENT
   align-items: center;
   /* UNIVERSAL CHILD CENTERING FIX */
 }
-.app-container .content-container > * {
+
+.app-container .content-container>* {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -1571,15 +1712,18 @@ PRODUCT TABLE & GRID COMPONENT
   App-container already handles the global max-width (1400px). */
   /* Mobile Fix: Allow left alignment if overflowing */
 }
+
 @media (max-width: 768px) {
-  .app-container .content-container > * {
+  .app-container .content-container>* {
     margin-left: 0;
     margin-right: 0;
   }
 }
+
 .app-container {
   /* Flex Container for Content + Sidebar */
 }
+
 .app-container .content-container-flex {
   display: flex;
   align-items: flex-start;
@@ -1588,6 +1732,7 @@ PRODUCT TABLE & GRID COMPONENT
   width: 100%;
   gap: 20px;
 }
+
 .app-container .content-container-flex .hamburger-btn {
   left: unset;
   margin-right: 20px;
@@ -1596,6 +1741,7 @@ PRODUCT TABLE & GRID COMPONENT
   top: 20px;
   z-index: 1000;
 }
+
 .app-container {
   /* =================================================================
   MIGRATED SECTION STYLES (from legacy containers.css)
@@ -1606,6 +1752,7 @@ PRODUCT TABLE & GRID COMPONENT
   These classes provide spacing/borders for specific product sections.
   ================================================================= */
 }
+
 .app-container .refrescos-section,
 .app-container .jarras-section,
 .app-container .vasos-section,
@@ -1614,6 +1761,7 @@ PRODUCT TABLE & GRID COMPONENT
 .app-container .vasos-cerveza-section {
   margin-bottom: 2rem;
 }
+
 .app-container .refrescos-section:not(:last-child),
 .app-container .jarras-section:not(:last-child),
 .app-container .vasos-section:not(:last-child),
@@ -1623,6 +1771,7 @@ PRODUCT TABLE & GRID COMPONENT
   border-bottom: 2px solid var(--color-gray-300);
   padding-bottom: 1.5rem;
 }
+
 .app-container .refrescos-section h2,
 .app-container .jarras-section h2,
 .app-container .vasos-section h2,
@@ -1636,9 +1785,11 @@ PRODUCT TABLE & GRID COMPONENT
   text-align: center;
   /* Removed redundant border resets */
 }
+
 .app-container {
   /* Page Header */
 }
+
 .app-container .page-header {
   display: flex;
   justify-content: space-between;
@@ -1649,13 +1800,16 @@ PRODUCT TABLE & GRID COMPONENT
   margin-right: auto;
   position: relative;
 }
+
 .app-container {
   /* ===== MIGRATED SECTIONS ===== */
 }
+
 .app-container .saved-orders {
   width: 100%;
   margin-bottom: 20px;
 }
+
 .app-container .saved-orders h3 {
   color: var(--primary-color);
   font: 1.3rem "Playfair Display", serif;
@@ -1664,15 +1818,19 @@ PRODUCT TABLE & GRID COMPONENT
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 5px;
 }
+
 .app-container .saved-order-items {
   margin-bottom: 10px;
 }
+
 .app-container .saved-order-item {
   padding: 5px 0;
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0, 247, 255, 0.1);
 }
-.app-container .section-wrapper, .app-container .refrescos-section,
+
+.app-container .section-wrapper,
+.app-container .refrescos-section,
 .app-container .jarras-section,
 .app-container .vasos-section,
 .app-container .cervezas-botella-section,
@@ -1680,7 +1838,9 @@ PRODUCT TABLE & GRID COMPONENT
 .app-container .vasos-cerveza-section {
   margin-bottom: 2rem;
 }
-.app-container .section-wrapper:not(:last-child), .app-container .refrescos-section:not(:last-child),
+
+.app-container .section-wrapper:not(:last-child),
+.app-container .refrescos-section:not(:last-child),
 .app-container .jarras-section:not(:last-child),
 .app-container .vasos-section:not(:last-child),
 .app-container .cervezas-botella-section:not(:last-child),
@@ -1689,7 +1849,9 @@ PRODUCT TABLE & GRID COMPONENT
   border-bottom: 2px solid var(--color-gray-300);
   padding-bottom: 1.5rem;
 }
-.app-container .section-wrapper h2, .app-container .refrescos-section h2,
+
+.app-container .section-wrapper h2,
+.app-container .refrescos-section h2,
 .app-container .jarras-section h2,
 .app-container .vasos-section h2,
 .app-container .cervezas-botella-section h2,
@@ -1703,6 +1865,7 @@ PRODUCT TABLE & GRID COMPONENT
   border-left: none;
   padding-left: 0;
 }
+
 .app-container {
   /* Apply wrapper to legacy classes */
 }
