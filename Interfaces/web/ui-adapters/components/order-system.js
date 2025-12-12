@@ -26,6 +26,16 @@ class OrderSystem {
     try {
       this._ensureProductRepository();
       this.ui.initialize();
+
+      // Listen for decoupled events from ProductRenderer
+      document.addEventListener('product-selected', (e) => {
+        if (!e.detail) return;
+        const { productName, priceText, row, card, target } = e.detail;
+        // Adapt to internal handler signature
+        // rowOrCard is either row or card.
+        this.handleProductSelection(productName, priceText, row || card, { target: target });
+      });
+
       // Restore state if needed
       this.updateOrderDisplay();
     } catch (error) {

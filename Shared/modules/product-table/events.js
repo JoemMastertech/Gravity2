@@ -174,17 +174,38 @@ export const eventHandlers = {
             const priceText = target.textContent;
             const productName = nameCell.textContent;
 
-            if (window.OrderSystem && window.OrderSystem.handleProductSelection) {
-                window.OrderSystem.handleProductSelection(productName, priceText, row, event);
-            }
+            // Decoupled: Dispatch CustomEvent instead of direct dependency
+            const selectionEvent = new CustomEvent('product-selected', {
+                bubbles: true,
+                detail: {
+                    productName: productName,
+                    priceText: priceText,
+                    row: row, // Can be null in grid view
+                    card: card, // Can be null in table view
+                    target: target // The specific button clicked
+                }
+            });
+            target.dispatchEvent(selectionEvent);
+            Logger.debug(`[Events] Dispatched product-selected for ${productName}`);
+
         } else if (card) {
             // Grid view handling
             const productName = target.dataset.productName;
             const priceText = target.textContent;
 
-            if (window.OrderSystem && window.OrderSystem.handleProductSelection) {
-                window.OrderSystem.handleProductSelection(productName, priceText, card, event);
-            }
+            // Decoupled: Dispatch CustomEvent
+            const selectionEvent = new CustomEvent('product-selected', {
+                bubbles: true,
+                detail: {
+                    productName: productName,
+                    priceText: priceText,
+                    row: null,
+                    card: card,
+                    target: target
+                }
+            });
+            target.dispatchEvent(selectionEvent);
+            Logger.debug(`[Events] Dispatched product-selected for ${productName}`);
         }
     },
 

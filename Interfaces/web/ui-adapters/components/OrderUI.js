@@ -404,18 +404,10 @@ export class OrderUI {
         const modalTitle = document.querySelector('#drink-options-modal h3');
         if (!modalTitle) return;
 
-        const { message } = this.controller.logic.getDrinkOptionsForProduct(this.controller.logic.currentProduct.name);
-        const baseTitle = '¿Con qué desea acompañar su bebida?';
+        const { title, subtitle } = this.controller.logic.getDrinkModalTitle(this.controller.logic.currentProduct.name);
         const styleSpan = '<span class="modal-subtitle">';
-        const bottleCategory = this.controller.logic.bottleCategory;
 
-        if (bottleCategory === 'VODKA' || bottleCategory === 'GINEBRA' || this.controller.logic.isSpecialBottleCategory()) {
-            modalTitle.innerHTML = `${baseTitle}${styleSpan}Puedes elegir 2 Jarras de jugo ó 5 Refrescos ó 1 Jarra de jugo y 2 Refrescos</span>`;
-        } else if (message === "Puedes elegir 5 refrescos") {
-            modalTitle.innerHTML = `${baseTitle}${styleSpan}Puedes elegir 5 refrescos</span>`;
-        } else {
-            modalTitle.innerHTML = `${baseTitle}${styleSpan}${message}</span>`;
-        }
+        modalTitle.innerHTML = `${title}${styleSpan}${subtitle}</span>`;
         // Re-apply translation
         this._retranslateIfNeeded(document.getElementById('drink-options-modal'));
     }

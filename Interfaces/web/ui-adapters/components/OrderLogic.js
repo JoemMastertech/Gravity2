@@ -311,6 +311,24 @@ export class OrderLogic {
         return { drinkOptions: options, message };
     }
 
+    // New Method for Centralized UI Logic
+    getDrinkModalTitle(productName) {
+        if (!productName) return { title: '¿Con qué desea acompañar su bebida?', subtitle: '' };
+
+        const { message } = this.getDrinkOptionsForProduct(productName);
+        const baseTitle = '¿Con qué desea acompañar su bebida?';
+        let subtitle = message;
+
+        // Centralize the override logic that was previously in OrderUI
+        if (this.bottleCategory === 'VODKA' || this.bottleCategory === 'GINEBRA' || this.isSpecialBottleCategory()) {
+            subtitle = CONSTANTS.MESSAGES.SPECIAL; // "Puedes elegir: 2 Jarras..."
+        } else if (message === "Puedes elegir 5 refrescos" || this.isOnlySodaCategory(this.currentProduct?.mixers)) {
+            subtitle = CONSTANTS.MESSAGES.ONLY_SODAS;
+        }
+
+        return { title: baseTitle, subtitle };
+    }
+
     _getSpecialProductOptions(normalizedName) {
         if (!normalizedName || typeof normalizedName !== 'string') return null;
 
