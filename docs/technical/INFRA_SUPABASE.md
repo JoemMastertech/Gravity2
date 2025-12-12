@@ -102,5 +102,8 @@ CREATE TABLE cervezas (
 
 ## ⚠️ Solución de Problemas Comunes
 - **Las imágenes no cargan:** Verifica si la tabla usa `imagen` o `ruta_archivo`. El adaptador intenta normalizarlo, pero lo ideal es ser consistente.
-- **Precios en 0:** Si es un licor, asegura que estás llenando `precio_botella` (snake_case) o `precioBotella` (camelCase). El adaptador normaliza ambos.
+- **Precios en 0:** Si es un licor, asegúrate de llenar `precio_botella` (snake_case).
+  - **Nota Importante:** El sistema acepta `precio_botella` o `precioBotella`. Zod los normaliza automáticamente.
+  - Si el valor es texto ("$100.00"), Zod lo convertirá a número (100).
+  - Si el valor es `null`, Zod asignará `0` para evitar crashes.
 - **Tabla no encontrada (404):** El sistema ignorará silenciosamente las tablas que no existen y usará datos locales.

@@ -71,16 +71,64 @@
     }
 
     /* --- Mobile Override (Migrated from sidebar.css) --- */
-    @include mobile-only {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        transform: translateY(100%);
+    /* --- Mobile Override (Standardized Media Query) --- */
+    @media (max-width: 768px) {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        top: auto !important;
+        /* Force override of top: 90px */
+        height: 52vh;
+        max-height: none;
+        border-radius: 20px 20px 0 0;
+
+        display: flex;
+        flex-direction: column;
+
+        transform: translateY(105%);
+        /* Hide initially */
+        transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 
         &.active,
         &.is-open {
             transform: translateY(0);
+        }
+
+        /* NESTED FLEX REPAIR for #order-content Wrapper */
+        #order-content {
+            flex: 1 1 0px;
+            /* Grow to fill space above footer */
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            /* Allow shrinking */
+            overflow: hidden;
+        }
+
+        .order-sidebar__header {
+            flex: 0 0 auto;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .order-sidebar__items {
+            flex: 1 1 auto;
+            /* Scrollable area */
+            overflow-y: auto;
+            min-height: 0;
+            padding: 10px 20px;
+            overscroll-behavior: contain;
+        }
+
+        /* Pin Footer to Bottom */
+        .order-total,
+        .order-actions {
+            flex: 0 0 auto;
+            z-index: 10;
+            background: inherit;
+            /* Maintain opacity/blur if any */
         }
     }
 }
