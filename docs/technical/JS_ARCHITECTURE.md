@@ -14,13 +14,12 @@ Utilidades genéricas reutilizables en toda la aplicación.
 Definiciones puras de entidades. NO dependen de UI ni de Supabase.
 - **`product.schema.js`**: Define `productSchema` y `licorSchema` usando Zod. Contiene la lógica bilingüe (`z.preprocess`) y defaults.
 
-### 3. Infrastructure (`Infraestructura/data-providers/`)
-Adaptadores que obtienen datos sucios y los limpian.
-- **`product-data.js`**: 
-    1. Llama a Supabase.
-    2. Recibe datos crudos (snake_case).
-    3. Ejecuta `z.array(schema).parse(data)`.
-    4. Retorna objetos limpios y tipados (camelCase) a la aplicación.
+### 3. Infrastructure (`Infraestructura/adapters/`)
+**`ProductDataAdapter.js`**: Implementación del repositorio (Hexagonal Architecture).
+1.  **Wrapper**: Envuelve a `product-data.js` y Supabase.
+2.  **Sync**: Maneja la sincronización offline/online (`DataSyncService`).
+3.  **Mapping**: Normaliza datos crudos a través de `_mapLiquorItem` y validación Zod (`validateProducts`).
+4.  **Data Provider**: `product-data.js` permanece como proveedor de bajo nivel y fallback de datos estáticos.
 
 ### 4. Product Table (`Shared/modules/product-table/`)
 Módulos específicos del dominio de la tabla de productos.

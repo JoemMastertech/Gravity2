@@ -8,14 +8,17 @@ El usuario reportó que el sistema parece "sano pero tonto". La auditoría ha co
 ### El Problema de Zod (Data Shielding)
 La documentación (`DATA_ZOD_SHIELDING.md`) y la arquitectura prometen un "Blindaje de Datos" robusto usando Zod para normalizar inputs bilingües (Inglés/Español/SnakeCase).
 
-**Realidad:**
-- El archivo `src/schemas/product.schema.js` EXISTE y contiene la lógica correcta.
-- PERO, `ProductDataAdapter.js` **NO LO USA**.
-- En su lugar, el adaptador hace una "normalización manual" (`_normalizeSupabaseData`) usando `if/else` y mapeos hardcodeados (`priceFields`).
+**Realidad (Actualizado - Fix Reciente):**
+- El archivo `src/schemas/product.schema.js` EXISTE pero tenía brechas:
+    - Faltaba 'espumosos' en `LIQUOR_CATEGORIES`, por lo que Zod borraba sus precios específicos.
+    - Zod fallaba con precios en formato texto (`"$190.00"`), convirtiéndolos a 0.
+- **Solución Implementada:** 
+    - Se añadió mapeo explícito en `ProductDataAdapter` (`_mapLiquorItem`) como red de seguridad inmediata.
+    - Se planea robustecer `product.schema.js` para limpiar símbolos de moneda (`$`).
 
 **Consecuencia:**
-- El sistema es frágil. Si un campo cambia levemente en Supabase, el adaptador manual falla silenciosamente o pone `--`, mientras que Zod habría manejado los alias inteligentemente.
-- La "inteligencia" del sistema está construida pero desconectada.
+- El sistema ahora es resistente, pero la redundancia (Mapeo Manual + Zod) debe unificarse a futuro.
+- La "inteligencia" del sistema (Zod) está siendo reconectada paso a paso.
 
 ## 🔎 Estado de la Documentación vs Realidad
 

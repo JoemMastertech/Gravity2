@@ -38,6 +38,9 @@ class ProductDataAdapter extends BaseAdapter {
    * @private
    */
   async _getGenericCategory(tableName, localKey = tableName) {
+    // ... implementation ... (preserving method signature, looking for where to insert plator fuertes mapper)
+    // Actually, I should insert _mapPlatoFuerteItem separately or near getPlatosFuertes.
+    // Let's check where getPlatosFuertes is. I'll use a separate chunk for it.
     try {
       const data = await this._fetchFromSupabase(tableName);
       return data.length > 0 ? data : this.productData[localKey] || [];
@@ -248,7 +251,24 @@ class ProductDataAdapter extends BaseAdapter {
    * @returns {Promise<Array>} Array of main course objects
    */
   async getPlatosFuertes() {
-    return this._getGenericCategory('platos_fuertes');
+    const data = await this._getGenericCategory('platos_fuertes');
+    return data.map(item => this._mapPlatoFuerteItem(item));
+  }
+
+  /**
+   * Helper: Map raw DB dishes to UI schema
+   * @private
+   */
+  _mapPlatoFuerteItem(item) {
+    return {
+      id: item.id,
+      nombre: item.nombre,
+      ingredientes: item.ingredientes,
+      video: item.video,
+      precio: item.precio, // Usually matches, but explicit return is safer
+      imagen: item.thumbnail || item.imagen, // Map thumbnail to imagen
+      categoria: 'platos fuertes'
+    };
   }
 
   /**
@@ -331,7 +351,7 @@ class ProductDataAdapter extends BaseAdapter {
       'mezcal': () => this.getLiquorSubcategory('mezcal'),
       'mezcales': () => this.getLiquorSubcategory('mezcal'),
       'cervezas': () => this.getCervezas(),
-      'espumosos': () => this.getEspumosos(),
+      'espumosos': () => this.getLiquorSubcategory('espumosos'), // Fix: Use generic liquor method
       'pizzas': () => this.getPizzas(),
       'alitas': () => this.getAlitas(),
       'sopas': () => this.getSopas(),
@@ -434,7 +454,30 @@ class ProductDataAdapter extends BaseAdapter {
    * @returns {Promise<Array>} Array of products in the subcategory
    */
   async getLiquorSubcategory(subcategory) {
-    return this._getGenericCategory(subcategory);
+    const data = await this._getGenericCategory(subcategory);
+    return data.map(item => this._mapLiquorItem(item, subcategory));
+  }
+
+  /**
+   * Helper: Map raw DB liquor item to UI schema (camelCase)
+   * @private
+   */
+  _mapLiquorItem(item, subcategory) {
+    // If item already has camelCase props (from local fallback), use them.
+    // Otherwise map from snake_case DB columns.
+    return {
+      id: item.id,
+      nombre: item.nombre,
+      imagen: item.imagen,
+      precioBotella: item.precioBotella || item.precio_botella,
+      precioLitro: item.precioLitro || item.precio_litro,
+      precioCopa: item.precioCopa || item.precio_copa,
+      pais: item.pais,
+      mixersBotella: item.mixersBotella || item.mixers_botella,
+      mixersLitro: item.mixersLitro || item.mixers_litro,
+      mixersCopa: item.mixersCopa || item.mixers_copa,
+      categoria: subcategory
+    };
   }
 
   /**

@@ -185,6 +185,28 @@
   <div id="food-customization-modal" class="modal modal-hidden"></div>
   <div id="meat-customization-modal" class="modal modal-hidden"></div>
 
+  <!-- Generic Media Modal (Image/Video) -->
+  <div id="media-modal" class="modal modal-hidden">
+    <!-- Class 'video-modal' will be toggled on this content div -->
+    <div id="media-modal-content" class="modal-content image-modal">
+
+      <h3 id="media-modal-title"></h3>
+
+      <!-- Shared Close X Button (applied to both) -->
+      <button id="media-modal-close-x" class="modal-close-btn" aria-label="Cerrar">×</button>
+
+      <!-- Video Specific Elements -->
+      <video id="media-modal-video" class="hidden" controls playsinline style="display: none;"></video>
+
+      <!-- Image Specific Elements -->
+      <img id="media-modal-image" class="hidden" src="" alt="" style="display: none;">
+
+      <!-- Error Message -->
+      <div id="media-error-message" class="error-message hidden" style="display: none;">Video no disponible en este
+        momento</div>
+    </div>
+  </div>
+
   <!-- Modal Templates -->
   <div id="modal-templates" class="screen-hidden">
     <!-- Drink Options Modal Template -->

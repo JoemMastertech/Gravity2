@@ -375,10 +375,13 @@ const ProductRenderer = {
 
   _createImageCell: function (td, item, field, categoryTitle) {
     td.className = 'image-icon';
-    if (item[field]) {
+    // Fix: Explicitly check 'imagen' and 'ruta_archivo' regardless of the field name passed
+    // This solves the issue where Tables looked for 'imagen' but data had 'ruta_archivo'
+    const imageSrc = item[field] || item.imagen || item.ruta_archivo;
+
+    if (imageSrc) {
       const img = document.createElement('img');
-      // Usamos directamente la URL de la base de datos
-      img.src = item[field];
+      img.src = imageSrc;
       img.alt = item.nombre;
 
       // Fallback Logic for Images
@@ -590,7 +593,8 @@ const ProductRenderer = {
             // Regular price button for non-liquor categories
             const priceButton = document.createElement('button');
             priceButton.className = 'price-button';
-            priceButton.textContent = priceValue;
+            // Fix: Format price for standard items (Refrescos, Cervezas, Platos, etc.)
+            priceButton.textContent = formatPrice(priceValue);
             priceButton.dataset.productName = item.nombre;
             priceButton.dataset.price = priceValue;
             priceButton.dataset.field = field;
@@ -668,96 +672,118 @@ const ProductRenderer = {
 
 
   showVideoModal: function (videoUrl, title, category = null, fallbackUrl = null) {
-    // Create modal backdrop
-    const modalBackdrop = document.createElement('div');
-    modalBackdrop.className = 'modal-backdrop active';
+    const modal = document.getElementById('media-modal');
+    const modalContent = document.getElementById('media-modal-content');
+    const titleEl = document.getElementById('media-modal-title');
+    const videoEl = document.getElementById('media-modal-video');
+    const imageEl = document.getElementById('media-modal-image');
+    const errorEl = document.getElementById('media-error-message');
+    const closeBtn = document.getElementById('media-modal-close-x');
 
-    // Create modal content
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content image-modal video-modal';
-    if (category) {
-      modalContent.setAttribute('data-category', category);
+    if (!modal || !modalContent || !videoEl) {
+      Logger.error('Media modal elements not found in DOM');
+      return;
     }
 
-    // Add title
-    const modalTitle = document.createElement('h3');
-    modalTitle.textContent = title;
-    modalContent.appendChild(modalTitle);
+    // Reset State
+    modalContent.classList.add('video-modal'); // Enable video styling
+    if (category) modalContent.setAttribute('data-category', category);
 
-    // Add video
-    const video = document.createElement('video');
-    video.src = videoUrl;
-    video.controls = true;
-    video.autoplay = true;
+    titleEl.textContent = title;
 
-    // Add error handling for video loading
-    video.addEventListener('error', (e) => {
-      // Intentar fallback si está disponible
-      if (fallbackUrl && !video.dataset.usedFallback) {
-        Logger.info(`Video primario falló, intentando fallback: ${fallbackUrl}`);
-        video.dataset.usedFallback = 'true';
-        video.src = fallbackUrl;
+    // Show Video Elements
+    videoEl.src = videoUrl;
+    videoEl.style.display = 'block';
+    videoEl.className = ''; // Remove 'hidden' class if present
+    closeBtn.style.display = 'flex'; // Ensure flex for centering
+
+    // Autoplay
+    videoEl.play().catch(e => Logger.warn('Autoplay prevented by browser:', e));
+
+    // Hide Image Elements
+    imageEl.style.display = 'none';
+    errorEl.style.display = 'none';
+
+    // Error Handling
+    videoEl.onerror = (e) => {
+      if (fallbackUrl && !videoEl.dataset.usedFallback) {
+        Logger.info(`Video fallback triggered: ${fallbackUrl}`);
+        videoEl.dataset.usedFallback = 'true';
+        videoEl.src = fallbackUrl;
         return;
       }
+      Logger.warn('Video failed to load', e);
+      videoEl.style.display = 'none';
+      errorEl.style.display = 'block';
+    };
 
-      logWarning('Video loading error', e, { videoUrl });
-      video.className = 'video-hidden';
+    // Close Handler
+    closeBtn.onclick = () => {
+      videoEl.pause();
+      videoEl.src = ''; // Stop buffering
+      modal.classList.add('modal-hidden');
+      modal.classList.remove('active'); // legacy support
+    };
 
-      const errorMessage = document.createElement('p');
-      errorMessage.textContent = 'Video no disponible en este momento';
-      errorMessage.className = 'error-message';
-      modalContent.insertBefore(errorMessage, video.nextSibling);
-    });
+    // Close Handler (Click Outside/Backdrop)
+    modal.onclick = (e) => {
+      // Only close if clicking the backdrop (not the content)
+      if (e.target === modal) {
+        closeBtn.click();
+      }
+    };
 
-    modalContent.appendChild(video);
-
-    // Add close button as X in top right corner
-    const closeButton = document.createElement('button');
-    closeButton.textContent = '×';
-    closeButton.className = 'modal-close-btn';
-    closeButton.dataset.modalId = 'video-modal';
-    closeButton.setAttribute('aria-label', 'Cerrar');
-    // No individual event listener - handled by delegation
-    modalContent.appendChild(closeButton);
-
-    // Add modal to body
-    modalBackdrop.className += ' video-modal-backdrop';
-    modalBackdrop.appendChild(modalContent);
-    document.body.appendChild(modalBackdrop);
+    // Show Modal
+    modal.classList.remove('modal-hidden');
+    // Also support 'active' class if used by CSS
+    setTimeout(() => modal.classList.add('active'), 10);
   },
 
   showImageModal: function (imageUrl, title, category = null) {
-    // Create modal backdrop
-    const modalBackdrop = document.createElement('div');
-    modalBackdrop.className = 'modal-backdrop active';
+    const modal = document.getElementById('media-modal');
+    const modalContent = document.getElementById('media-modal-content');
+    const titleEl = document.getElementById('media-modal-title');
+    const videoEl = document.getElementById('media-modal-video');
+    const imageEl = document.getElementById('media-modal-image');
+    const errorEl = document.getElementById('media-error-message');
+    const closeBtn = document.getElementById('media-modal-close-x');
 
-    // Create modal content
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content image-modal';
+    if (!modal || !modalContent || !imageEl) return;
 
-    // Add title
-    const modalTitle = document.createElement('h3');
-    modalTitle.textContent = title;
-    modalContent.appendChild(modalTitle);
+    // Reset State
+    modalContent.classList.remove('video-modal'); // Disable video styling
+    if (category) modalContent.setAttribute('data-category', category);
 
-    // Add image with standardized size
-    const image = document.createElement('img');
-    image.src = imageUrl;
-    image.alt = title;
-    modalContent.appendChild(image);
+    titleEl.textContent = title;
 
-    // Add close button
-    const closeButton = document.createElement('button');
-    closeButton.textContent = 'Cerrar';
-    closeButton.className = 'nav-button modal-close-btn';
-    closeButton.dataset.modalId = 'image-modal';
-    // No individual event listener - handled by delegation
-    modalContent.appendChild(closeButton);
+    // Show Image Elements
+    imageEl.src = imageUrl;
+    imageEl.style.display = 'block';
+    imageEl.className = '';
+    closeBtn.style.display = 'flex';
 
-    // Add modal to body
-    modalBackdrop.className += ' image-modal-backdrop';
-    modalBackdrop.appendChild(modalContent);
-    document.body.appendChild(modalBackdrop);
+    // Hide Video Elements
+    videoEl.style.display = 'none';
+    videoEl.pause();
+    errorEl.style.display = 'none';
+
+    // Close Handler
+    closeBtn.onclick = () => {
+      modal.classList.add('modal-hidden');
+      modal.classList.remove('active');
+    };
+
+    // Close Handler (Click Outside/Backdrop)
+    modal.onclick = (e) => {
+      // Only close if clicking the backdrop (not the content)
+      if (e.target === modal) {
+        closeBtn.click();
+      }
+    };
+
+    // Show Modal
+    modal.classList.remove('modal-hidden');
+    setTimeout(() => modal.classList.add('active'), 10);
   },
 
   renderLicores: async function (container) {
