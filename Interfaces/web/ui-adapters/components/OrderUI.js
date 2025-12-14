@@ -35,8 +35,14 @@ export class OrderUI {
     showModal(modalId) { showModal(modalId); }
     hideModal(modalId) { hideModal(modalId); }
 
+    showValidationModal(message) {
+        console.log('[OrderUI] 4. showValidationModal called with:', message); // TRACE
+        this._createSimpleModal(message, 'Aceptar');
+    }
+
     _createSimpleModal(message, buttonText, onConfirm) {
-        const modalBackdrop = this._createElement('div', 'modal-backdrop');
+        console.log('[OrderUI] 5. Creating simple modal DOM'); // TRACE
+        const modalBackdrop = this._createElement('div', 'modal-backdrop active');
         const modalContent = this._createElement('div', 'modal-content');
 
         const modalTitle = this._createElement('h3');
@@ -54,15 +60,7 @@ export class OrderUI {
         [modalTitle, modalActions].forEach(el => modalContent.appendChild(el));
         modalBackdrop.appendChild(modalContent);
         document.body.appendChild(modalBackdrop);
-    }
-
-    showValidationModal(message) {
-        // We can import OrderSystemValidations here or use the one from Logic?
-        // But OrderSystemValidations.showValidationModal calls createSimpleModal.
-        // We can just implement it directly or use the helper.
-        // Let's use the helper if we can import it, but circular dependency might be an issue if Logic imports Validations.
-        // I'll just use _createSimpleModal directly since it's simple.
-        this._createSimpleModal(message, 'Aceptar');
+        console.log('[OrderUI] 6. Modal appended to body'); // TRACE
     }
 
     showConfirmationModal(title, message, onConfirm) {

@@ -2,7 +2,7 @@ import { STORAGE_CONFIG } from '../../Shared/config/storage.js';
 import { createClient } from '@supabase/supabase-js';
 import AppConfig from '../../Shared/core/AppConfig.js';
 import { z } from 'zod';
-import { productSchema, licorSchema } from '../../src/schemas/product.schema.js';
+import { productSchema, licorSchema, validateProducts } from '../../src/schemas/product.schema.js';
 
 // Initialize Supabase client
 const appConfig = AppConfig.getAll();
@@ -1543,19 +1543,8 @@ const ProductData = {
         return [];
       }
 
-      // Map Supabase fields to UI fields if necessary
-      // Assuming table columns: id, nombre, ingredientes, video, precio, imagen
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        ingredientes: item.ingredientes,
-        video: item.video, // URL to video
-        precio: item.precio,
-        imagen: item.thumbnail || item.imagen, // Map thumbnail column to imagen property
-        categoria: 'platos fuertes' // Ensure category is set
-      }));
-
-      return z.array(productSchema).parse(mappedData);
+      // Use Data Shielding to validate and map
+      return validateProducts(data, 'platos fuertes');
     } catch (err) {
       console.error('Unexpected error fetching platos fuertes:', err);
       return [];
@@ -1575,22 +1564,7 @@ const ProductData = {
         return [];
       }
 
-      // Map Supabase fields to UI fields
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        imagen: item.imagen,
-        precioBotella: item.precio_botella,
-        precioLitro: item.precio_litro,
-        precioCopa: item.precio_copa,
-        pais: item.pais,
-        mixersBotella: item.mixers_botella,
-        mixersLitro: item.mixers_litro,
-        mixersCopa: item.mixers_copa,
-        categoria: 'tequila'
-      }));
-
-      return z.array(licorSchema).parse(mappedData);
+      return validateProducts(data, 'tequila');
     } catch (err) {
       console.error('Unexpected error fetching tequilas:', err);
       return [];
@@ -1787,21 +1761,7 @@ const ProductData = {
         return [];
       }
 
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        imagen: item.imagen,
-        precioBotella: item.precio_botella,
-        precioLitro: item.precio_litro,
-        precioCopa: item.precio_copa,
-        pais: item.pais,
-        mixersBotella: item.mixers_botella,
-        mixersLitro: item.mixers_litro,
-        mixersCopa: item.mixers_copa,
-        categoria: 'ginebra'
-      }));
-
-      return z.array(licorSchema).parse(mappedData);
+      return validateProducts(data, 'ginebra');
     } catch (err) {
       console.error('Unexpected error fetching ginebras:', err);
       return [];
@@ -1822,21 +1782,7 @@ const ProductData = {
         return [];
       }
 
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        imagen: item.imagen,
-        precioBotella: item.precio_botella,
-        precioLitro: item.precio_litro,
-        precioCopa: item.precio_copa,
-        pais: item.pais,
-        mixersBotella: item.mixers_botella,
-        mixersLitro: item.mixers_litro,
-        mixersCopa: item.mixers_copa,
-        categoria: 'mezcal'
-      }));
-
-      return z.array(licorSchema).parse(mappedData);
+      return validateProducts(data, 'mezcal');
     } catch (err) {
       console.error('Unexpected error fetching mezcales:', err);
       return [];
@@ -1857,21 +1803,7 @@ const ProductData = {
         return [];
       }
 
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        imagen: item.imagen,
-        precioBotella: item.precio_botella,
-        precioLitro: item.precio_litro,
-        precioCopa: item.precio_copa,
-        pais: item.pais,
-        mixersBotella: item.mixers_botella,
-        mixersLitro: item.mixers_litro,
-        mixersCopa: item.mixers_copa,
-        categoria: 'digestivos'
-      }));
-
-      return z.array(licorSchema).parse(mappedData);
+      return validateProducts(data, 'digestivos');
     } catch (err) {
       console.error('Unexpected error fetching digestivos:', err);
       return [];
@@ -1892,21 +1824,7 @@ const ProductData = {
         return [];
       }
 
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        imagen: item.imagen,
-        precioBotella: item.precio_botella,
-        precioLitro: item.precio_litro,
-        precioCopa: item.precio_copa,
-        pais: item.pais,
-        mixersBotella: item.mixers_botella,
-        mixersLitro: item.mixers_litro,
-        mixersCopa: item.mixers_copa,
-        categoria: 'licores'
-      }));
-
-      return z.array(licorSchema).parse(mappedData);
+      return validateProducts(data, 'licores');
     } catch (err) {
       console.error('Unexpected error fetching licores:', err);
       return [];
@@ -1927,21 +1845,7 @@ const ProductData = {
         return [];
       }
 
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        imagen: item.imagen,
-        precioBotella: item.precio_botella,
-        precioLitro: item.precio_litro,
-        precioCopa: item.precio_copa,
-        pais: item.pais,
-        mixersBotella: item.mixers_botella,
-        mixersLitro: item.mixers_litro,
-        mixersCopa: item.mixers_copa,
-        categoria: 'espumosos'
-      }));
-
-      return z.array(licorSchema).parse(mappedData);
+      return validateProducts(data, 'espumosos');
     } catch (err) {
       console.error('Unexpected error fetching espumosos:', err);
       return [];
@@ -1961,18 +1865,7 @@ const ProductData = {
         return [];
       }
 
-      // Map Supabase fields to UI fields
-      const mappedData = data.map(item => ({
-        id: item.id,
-        nombre: item.nombre,
-        ingredientes: item.ingredientes,
-        video: item.video,
-        precio: item.precio,
-        imagen: item.thumbnail || item.imagen,
-        categoria: 'snacks'
-      }));
-
-      return z.array(productSchema).parse(mappedData);
+      return validateProducts(data, 'snacks');
     } catch (err) {
       console.error('Unexpected error fetching snacks:', err);
       return [];

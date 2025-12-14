@@ -6,15 +6,15 @@ export const BUSINESS_RULES = {
   MAX_JUICE_COUNT: 10,
   MIN_ORDER_AMOUNT: 0,
   MAX_ORDER_AMOUNT: 10000,
-  
+
   // Jägermeister special rules
   JAGER_MULTIPLIER: 1,
   JAGER_EXCEPTION_DRINKS: ['2 Boost'],
-  
+
   // Stock and inventory
   LOW_STOCK_THRESHOLD: 5,
   OUT_OF_STOCK_THRESHOLD: 0,
-  
+
   // Pricing rules
   DEFAULT_PRICE: 0,
   PRICE_PRECISION: 2
@@ -61,12 +61,12 @@ export const UI_TIMING = {
   LOGO_DURATION: 3000,
   CATEGORY_DURATION: 2000,
   FADE_DURATION: 1000,
-  
+
   // Modal and interaction timing
   MODAL_FADE_DURATION: 300,
   TOOLTIP_DELAY: 500,
   DEBOUNCE_DELAY: 300,
-  
+
   // Loading and feedback
   LOADING_MIN_DURATION: 500,
   SUCCESS_MESSAGE_DURATION: 2000,
@@ -86,7 +86,7 @@ export const PRODUCT_CATEGORIES = {
   MEATS: 'carnes',
   COFFEE: 'cafe',
   DESSERTS: 'postres',
-  
+
   // Liquor subcategories
   VODKA: 'VODKA',
   GINEBRA: 'GINEBRA',
@@ -101,13 +101,13 @@ export const DRINK_TYPES = {
   // Alcoholic drinks
   ALCOHOLIC: 'alcoholic',
   NON_ALCOHOLIC: 'non-alcoholic',
-  
+
   // Juice types
   JUICES: ['Naranja', 'Piña', 'Cranberry', 'Limón', 'Toronja'],
-  
+
   // Water and mixers
   WATERS: ['Botella de Agua', 'Mineral', 'Agua Quina'],
-  
+
   // Soft drinks
   SOFT_DRINKS: ['Coca Cola', 'Pepsi', 'Sprite', '7UP', 'Fanta']
 };
@@ -116,24 +116,24 @@ export const VALIDATION = {
   // Email and phone patterns
   EMAIL_PATTERN: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   PHONE_PATTERN: /^[\+]?[1-9][\d]{0,15}$/,
-  
+
   // String length limits
   MIN_NAME_LENGTH: 2,
   MAX_NAME_LENGTH: 100,
   MIN_PASSWORD_LENGTH: 6,
   MAX_COMMENT_LENGTH: 500,
   MAX_DESCRIPTION_LENGTH: 500,
-  
+
   // Numeric limits
   MIN_PRICE: 0,
   MAX_PRICE: 9999.99,
   MIN_QUANTITY: 1,
   MAX_QUANTITY: 99,
-  
+
   // Pattern validation
   PRICE_PATTERN: /^\$?\d+(\.\d{2})?$/,
   ID_PATTERN: /^[a-zA-Z0-9_-]+$/,
-  
+
   // Required fields
   REQUIRED_PRODUCT_FIELDS: ['id', 'nombre', 'precio'],
   REQUIRED_ORDER_FIELDS: ['items', 'total']
@@ -146,7 +146,7 @@ export const MESSAGES = {
     ORDER_PLACED: 'Pedido realizado con éxito',
     DATA_SAVED: 'Datos guardados correctamente'
   },
-  
+
   // Error messages
   ERRORS: {
     PRODUCT_NOT_FOUND: 'Producto no encontrado',
@@ -156,14 +156,14 @@ export const MESSAGES = {
     NETWORK_ERROR: 'Error de conexión',
     VALIDATION_FAILED: 'Error de validación'
   },
-  
+
   // Warning messages
   WARNINGS: {
     LOW_STOCK: 'Stock bajo',
     UNSAVED_CHANGES: 'Cambios sin guardar',
     SLOW_CONNECTION: 'Conexión lenta detectada'
   },
-  
+
   // Info messages
   INFO: {
     LOADING: 'Cargando...',
@@ -176,11 +176,11 @@ export const NETWORK = {
   // Timeouts
   DEFAULT_TIMEOUT: 10000,
   RETRY_TIMEOUT: 3000,
-  
+
   // Retry configuration
   MAX_RETRIES: 3,
   RETRY_DELAY: 1000,
-  
+
   // HTTP status codes
   STATUS_CODES: {
     OK: 200,
@@ -200,12 +200,12 @@ export const DEBUG = {
     INFO: 'info',
     DEBUG: 'debug'
   },
-  
+
   // Debug flags
   ENABLE_CONSOLE_LOGS: true,
   ENABLE_PERFORMANCE_MONITORING: false,
   ENABLE_ERROR_REPORTING: true,
-  
+
   // Development helpers
   MOCK_DATA_ENABLED: false,
   SKIP_VALIDATIONS: false
@@ -213,9 +213,9 @@ export const DEBUG = {
 
 export const API = {
   // Base URLs
-  BASE_URL: window.location.origin + '/api',
+  BASE_URL: typeof window !== 'undefined' ? window.location.origin + '/api' : 'http://localhost:3000/api',
   TIMEOUT: 10000,
-  
+
   // Endpoints
   ENDPOINTS: {
     PRODUCTS: '/products',
@@ -223,7 +223,7 @@ export const API = {
     CATEGORIES: '/categories',
     HEALTH: '/health'
   },
-  
+
   // Headers
   DEFAULT_HEADERS: {
     'Content-Type': 'application/json',
@@ -235,16 +235,16 @@ export const PERFORMANCE = {
   // Lazy loading
   ENABLE_LAZY_LOADING: true,
   LAZY_LOADING_THRESHOLD: 100,
-  
+
   // Memoization
   ENABLE_MEMOIZATION: true,
   CACHE_SIZE: 100,
   CACHE_TTL: 300000, // 5 minutes
-  
+
   // Debouncing
   ENABLE_DEBOUNCING: true,
   DEFAULT_DEBOUNCE_DELAY: 300,
-  
+
   // Bundle optimization
   ENABLE_CODE_SPLITTING: true,
   CHUNK_SIZE_LIMIT: 250000 // 250KB
@@ -254,22 +254,22 @@ export const UI = {
   // Theme settings
   DEFAULT_THEME: 'light',
   AVAILABLE_THEMES: ['light', 'dark', 'auto'],
-  
+
   // Animation settings
   ENABLE_ANIMATIONS: true,
   ANIMATION_DURATION: 300,
-  
+
   // Layout settings
   SIDEBAR_WIDTH: 250,
   HEADER_HEIGHT: 60,
-  
+
   // Responsive breakpoints
   BREAKPOINTS: {
     MOBILE: 768,
     TABLET: 1024,
     DESKTOP: 1200
   },
-  
+
   // Debug settings
   DEBUG_MODE: false,
   SHOW_PERFORMANCE_METRICS: false
@@ -279,15 +279,15 @@ export const TESTING = {
   // Test environment
   ENABLE_TESTING: false,
   TEST_TIMEOUT: 5000,
-  
+
   // Mock data
   ENABLE_MOCK_DATA: false,
   MOCK_DELAY: 500,
-  
+
   // E2E testing
   E2E_TIMEOUT: 30000,
   SCREENSHOT_ON_FAILURE: true,
-  
+
   // Test reporting
   ENABLE_COVERAGE: false,
   COVERAGE_THRESHOLD: 80

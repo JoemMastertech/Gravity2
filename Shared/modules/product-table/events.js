@@ -156,57 +156,50 @@ export const eventHandlers = {
             return;
         }
 
-        // Si el modo de orden no está activo, mostrar un único modal y no delegar más
-        if (!window.OrderSystem?.isOrderMode) {
-            event.preventDefault();
-            if (window.OrderSystem && typeof window.OrderSystem._showValidationModal === 'function') {
-                window.OrderSystem._showValidationModal('Para agregar productos, primero presiona “Crear orden” en el menú.');
-            }
+        const priceBtn = target.closest('.price-button');
+        if (!priceBtn) {
+            Logger.debug('[Events] Clicked element is not a price button (checked closest)');
             return;
         }
 
-        const row = target.closest('tr');
-        const card = target.closest('.product-card');
+        // DECOUPLED: No window.OrderSystem checks here. Just dispatch event.
+
+        const row = priceBtn.closest('tr');
+        const card = priceBtn.closest('.product-card');
+        let productName, priceText, contextElement;
 
         if (row) {
             // Table view handling
             const nameCell = row.querySelector('.product-name');
-            const priceText = target.textContent;
-            const productName = nameCell.textContent;
-
-            // Decoupled: Dispatch CustomEvent instead of direct dependency
-            const selectionEvent = new CustomEvent('product-selected', {
-                bubbles: true,
-                detail: {
-                    productName: productName,
-                    priceText: priceText,
-                    row: row, // Can be null in grid view
-                    card: card, // Can be null in table view
-                    target: target // The specific button clicked
-                }
-            });
-            target.dispatchEvent(selectionEvent);
-            Logger.debug(`[Events] Dispatched product-selected for ${productName}`);
-
+            priceText = priceBtn.textContent;
+            productName = nameCell.textContent;
+            contextElement = row;
         } else if (card) {
             // Grid view handling
-            const productName = target.dataset.productName;
-            const priceText = target.textContent;
-
-            // Decoupled: Dispatch CustomEvent
-            const selectionEvent = new CustomEvent('product-selected', {
-                bubbles: true,
-                detail: {
-                    productName: productName,
-                    priceText: priceText,
-                    row: null,
-                    card: card,
-                    target: target
-                }
-            });
-            target.dispatchEvent(selectionEvent);
-            Logger.debug(`[Events] Dispatched product-selected for ${productName}`);
+            productName = priceBtn.dataset.productName;
+            priceText = priceBtn.textContent;
+            contextElement = card;
+        } else {
+            Logger.warn('Price button clicked outside of row or card context');
+            return;
         }
+
+        Logger.debug(`[Events] Dispatching product-interaction for ${productName}`);
+
+        // Dispatch decoupled event
+        const interactionEvent = new CustomEvent('product-interaction', {
+            bubbles: true,
+            detail: {
+                action: 'select',
+                productName: productName,
+                priceText: priceText,
+                contextElement: contextElement,
+                originalEvent: event,
+                target: priceBtn
+            }
+        });
+
+        document.dispatchEvent(interactionEvent);
     },
 
     handleVideoClick: function (target) {

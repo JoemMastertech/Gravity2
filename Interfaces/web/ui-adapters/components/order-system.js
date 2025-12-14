@@ -27,12 +27,35 @@ class OrderSystem {
       this._ensureProductRepository();
       this.ui.initialize();
 
-      // Listen for decoupled events from ProductRenderer
+      // Listen for decoupled events from ProductRenderer and events.js
+      document.addEventListener('product-interaction', (e) => {
+        console.log('[OrderSystem] 1. Event received:', e.detail); // TRACE
+        if (!e.detail) return;
+
+        Logger.debug('[OrderSystem] Received product-interaction', e.detail);
+
+        const { action, productName, priceText, contextElement, target } = e.detail;
+
+        if (action === 'select') {
+          console.log('[OrderSystem] 2. Action is select. isOrderMode:', this.isOrderMode); // TRACE
+          // ACTIVE FEEDBACK: If order mode is NOT active, show warning modal
+          if (!this.isOrderMode) {
+            console.log('[OrderSystem] 3. Triggering Validation Modal'); // TRACE
+            Logger.info('[OrderSystem] Order mode inactive, showing warning');
+            // Re-using the validation modal for this specific warning
+            this.ui.showValidationModal('Para seleccionar productos, primero inicia una orden.');
+            return;
+          }
+
+          // Otherwise, proceed with selection
+          this.handleProductSelection(productName, priceText, contextElement, { target: target || e.detail.originalEvent?.target });
+        }
+      });
+
+      // Legacy listener support (deprecated but kept for safety during transition)
       document.addEventListener('product-selected', (e) => {
         if (!e.detail) return;
         const { productName, priceText, row, card, target } = e.detail;
-        // Adapt to internal handler signature
-        // rowOrCard is either row or card.
         this.handleProductSelection(productName, priceText, row || card, { target: target });
       });
 
@@ -270,28 +293,24 @@ class OrderSystem {
   }
 
   canIncrementDrink(option) {
-    // We can move this logic to OrderLogic or keep it here if it needs complex validation
-    // OrderUI had _canIncrementDrink.
-    // Let's implement a helper in Logic or use Logic's state.
     const isJuice = isJuiceOption(option);
     const totalCount = this.logic.calculateTotalDrinkCount();
+    const totalJuices = this.logic.calculateTotalJuiceCount();
 
-    if (this.logic.isSpecialBottleCategory()) {
-      const totalJuices = this.logic.calculateTotalJuiceCount();
-      const totalRefrescos = this.logic.calculateTotalDrinkCount() - totalJuices; // Approx
-      // Actually logic.calculateTotalDrinkCount() returns sum of all counts.
-      // We need separate counts.
-      // logic.calculateTotalJuiceCount() returns juice count.
-      // So refrescos = total - juices.
-      return OrderSystemValidations.validateSpecialBottleRules(
-        isJuice,
-        totalJuices,
-        totalRefrescos,
-        this.logic.bottleCategory,
-        this.logic.currentProduct?.name
-      );
-    }
-    return totalCount < this.logic.maxDrinkCount;
+    // Calculate total sodas (refrescos)
+    // Logic: Total Drink Count - Total Juices = Total Sodas
+    // Only if totalCount is >= totalJuices, otherwise something is wrong with state, but safe to assume 0 min.
+    const totalRefrescos = Math.max(0, totalCount - totalJuices);
+
+    return OrderSystemValidations.canAddDrink(
+      isJuice,
+      totalCount,
+      this.logic.maxDrinkCount,
+      totalJuices,
+      totalRefrescos,
+      this.logic.bottleCategory,
+      this.logic.currentProduct?.name
+    );
   }
 
   handleCompleteOrder() {
