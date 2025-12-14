@@ -134,6 +134,15 @@ sequenceDiagram
 - `Dominio/entities/`: Core definitions (Cocktail, Food, etc).
 - `Dominio/ports/`: Interfaces for Repositories.
 
+### 🎨 Styling & Visuals (The Skin)
+*Modern SCSS Architecture (ITCSS-ish).*
+- **Entry Point**: `Shared/styles/main.scss` (The root).
+- **Tools**: `Shared/styles/tools/_mixins.scss` (The Orchestrator).
+- **Views**:
+  - `Shared/styles/views/_view-grid.scss` (The Grid).
+  - `Shared/styles/views/_view-table.scss` (The logic-heavy Tables).
+- **Docs**: See `docs/VISUAL_MAP.md` for the visual radiography.
+
 ---
 
 ## 🏗️ Core Modules Breakdown

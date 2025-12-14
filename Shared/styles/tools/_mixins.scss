@@ -75,3 +75,57 @@ $bp-wide: 1200px;
         @content;
     }
 }
+
+/* 5. Legacy Compatibility Layer (Backwards Compatibility) */
+/* Maps old 'respond-to' calls to new semantic mixins */
+@mixin respond-to($breakpoint) {
+    @if $breakpoint =='mobile-portrait' {
+        @include mobile-portrait {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='mobile-landscape' {
+        @include mobile-landscape {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='tablet-portrait' {
+        @include tablet-portrait {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='tablet-landscape' {
+        @include tablet-landscape {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='desktop' {
+        @include desktop {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='desktop-wide' {
+        @include desktop-wide {
+            @content;
+        }
+    }
+
+    @else {
+
+        /* Fallback for raw values or unknown names */
+        @media (max-width: $breakpoint) {
+            @content;
+        }
+    }
+}
+
+@mixin mobile-only {
+    @include mobile-portrait {
+        @content;
+    }
+}

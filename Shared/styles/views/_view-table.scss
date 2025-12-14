@@ -4,7 +4,7 @@
    Refactored: Dec 13, 2025
    ============================================================================= */
 
-@use '../tools/mixins' as *;
+@import '../tools/mixins';
 
 /* Shared Base Styles via Abstract Placeholder */
 %table-base {

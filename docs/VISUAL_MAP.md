@@ -1,5 +1,6 @@
 # 🎨 Visual System Map (Radiography)
 *Generated: Dec 13, 2025*
+*Updated: Dec 13, 2025 (Refactor Completed)*
 *Status: Verified against Codebase*
 
 ## 🧬 Materia Prima (Global Variables)
@@ -19,34 +20,36 @@ These are the atoms of the design. Changes here ripple everywhere.
 
 ## 🎛️ PANEL A: MODO GRID (Tarjetas)
 **Independence Status:** ✅ TOTAL
-**Sources:** `Shared/styles/components/_product-table-v2.scss` (Layout), `cards.css` (Component)
+**Source:** `Shared/styles/views/_view-grid.scss`
+*Unified View (formerly cards.css + product-table-v2)*
 
 ### 1. Estructura (Grid Layout)
-| Dispositivo | Breakpoint | Columnas | Gap (Espacio) | Padding |
-| :--- | :--- | :--- | :--- | :--- |
-| **Móvil Portrait** | Defaults | 2 ccols | `12px` | `12px` |
-| **Móvil (Min)** | > 480px | 2 cols | `12px` | `12px` |
-| **Tablet/Desktop** | > 768px | 3 cols | `16px` | `16px` |
-| **Large Desktop** | > 1200px | 3 cols | `20px` | `20px` |
-| **Licores (Desktop)** | > 1200px | **5 cols** | `20px` | - |
+Uses `tools/_mixins.scss` for responsive logic.
+
+| Dispositivo | Mixin | Columnas | Gap | Padding | Notas |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Móvil Portrait** | `@include mobile-portrait` | **2 Cols** | `var(--spacing-md)` | `var(--spacing-md)` | |
+| **Móvil Landscape** | `@include mobile-landscape` | **3 Cols** | `var(--spacing-sm)` | - | **Sidebar Aware:** Drops to 2 cols if Sidebar Open |
+| **Tablet Portrait** | `@include tablet-portrait` | **3 Cols** | `var(--spacing-lg)` | `var(--spacing-lg)` | |
+| **Tablet Landscape** | `@include tablet-landscape` | **3 Cols** | `var(--spacing-lg)` | - | Desktop logic applies |
+| **Licores (Wide)** | `@include desktop-wide` | **5 Cols** | `var(--spacing-lg)` | - | Only for licores category |
 
 ### 2. La Tarjeta (Componente `.product-card`)
-- **Altura Imagen:** `180px` (Fixed).
-- **Bordes:** `10px` (Rounded). (*User estimate: 12px*)
-- **Sombra:** `0 0 10px var(--border-color)`.
-- **Padding Interno:** `clamp(15px, 1.8vw, 20px)`.
+- **Altura Imagen (Base):** `180px`.
+- **Altura Imagen (Móvil Land):** `140px` (Compact).
+- **Bordes:** `var(--radius-md)`.
+- **Padding Interno:** `clamp(15px, 1.8vw, 20px)` (Base) / `10px` (Móvil Land).
 
 ### 3. Tipografía Grid
-- **Título:** `1.1rem` (Bold 600).
-- **Precio:** `0.9rem` (Bold 600). (*User estimate: 1.2rem*)
-- **Descripción:** Size `clamp(0.7rem...)`. Color `text-color`.
+- **Título:** `.product-name` -> `1.1rem` (Bold 600).
+- **Precio:** `.price-button` -> `0.75rem` (Centralized).
 
 ---
 
 ## 🎛️ PANEL B: MODO TABLA (Listas)
 **Independence Status:** ✅ TOTAL
-**Source:** `Shared/styles/components/_tables.scss`
-*Cambios aquí NO afectan al Grid.*
+**Source:** `Shared/styles/views/_view-table.scss`
+*Refactored from _tables.scss*
 
 ### 1. Estructura (Table Layout)
 - **Ancho:** 100% (Max 1400px).
@@ -55,18 +58,18 @@ These are the atoms of the design. Changes here ripple everywhere.
 ### 2. La Fila (Componente `tr`)
 | Configuración | Valor Actual (Code) | Notas |
 | :--- | :--- | :--- |
-| **Padding Celda** | `15px 10px` | *User estimate: 12px 15px* |
+| **Padding Celda** | `15px 10px` | |
 | **Borde Inferior** | `2px solid` | Separador |
 | **Hover** | `rgba(0,0,0,0.4)` | Oscurecimiento |
 
 ### 3. Elementos Internos
-- **Imagen Thumbnail:** `70px x 70px` (Cuadrada). (*User estimate: 60px*)
+- **Imagen Thumbnail:** `70px x 70px` (Cuadrada).
 - **Animación:** Glow `2s infinite`.
 
 ### ⚠️ Zona de Conflicto (Overrides Móviles)
-**Source:** `_tables.scss` @media (max-width: 480px)
+**Source:** `_view-table.scss` -> `@mixin nuclear-mobile`
 
-Estas reglas fuerzan la tabla a caber en pantallas pequeñas. Son destructivas ("Nuclear Option").
+Estas reglas fuerzan la tabla a caber en pantallas pequeñas. Son destructivas ("Squish Protocol").
 - **Padding:** `2px !important`.
 - **Imagen:** `30px !important`.
 - **Fuente:** `0.75rem`.
@@ -74,25 +77,26 @@ Estas reglas fuerzan la tabla a caber en pantallas pequeñas. Son destructivas (
 
 ---
 
-## 🛠️ Guía de Edición (Hacker's Manual)
+## 🛠️ Guía de Edición (New Hacker's Manual)
 
 ### Si quieres cambiar...
 
-1.  **Tamaño Tarjetas (PC):**
-    - Ir a `_product-table-v2.scss`.
-    - Buscar `@media (min-width: 768px)`.
+1.  **Tamaño Tarjetas (PC/Tablet):**
+    - Ir a `Shared/styles/views/_view-grid.scss`.
+    - Buscar `@include tablet-portrait` o start of file.
     - Cambiar `repeat(3, ...)` a `repeat(2, ...)`.
 
-2.  **Letra de Tabla:**
-    - Ir a `_tables.scss`.
+2.  **Comportamiento Móvil Landscape:**
+    - Ir a `Shared/styles/views/_view-grid.scss`.
+    - Buscar `@include mobile-landscape`.
+    - Modificar la regla `.app-container.order-mode &` si quieres cambiar el comportamiento con Sidebar.
+
+3.  **Letra de Tabla:**
+    - Ir a `Shared/styles/views/_view-table.scss`.
     - Buscar `.product-table td`.
     - Editar `font-size` (Solo afectará tablas).
 
-3.  **Color Precios (Global):**
-    - Ir a `variables.css`.
-    - Editar `--price-color` o `--accent-color`.
-
 4.  **Imágenes de Licores:**
-    - Ir a `cards.css`.
+    - Ir a `Shared/styles/views/_view-grid.scss`.
     - Buscar `.product-card.liquor-card .product-image`.
-    - Grid Licores tiene reglas propias de altura (`clamp`).
+    - Ajustar height clamp.
