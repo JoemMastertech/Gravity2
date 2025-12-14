@@ -1,4 +1,4 @@
-report({
+{
   "testSuite": "BackstopJS",
   "tests": [
     {
@@ -150,4 +150,4 @@ report({
     }
   ],
   "id": "antigravity_visual_check"
-});
+}

@@ -1,8 +1,12 @@
-/* ==========================================================================
-   Component: Tables (Product & Liquor)
-   ========================================================================== */
+/* =============================================================================
+   🎛️ PANEL B: TABLE VIEW (Listas)
+   Source: _tables.scss
+   Refactored: Dec 13, 2025
+   ============================================================================= */
 
-/* Shared Base Styles */
+@use '../tools/mixins' as *;
+
+/* Shared Base Styles via Abstract Placeholder */
 %table-base {
     border-collapse: separate;
     border-spacing: 0 10px;
@@ -105,48 +109,54 @@
         }
     }
 
-    /* Hover Effects */
     tr:hover td {
         background-color: rgba(0, 0, 0, 0.4);
     }
 
     /* --- RESPONSIVE LOGIC --- */
 
-    /* Tablet / Mobile Common */
-    @media (min-width: 480px) {
+    /* Tablet Rules */
+    @include tablet-portrait {
+        padding: 8px 4px;
+        font-size: 0.8rem;
+        table-layout: fixed;
+        width: 100%;
+        max-width: 100%;
 
-        /* Actually max-width 768px in legacy logic */
-        @media (max-width: 768px) {
-            padding: 8px 4px;
-            font-size: 0.8rem;
-            table-layout: fixed;
-            width: 100%;
-            /* Ensure it fits container but NO 100vw force */
-            max-width: 100%;
+        th,
+        td {
+            padding: 6px 3px;
+            font-size: 0.75rem;
+        }
 
-            th,
-            td {
-                padding: 6px 3px;
-                font-size: 0.75rem;
-            }
-
-            td.product-name {
-                font-size: 0.7rem;
-                word-break: break-word;
-                white-space: normal;
-            }
+        td.product-name {
+            font-size: 0.7rem;
+            word-break: break-word;
+            white-space: normal;
         }
     }
 
-    /* Mobile Portrait (Cards View) - LEGACY SQUISH PROTOCOL */
-    @media (max-width: 480px) and (orientation: portrait) {
+    /* Use same logic for Mobile Landscape as tablet portrait usually */
+    @include mobile-landscape {
+        font-size: 0.75rem;
+
+        td,
+        th {
+            padding: 6px 4px;
+        }
+
+        .price-button {
+            font-size: 0.62rem;
+        }
+    }
+
+
+    /* --- THE NUCLEAR OPTION (Mobile Portrait) --- */
+    @include mobile-portrait {
         width: 100% !important;
         margin: 0 !important;
         table-layout: fixed !important;
-        /* FORCE FIXED LAYOUT */
 
-
-        /* Squished Cells */
         th,
         td {
             padding-left: 2px !important;
@@ -154,7 +164,7 @@
             font-size: 0.75rem;
         }
 
-        /* Specific alignment override from legacy */
+        /* Specific alignment */
         td:first-child,
         td.product-name {
             padding-left: 10px !important;
@@ -177,12 +187,6 @@
 .product-table[data-category="refrescos"],
 .product-table[data-category="cervezas"] {
 
-    /* Specific width logic from legacy, but adaptable */
-    th,
-    td {
-        text-align: center;
-    }
-
     th:first-child,
     td.product-name {
         text-align: left;
@@ -190,73 +194,65 @@
     }
 }
 
-// ==========================================================================
-// RESCUED LEGACY LOGIC (Liquor Tables)
-// Migrated from media-queries.css
-// ==========================================================================
-
+/* Liquor Table Logic (Rescued Legacy) */
 .liquor-table {
 
-    // Exact column proportions to maintain layout stability
     th:nth-child(1),
     td:nth-child(1) {
-        width: 25%; // Nombre
+        width: 25%;
     }
 
+    /* Nombre */
     th:nth-child(2),
     td:nth-child(2) {
-        width: 20%; // Imagen (o ingrediente)
+        width: 20%;
     }
 
+    /* Imagen */
     th:nth-child(3),
     td:nth-child(3) {
-        width: 18%; // Botella
+        width: 18%;
     }
 
+    /* Botella */
     th:nth-child(4),
     td:nth-child(4) {
-        width: 18%; // Litro
+        width: 18%;
     }
 
+    /* Litro */
     th:nth-child(5),
     td:nth-child(5) {
-        width: 19%; // Copa
+        width: 19%;
     }
 
-    // Prevent price wrapping (Desktop/Tablet Default)
+    /* Copa */
+
     td.product-price,
     th:nth-child(3),
     th:nth-child(4),
     th:nth-child(5) {
         white-space: nowrap;
         word-break: keep-all;
-        hyphens: none;
-    }
-}
-
-/* === FINAL MOBILE OVERRIDES (The Nuclear Option) === */
-/* Must be at the end to override specific liquor-table rules */
-@media (max-width: 480px) {
-
-    .liquor-table td.product-price,
-    .liquor-table th:nth-child(3),
-    .liquor-table th:nth-child(4),
-    .liquor-table th:nth-child(5) {
-        white-space: normal !important;
-        /* Allow wrapping */
-        word-break: break-all !important;
-        /* Break words if needed */
-        font-size: 0.65rem !important;
-        /* Tiny font */
-        padding: 2px 1px !important;
-        min-width: 0 !important;
     }
 
-    /* Ensure images can shrink */
-    .liquor-table td:nth-child(2) img,
-    .product-table td.image-icon img {
-        width: 30px !important;
-        height: 30px !important;
-        min-width: 0 !important;
+    /* Nuclear Override for Liquor */
+    @include nuclear-mobile {
+
+        td.product-price,
+        th:nth-child(3),
+        th:nth-child(4),
+        th:nth-child(5) {
+            white-space: normal !important;
+            word-break: break-all !important;
+            font-size: 0.65rem !important;
+            padding: 2px 1px !important;
+        }
+
+        td:nth-child(2) img,
+        .product-table td.image-icon img {
+            width: 30px !important;
+            height: 30px !important;
+        }
     }
 }

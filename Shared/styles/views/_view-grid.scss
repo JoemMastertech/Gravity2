@@ -1,0 +1,300 @@
+/* =============================================================================
+   🎛️ PANEL A: GRID VIEW (Tarjetas)
+   Source: Unified from product-table-v2 + cards.css
+   Refactored: Dec 13, 2025
+   ============================================================================= */
+
+@use '../tools/mixins' as *;
+
+/* 1. The Container (Layout) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Mobile Default */
+    gap: var(--spacing-md);
+    width: 100%;
+    padding: var(--spacing-md);
+    margin-top: 0;
+    box-sizing: border-box;
+    justify-content: center;
+
+    /* Responsive Logic via Mixins */
+    @include tablet-portrait {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+
+    @include tablet-landscape {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include desktop {
+        gap: var(--spacing-xl);
+        padding: var(--spacing-xl);
+        max-width: var(--table-max-width, 1400px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Legacy "Squish" Protocol */
+    @include mobile-portrait {
+        // Only if needed specific overrides not covered by default 2 col
+    }
+}
+
+/* 2. Category Grid (Licores Special) */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+
+    @include tablet-portrait {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+
+    /* Desktop Wide 5-col for licores */
+    @include desktop-wide {
+        &[data-category="licores"] {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: var(--spacing-lg);
+            max-width: var(--table-max-width, 1400px);
+            margin: 0 auto;
+        }
+    }
+}
+
+/* 3. The Card Component */
+.category-card,
+.product-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    min-height: 200px;
+    /* Base */
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px var(--border-color);
+
+    &:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 5px 20px var(--price-color);
+    }
+}
+
+.product-card {
+    min-height: clamp(300px, 35vh, 400px);
+    height: auto;
+    padding: clamp(15px, 1.8vw, 20px);
+    gap: clamp(10px, 1.2vw, 15px);
+}
+
+/* Card Elements */
+.product-name,
+.category-name {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color);
+    /* White for category */
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.category-name {
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-name {
+    order: 1;
+    /* Level 1: Fixed space */
+    height: clamp(1.92rem, 2.88vw + 0.8rem, 2.56rem);
+    /* Level 2: Adaptive content */
+    font-size: clamp(0.69rem, 1.46vw + 0.406rem, 0.975rem);
+    line-height: clamp(1.2, 1.5vw + 1rem, 1.4);
+    display: block;
+    overflow: visible;
+    word-wrap: break-word;
+    /* Ensure wrapping */
+}
+
+/* Ingredients */
+.product-ingredients {
+    font-size: 0.9rem;
+    color: var(--color-gray-400);
+    /* or text-color/opacity */
+    text-align: justify;
+    font-style: italic;
+    order: 3;
+    flex-grow: 1;
+    margin-bottom: 15px;
+    /* Responsive sizing */
+    font-size: clamp(0.7rem, 1.5vw + 0.3rem, 0.9rem);
+    line-height: clamp(1.2, 1.3vw + 1rem, 1.4);
+}
+
+/* Media (Image/Video) Container */
+.product-media {
+    width: 100%;
+    min-height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 2;
+    margin-bottom: 15px;
+}
+
+.product-image,
+.video-thumbnail,
+.category-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+}
+
+/* Category Image Specifics */
+.category-image {
+    width: 80%;
+    height: 120px;
+    object-fit: contain;
+    background: white;
+    margin-bottom: 10px;
+}
+
+/* Licores Special Logic */
+.product-card.liquor-card {
+    .product-name {
+        /* Larger font, no truncation */
+        font-size: clamp(0.63rem, 1.35vw + 0.375rem, 0.9rem);
+        line-height: clamp(1.15, 1.8vw + 0.9rem, 1.35);
+        display: block;
+        height: clamp(1.62rem, 2.16vw + 0.864rem, 2.376rem);
+        min-height: unset;
+    }
+
+    .product-image {
+        height: clamp(120px, 15vw + 2vh, 200px);
+        width: 100%;
+        object-fit: contain;
+        background: white;
+    }
+
+    .product-media {
+        min-height: clamp(120px, 15vw + 2vh, 200px);
+        height: auto;
+    }
+
+    .product-prices {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(3px, 1.5%, 8px);
+        width: 100%;
+        min-height: clamp(75px, 25%, 140px);
+        justify-content: space-between;
+    }
+
+    .price-item {
+        display: flex;
+        align-items: center;
+        gap: clamp(4px, 2%, 10px);
+        width: 100%;
+
+        .price-label {
+            font-size: clamp(0.55rem, 3% + 0.1rem, 0.8rem);
+            min-width: clamp(35px, 20%, 60px);
+        }
+
+        .price-button {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            min-width: 50px;
+            flex: 1;
+        }
+    }
+}
+
+/* Price Buttons (Standard) */
+.product-prices {
+    display: flex;
+    flex-direction: column;
+    /* Or row wrapping */
+    gap: var(--spacing-sm);
+    margin-top: auto;
+    order: 4;
+    width: 100%;
+
+    /* Standard Card: prices stack or wrap? Original cards.css says wrap, but earlier product-table-v2 said column. 
+       Let's stick to centralized buttons.css or define here. 
+       Re-using logic from cards.css line 380: flex-wrap with center justify */
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.price-button {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+
+    &:hover {
+        background: var(--accent-color);
+        color: var(--color-black);
+        box-shadow: 0 0 10px var(--accent-color);
+    }
+}
+
+/* Subcategory Prompt */
+.subcategory-prompt {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* BEM Helpers (from cards.css) - kept for compatibility if HTML uses them */
+.product {
+    @extend .product-card;
+}
+
+.product__title {
+    @extend .product-name;
+}
+
+.product__image {
+    @extend .product-image;
+}
+
+.product__ingredients {
+    @extend .product-ingredients;
+}

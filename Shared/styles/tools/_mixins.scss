@@ -1,34 +1,77 @@
-/* ==========================================================================
-   Responsive Mixins (The Factory)
-   ========================================================================== */
+/* =============================================================================
+   📍 THE ORCHESTRATOR (SASS MIXINS)
+   =============================================================================
+   Centralized responsive logic to replace manual media queries.
+   Usage: @include mobile-portrait { ... }
+   ============================================================================= */
 
-$breakpoints: (
-    'mobile': 480px,
-    'tablet-portrait': 768px,
-    'tablet-landscape': 1024px,
-    'desktop': 1200px
-);
+// 1. Base Breakpoints (for reference, though we use them inside logic)
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+$bp-wide: 1200px;
 
-@mixin respond-to($breakpoint) {
-    @if map-has-key($breakpoints, $breakpoint) {
-        @media (min-width: map-get($breakpoints, $breakpoint)) {
-            @content;
-        }
-    }
-
-    @else {
-        @warn "Invalid breakpoint: #{$breakpoint}.";
-    }
-}
-
-@mixin mobile-only {
-    @media (max-width: 767px) {
+// 2. Orientation Logic
+@mixin landscape {
+    @media (orientation: landscape) {
         @content;
     }
 }
 
-@mixin tablet-only {
-    @media (min-width: 768px) and (max-width: 1023px) {
+@mixin portrait {
+    @media (orientation: portrait) {
+        @content;
+    }
+}
+
+// 3. Device + Orientation Combinations (Semantic Views)
+
+/* Mobile Portrait (Grid: 2 cols, Table: Compact) */
+@mixin mobile-portrait {
+    @media (max-width: #{$bp-mobile}) and (orientation: portrait) {
+        @content;
+    }
+}
+
+/* Mobile Landscape (Often treated as small tablet) */
+@mixin mobile-landscape {
+    @media (max-width: #{$bp-tablet}) and (orientation: landscape) {
+        @content;
+    }
+}
+
+/* Tablet Portrait */
+@mixin tablet-portrait {
+    @media (min-width: #{$bp-mobile + 1}) and (max-width: #{$bp-desktop}) and (orientation: portrait) {
+        @content;
+    }
+}
+
+/* Tablet Landscape / Small Desktop */
+@mixin tablet-landscape {
+    @media (min-width: #{$bp-tablet}) and (orientation: landscape) {
+        @content;
+    }
+}
+
+/* Standard Desktop */
+@mixin desktop {
+    @media (min-width: #{$bp-desktop}) {
+        @content;
+    }
+}
+
+/* Wide Desktop (Large screens, 5-col grids) */
+@mixin desktop-wide {
+    @media (min-width: #{$bp-wide}) {
+        @content;
+    }
+}
+
+/* 4. Legacy "Squish" Protocol (Nuclear Option) Helper */
+/* Use this for rules that MUST override everything else on tiny screens */
+@mixin nuclear-mobile {
+    @media (max-width: 480px) {
         @content;
     }
 }
