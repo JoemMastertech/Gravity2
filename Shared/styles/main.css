@@ -162,6 +162,114 @@
   border-color: var(--accent-color);
   box-shadow: 0 5px 20px var(--price-color);
 }
+.category-card,
+.product-card,
+.product {
+  /* Staggered Animation Logic to prevent FOUC */
+  opacity: 0;
+  /* Default invisible */
+  animation: fadeIn 0.6s ease-out forwards;
+}
+.category-card:nth-child(1),
+.product-card:nth-child(1),
+.product:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.category-card:nth-child(2),
+.product-card:nth-child(2),
+.product:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.category-card:nth-child(3),
+.product-card:nth-child(3),
+.product:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.category-card:nth-child(4),
+.product-card:nth-child(4),
+.product:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.category-card:nth-child(5),
+.product-card:nth-child(5),
+.product:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.category-card:nth-child(6),
+.product-card:nth-child(6),
+.product:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.category-card:nth-child(7),
+.product-card:nth-child(7),
+.product:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.category-card:nth-child(8),
+.product-card:nth-child(8),
+.product:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.category-card:nth-child(9),
+.product-card:nth-child(9),
+.product:nth-child(9) {
+  animation-delay: 0.45s;
+}
+.category-card:nth-child(10),
+.product-card:nth-child(10),
+.product:nth-child(10) {
+  animation-delay: 0.5s;
+}
+.category-card:nth-child(11),
+.product-card:nth-child(11),
+.product:nth-child(11) {
+  animation-delay: 0.55s;
+}
+.category-card:nth-child(12),
+.product-card:nth-child(12),
+.product:nth-child(12) {
+  animation-delay: 0.6s;
+}
+.category-card:nth-child(13),
+.product-card:nth-child(13),
+.product:nth-child(13) {
+  animation-delay: 0.65s;
+}
+.category-card:nth-child(14),
+.product-card:nth-child(14),
+.product:nth-child(14) {
+  animation-delay: 0.7s;
+}
+.category-card:nth-child(15),
+.product-card:nth-child(15),
+.product:nth-child(15) {
+  animation-delay: 0.75s;
+}
+.category-card:nth-child(16),
+.product-card:nth-child(16),
+.product:nth-child(16) {
+  animation-delay: 0.8s;
+}
+.category-card:nth-child(17),
+.product-card:nth-child(17),
+.product:nth-child(17) {
+  animation-delay: 0.85s;
+}
+.category-card:nth-child(18),
+.product-card:nth-child(18),
+.product:nth-child(18) {
+  animation-delay: 0.9s;
+}
+.category-card:nth-child(19),
+.product-card:nth-child(19),
+.product:nth-child(19) {
+  animation-delay: 0.95s;
+}
+.category-card:nth-child(20),
+.product-card:nth-child(20),
+.product:nth-child(20) {
+  animation-delay: 1s;
+}
 
 .product-card, .product {
   min-height: clamp(300px, 35vh, 400px);
