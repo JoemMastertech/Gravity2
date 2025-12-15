@@ -100,3 +100,26 @@ Estas reglas fuerzan la tabla a caber en pantallas pequeñas. Son destructivas (
     - Ir a `Shared/styles/views/_view-grid.scss`.
     - Buscar `.product-card.liquor-card .product-image`.
     - Ajustar height clamp.
+    
+---
+
+## 🎭 Coreografía de Animación (Anti-FOUC)
+**Logic:** Staggered Fade-In (Escalera)
+**Goal:** Prevent content "piling up" (FOUC) on load.
+**Location:** `_view-grid.scss` (.product-card) & `_view-table.scss` (tr)
+
+**Regla de Oro:**
+1.  El elemento debe iniciar con `opacity: 0`.
+2.  Debe tener `animation: fadeIn ... forwards`.
+3.  Debe existir un bucle SASS (`@for`) para asignar `animation-delay` secuencial.
+
+```scss
+/* Implementation Pattern */
+.element {
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
+    @for $i from 1 through 20 {
+        &:nth-child(#{$i}) { animation-delay: #{$i * 0.05}s; }
+    }
+}
+```
