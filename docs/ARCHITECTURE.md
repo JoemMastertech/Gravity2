@@ -169,3 +169,15 @@ sequenceDiagram
 - **Ghost Files**: Run `node tools/detect-clones.cjs` to find duplicates.
 - **Imports**: Run `node tools/map-imports.cjs` to find unused files.
 - **Business Rules**: See `docs/BUSINESS_RULES.md` for specific logic constraints.
+
+## 🛠️ Build Pipeline & Integrity (The Guards)
+*Automated systems that protect the project health.*
+
+### 🛡️ SCSS Integrity Guard
+- **Source**: `tools/vite-plugin-scss-audit.js`
+- **Trigger**: Runs on `npm run dev` and `npm run build`.
+- **Mission**: Ensuring strict 1-to-1 mapping between physical SCSS files and `main.scss`.
+- **Behavior**: 
+  - Scans `Shared/styles/` recursively.
+  - Parses `main.scss` imports.
+  - **FATAL ERROR** if any file exists but is not imported (preventing "Ghost Styles").

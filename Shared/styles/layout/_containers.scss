@@ -258,8 +258,7 @@
    TRANSITION HELPERS (ScreenManager.js Support)
    ================================================================= */
 .fade-out {
-    opacity: 0 !important;
-    transition: opacity 1s ease-out !important;
+    animation: fadeOut 1s ease-out forwards !important;
     pointer-events: none;
 }
 

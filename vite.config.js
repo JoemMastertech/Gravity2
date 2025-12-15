@@ -1,8 +1,13 @@
 import { defineConfig } from 'vite';
+import scssAudit from './tools/vite-plugin-scss-audit.js';
 
 export default defineConfig({
     // Root directory is the project root
     root: './',
+
+    plugins: [
+        scssAudit()
+    ],
 
     // Base public path
     base: './',

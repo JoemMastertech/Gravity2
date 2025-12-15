@@ -104,22 +104,32 @@ Estas reglas fuerzan la tabla a caber en pantallas pequeñas. Son destructivas (
 ---
 
 ## 🎭 Coreografía de Animación (Anti-FOUC)
-**Logic:** Staggered Fade-In (Escalera)
-**Goal:** Prevent content "piling up" (FOUC) on load.
-**Location:** `_view-grid.scss` (.product-card) & `_view-table.scss` (tr)
+**Logic:** Centralized Robust Animation System
+**Goal:** Prevent pile-up, ensure smooth entry/exit.
+**Location:** 
+- **Tool:** `tools/_mixins.scss` -> `@mixin stagger-children`
+- **Keyframes:** `base/animations.css` -> `fadeIn`, `fadeOut`
+- **States:** `layout/_containers.scss` -> `.screen-hidden`, `.fade-out`
 
-**Regla de Oro:**
-1.  El elemento debe iniciar con `opacity: 0`.
-2.  Debe tener `animation: fadeIn ... forwards`.
-3.  Debe existir un bucle SASS (`@for`) para asignar `animation-delay` secuencial.
-
+### 1. El Orquestador (Mixin)
+En lugar de bucles manuales, usamos el mixin robusto:
 ```scss
-/* Implementation Pattern */
-.element {
-    opacity: 0;
-    animation: fadeIn 0.6s ease-out forwards;
-    @for $i from 1 through 20 {
-        &:nth-child(#{$i}) { animation-delay: #{$i * 0.05}s; }
-    }
+/* Usage in Views */
+.product-card {
+    /* Automates opacity:0 and delays */
+    @include stagger-children(20, 0.05s); 
 }
 ```
+
+### 2. Máquina de Estados (Visibilidad)
+El sistema de navegación (`app-init.js`, `ScreenManager.js`) depende de estas clases CSS críticas.
+
+| Clase | Función | Comportamiento (CSS) |
+| :--- | :--- | :--- |
+| `.screen-hidden` | **Estado Final** | `display: none !important; opacity: 0;` |
+| `.fade-out` | **Transición Salida** | `animation: fadeOut 1s ...` (Fuerza opacidad a 0) |
+| `.screen-visible` | **Estado Visible** | `display: flex/block; opacity: 1;` |
+| `.fade-in` | **Transición Entrada** | `animation: fadeIn 1s ...` |
+
+> **Nota Crítica:** `.fade-out` usa `@keyframes` explícitos para garantizar que el elemento desaparezca visualmente antes de ser eliminado del flujo (display: none).
+

@@ -16,6 +16,7 @@
 @import "views/view-grid";
 @import "views/view-table";
 
+
 /* 5. Components (Remaining independent parts) */
 @import "components/buttons.css";
 @import "components/modals";
@@ -23,15 +24,12 @@
 @import "components/lists.css";
 @import "components/sidebar";
 @import "components/header";
+@import "components/orders";
 @import "components/drink-options.css";
 
-/* 6. Layout */
+/* 6. Layout & Utilities */
 @import "layout/containers";
 @import "layout/navigation.css";
-
-/* 5. Legacy (The Monolith) - DISSOLVED */
-/* All legacy imports removed */
-
-/* 6. Layout */
-@import "layout/containers";
-@import "layout/navigation.css";
+@import "utilities/display.css";
+@import "utilities/responsive";
+@import "utilities/shame";
