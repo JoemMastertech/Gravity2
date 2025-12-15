@@ -3,14 +3,20 @@
 /* 1. Settings */
 @import "settings/variables.css";
 
-/* 2. Tools */
+/* 2. Base (Must come first) */
+@import "base/reset.css";
+@import "base/typography.css";
+@import "base/animations.css";
+@import "base/scrollbars.css";
+
+/* 3. Tools */
 @import "tools/mixins";
 
-/* 3. Views (The Panels) */
+/* 4. Views (The Panels) */
 @import "views/view-grid";
 @import "views/view-table";
 
-/* 4. Components (Remaining independent parts) */
+/* 5. Components (Remaining independent parts) */
 @import "components/buttons.css";
 @import "components/modals";
 @import "components/forms.css";
@@ -19,11 +25,9 @@
 @import "components/header";
 @import "components/drink-options.css";
 
-/* 4. Base */
-@import "base/reset.css";
-@import "base/typography.css";
-@import "base/animations.css";
-@import "base/scrollbars.css";
+/* 6. Layout */
+@import "layout/containers";
+@import "layout/navigation.css";
 
 /* 5. Legacy (The Monolith) - DISSOLVED */
 /* All legacy imports removed */

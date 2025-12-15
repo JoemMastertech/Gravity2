@@ -228,3 +228,28 @@
         @extend .section-wrapper;
     }
 }
+
+/* =================================================================
+   VISIBILITY HELPERS (Required by app-init.js)
+   ================================================================= */
+.screen-hidden {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.screen-visible {
+    /* Restore flow */
+    display: flex !important;
+    /* Main screens are usually flex */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Specific override for main content which might need block */
+.main-content-screen.screen-visible {
+    display: block !important;
+}

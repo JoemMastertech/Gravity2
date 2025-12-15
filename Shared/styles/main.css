@@ -2,7 +2,12 @@
 /* ITCSS Architecture (SASS) */
 /* 1. Settings */
 @import "settings/variables.css";
-/* 2. Tools */
+/* 2. Base (Must come first) */
+@import "base/reset.css";
+@import "base/typography.css";
+@import "base/animations.css";
+@import "base/scrollbars.css";
+/* 3. Tools */
 /* =============================================================================
    📍 THE ORCHESTRATOR (SASS MIXINS)
    =============================================================================
@@ -19,7 +24,17 @@
 /* Use this for rules that MUST override everything else on tiny screens */
 /* 5. Legacy Compatibility Layer (Backwards Compatibility) */
 /* Maps old 'respond-to' calls to new semantic mixins */
-/* 3. Views (The Panels) */
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
+/* 4. Views (The Panels) */
 /* =============================================================================
    🎛️ PANEL A: GRID VIEW (Tarjetas)
    Source: Unified from product-table-v2 + cards.css
@@ -41,15 +56,22 @@
 /* Use this for rules that MUST override everything else on tiny screens */
 /* 5. Legacy Compatibility Layer (Backwards Compatibility) */
 /* Maps old 'respond-to' calls to new semantic mixins */
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
 /* 1. The Container (Layout) */
 @import "components/buttons.css";
 @import "components/forms.css";
 @import "components/lists.css";
 @import "components/drink-options.css";
-@import "base/reset.css";
-@import "base/typography.css";
-@import "base/animations.css";
-@import "base/scrollbars.css";
+@import "layout/navigation.css";
 @import "layout/navigation.css";
 .product-grid {
   display: grid;
@@ -165,110 +187,112 @@
 .category-card,
 .product-card,
 .product {
-  /* Staggered Animation Logic to prevent FOUC */
+  /* Staggered Animation Logic (Robust System) */
+  /* Base State: Invisible */
   opacity: 0;
-  /* Default invisible */
+  /* Action: Enter smoothly */
   animation: fadeIn 0.6s ease-out forwards;
+  /* The Loop (Choreography) */
 }
 .category-card:nth-child(1),
 .product-card:nth-child(1),
 .product:nth-child(1) {
-  animation-delay: 0.05s;
+  animation-delay: 0.1s;
 }
 .category-card:nth-child(2),
 .product-card:nth-child(2),
 .product:nth-child(2) {
-  animation-delay: 0.1s;
+  animation-delay: 0.15s;
 }
 .category-card:nth-child(3),
 .product-card:nth-child(3),
 .product:nth-child(3) {
-  animation-delay: 0.15s;
+  animation-delay: 0.2s;
 }
 .category-card:nth-child(4),
 .product-card:nth-child(4),
 .product:nth-child(4) {
-  animation-delay: 0.2s;
+  animation-delay: 0.25s;
 }
 .category-card:nth-child(5),
 .product-card:nth-child(5),
 .product:nth-child(5) {
-  animation-delay: 0.25s;
+  animation-delay: 0.3s;
 }
 .category-card:nth-child(6),
 .product-card:nth-child(6),
 .product:nth-child(6) {
-  animation-delay: 0.3s;
+  animation-delay: 0.35s;
 }
 .category-card:nth-child(7),
 .product-card:nth-child(7),
 .product:nth-child(7) {
-  animation-delay: 0.35s;
+  animation-delay: 0.4s;
 }
 .category-card:nth-child(8),
 .product-card:nth-child(8),
 .product:nth-child(8) {
-  animation-delay: 0.4s;
+  animation-delay: 0.45s;
 }
 .category-card:nth-child(9),
 .product-card:nth-child(9),
 .product:nth-child(9) {
-  animation-delay: 0.45s;
+  animation-delay: 0.5s;
 }
 .category-card:nth-child(10),
 .product-card:nth-child(10),
 .product:nth-child(10) {
-  animation-delay: 0.5s;
+  animation-delay: 0.55s;
 }
 .category-card:nth-child(11),
 .product-card:nth-child(11),
 .product:nth-child(11) {
-  animation-delay: 0.55s;
+  animation-delay: 0.6s;
 }
 .category-card:nth-child(12),
 .product-card:nth-child(12),
 .product:nth-child(12) {
-  animation-delay: 0.6s;
+  animation-delay: 0.65s;
 }
 .category-card:nth-child(13),
 .product-card:nth-child(13),
 .product:nth-child(13) {
-  animation-delay: 0.65s;
+  animation-delay: 0.7s;
 }
 .category-card:nth-child(14),
 .product-card:nth-child(14),
 .product:nth-child(14) {
-  animation-delay: 0.7s;
+  animation-delay: 0.75s;
 }
 .category-card:nth-child(15),
 .product-card:nth-child(15),
 .product:nth-child(15) {
-  animation-delay: 0.75s;
+  animation-delay: 0.8s;
 }
 .category-card:nth-child(16),
 .product-card:nth-child(16),
 .product:nth-child(16) {
-  animation-delay: 0.8s;
+  animation-delay: 0.85s;
 }
 .category-card:nth-child(17),
 .product-card:nth-child(17),
 .product:nth-child(17) {
-  animation-delay: 0.85s;
+  animation-delay: 0.9s;
 }
 .category-card:nth-child(18),
 .product-card:nth-child(18),
 .product:nth-child(18) {
-  animation-delay: 0.9s;
+  animation-delay: 0.95s;
 }
 .category-card:nth-child(19),
 .product-card:nth-child(19),
 .product:nth-child(19) {
-  animation-delay: 0.95s;
+  animation-delay: 1s;
 }
 .category-card:nth-child(20),
 .product-card:nth-child(20),
 .product:nth-child(20) {
-  animation-delay: 1s;
+  animation-delay: 1.05s;
 }
 
 .product-card, .product {
@@ -480,6 +504,16 @@
 /* Use this for rules that MUST override everything else on tiny screens */
 /* 5. Legacy Compatibility Layer (Backwards Compatibility) */
 /* Maps old 'respond-to' calls to new semantic mixins */
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
 /* Shared Base Styles via Abstract Placeholder */
 .product-table,
 .liquor-table {
@@ -590,92 +624,135 @@
 }
 .product-table,
 .liquor-table {
-  /* Staggered Animation for Rows */
+  /* Staggered Animation (Robust System) */
 }
 .product-table tr,
 .liquor-table tr {
+  /* Base State: Invisible */
   opacity: 0;
-  animation: fadeIn 0.5s ease-out forwards;
+  /* Action: Enter smoothly */
+  animation: fadeIn 0.6s ease-out forwards;
+  /* The Loop (Choreography) */
 }
 .product-table tr:nth-child(1),
 .liquor-table tr:nth-child(1) {
-  animation-delay: 0.05s;
+  animation-delay: 0.1s;
 }
 .product-table tr:nth-child(2),
 .liquor-table tr:nth-child(2) {
-  animation-delay: 0.1s;
+  animation-delay: 0.15s;
 }
 .product-table tr:nth-child(3),
 .liquor-table tr:nth-child(3) {
-  animation-delay: 0.15s;
+  animation-delay: 0.2s;
 }
 .product-table tr:nth-child(4),
 .liquor-table tr:nth-child(4) {
-  animation-delay: 0.2s;
+  animation-delay: 0.25s;
 }
 .product-table tr:nth-child(5),
 .liquor-table tr:nth-child(5) {
-  animation-delay: 0.25s;
+  animation-delay: 0.3s;
 }
 .product-table tr:nth-child(6),
 .liquor-table tr:nth-child(6) {
-  animation-delay: 0.3s;
+  animation-delay: 0.35s;
 }
 .product-table tr:nth-child(7),
 .liquor-table tr:nth-child(7) {
-  animation-delay: 0.35s;
+  animation-delay: 0.4s;
 }
 .product-table tr:nth-child(8),
 .liquor-table tr:nth-child(8) {
-  animation-delay: 0.4s;
+  animation-delay: 0.45s;
 }
 .product-table tr:nth-child(9),
 .liquor-table tr:nth-child(9) {
-  animation-delay: 0.45s;
+  animation-delay: 0.5s;
 }
 .product-table tr:nth-child(10),
 .liquor-table tr:nth-child(10) {
-  animation-delay: 0.5s;
+  animation-delay: 0.55s;
 }
 .product-table tr:nth-child(11),
 .liquor-table tr:nth-child(11) {
-  animation-delay: 0.55s;
+  animation-delay: 0.6s;
 }
 .product-table tr:nth-child(12),
 .liquor-table tr:nth-child(12) {
-  animation-delay: 0.6s;
+  animation-delay: 0.65s;
 }
 .product-table tr:nth-child(13),
 .liquor-table tr:nth-child(13) {
-  animation-delay: 0.65s;
+  animation-delay: 0.7s;
 }
 .product-table tr:nth-child(14),
 .liquor-table tr:nth-child(14) {
-  animation-delay: 0.7s;
+  animation-delay: 0.75s;
 }
 .product-table tr:nth-child(15),
 .liquor-table tr:nth-child(15) {
-  animation-delay: 0.75s;
+  animation-delay: 0.8s;
 }
 .product-table tr:nth-child(16),
 .liquor-table tr:nth-child(16) {
-  animation-delay: 0.8s;
+  animation-delay: 0.85s;
 }
 .product-table tr:nth-child(17),
 .liquor-table tr:nth-child(17) {
-  animation-delay: 0.85s;
+  animation-delay: 0.9s;
 }
 .product-table tr:nth-child(18),
 .liquor-table tr:nth-child(18) {
-  animation-delay: 0.9s;
+  animation-delay: 0.95s;
 }
 .product-table tr:nth-child(19),
 .liquor-table tr:nth-child(19) {
-  animation-delay: 0.95s;
+  animation-delay: 1s;
 }
 .product-table tr:nth-child(20),
 .liquor-table tr:nth-child(20) {
-  animation-delay: 1s;
+  animation-delay: 1.05s;
+}
+.product-table tr:nth-child(21),
+.liquor-table tr:nth-child(21) {
+  animation-delay: 1.1s;
+}
+.product-table tr:nth-child(22),
+.liquor-table tr:nth-child(22) {
+  animation-delay: 1.15s;
+}
+.product-table tr:nth-child(23),
+.liquor-table tr:nth-child(23) {
+  animation-delay: 1.2s;
+}
+.product-table tr:nth-child(24),
+.liquor-table tr:nth-child(24) {
+  animation-delay: 1.25s;
+}
+.product-table tr:nth-child(25),
+.liquor-table tr:nth-child(25) {
+  animation-delay: 1.3s;
+}
+.product-table tr:nth-child(26),
+.liquor-table tr:nth-child(26) {
+  animation-delay: 1.35s;
+}
+.product-table tr:nth-child(27),
+.liquor-table tr:nth-child(27) {
+  animation-delay: 1.4s;
+}
+.product-table tr:nth-child(28),
+.liquor-table tr:nth-child(28) {
+  animation-delay: 1.45s;
+}
+.product-table tr:nth-child(29),
+.liquor-table tr:nth-child(29) {
+  animation-delay: 1.5s;
+}
+.product-table tr:nth-child(30),
+.liquor-table tr:nth-child(30) {
+  animation-delay: 1.55s;
 }
 .product-table tr:hover td,
 .liquor-table tr:hover td {
@@ -856,7 +933,7 @@
   }
 }
 
-/* 4. Components (Remaining independent parts) */
+/* 5. Components (Remaining independent parts) */
 /* Extracted Modals Styles */
 /* === REGION: MODALES (BEM) === */
 /* Modal Component - BEM Structure */
@@ -1714,7 +1791,279 @@ body.order-mode-active .order-sidebar {
     min-width: 100px;
   }
 }
-/* 4. Base */
+/* 6. Layout */
+/* ==========================================================================
+   Layout: Containers
+   ========================================================================== */
+/* Main App Container */
+.app-container {
+  width: 100%;
+  max-width: var(--table-max-width, 1400px);
+  min-height: 100vh;
+  position: relative;
+  margin: 0 auto;
+  /* Smart centered padding */
+  padding: 0 max(20px, (100vw - var(--table-max-width, 1400px)) / 2);
+  transition: all 0.3s ease-in-out;
+  box-sizing: border-box;
+  /* Adjust padding when top nav is visible */
+}
+.top-nav-visible ~ .app-container .main-content-screen,
+.app-container .main-content-screen.with-top-nav {
+  padding-top: 100px;
+}
+.app-container {
+  /* === MIGRATED LEGACY RULE: EDGE-TO-EDGE MOBILE === */
+}
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: hidden;
+  }
+}
+.app-container {
+  /* Screen Container */
+}
+.app-container .screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.app-container {
+  /* Main Content Screen */
+}
+.app-container .main-content-screen {
+  position: relative;
+  padding: 20px;
+  justify-content: flex-start;
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  /* === MIGRATED LEGACY RULE: FULL WIDTH CONTENT === */
+}
+@media (max-width: 768px) {
+  .app-container .main-content-screen {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+.app-container {
+  /* Content Wrapper - THE UNIFICATION ENGINE */
+}
+.app-container .content-wrapper {
+  display: flex;
+  width: 100%;
+  gap: 0;
+  position: relative;
+  margin-top: 0;
+  padding-right: 0;
+  /* Default */
+  transition: padding-right 0.3s ease;
+  /* Smooth layout shift */
+  box-sizing: border-box;
+  /* --- LAYOUT SHIFT LOGIC (Hit #3) --- */
+}
+.app-container .content-wrapper.with-sidebar {
+  /* 
+    When JS detects sidebar is open in Landscape:
+    Add padding equal to Sidebar Width (264px) + Gap (~36px) = 300px.
+    This forces content to shrink, preventing overlap on ANY screen.
+  */
+  padding-right: 300px;
+}
+.app-container {
+  /* Content Container */
+}
+.app-container .content-container {
+  flex: 1;
+  padding: 0;
+  margin-right: 0;
+  width: 100%;
+  /* Ensure it takes available space */
+  /* ADDED: Centering for internal elements (tables/grids) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* UNIVERSAL CHILD CENTERING FIX */
+}
+.app-container .content-container > * {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  /* Removed max-width constraint to prevent double-boxing.
+  App-container already handles the global max-width (1400px). */
+  /* Mobile Fix: Allow left alignment if overflowing */
+}
+@media (max-width: 768px) {
+  .app-container .content-container > * {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+.app-container {
+  /* Flex Container for Content + Sidebar */
+}
+.app-container .content-container-flex {
+  display: flex;
+  align-items: flex-start;
+  /* CHANGED: flex-start -> center to fix left-alignment */
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+}
+.app-container .content-container-flex .hamburger-btn {
+  left: unset;
+  margin-right: 20px;
+  margin-top: 20px;
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
+}
+.app-container {
+  /* =================================================================
+  MIGRATED SECTION STYLES (from legacy containers.css)
+  ================================================================= */
+  /* =================================================================
+  MIGRATED SECTION STYLES
+  Consolidated for cleaner maintenance.
+  These classes provide spacing/borders for specific product sections.
+  ================================================================= */
+}
+.app-container .refrescos-section,
+.app-container .jarras-section,
+.app-container .vasos-section,
+.app-container .cervezas-botella-section,
+.app-container .tarros-section,
+.app-container .vasos-cerveza-section {
+  margin-bottom: 2rem;
+}
+.app-container .refrescos-section:not(:last-child),
+.app-container .jarras-section:not(:last-child),
+.app-container .vasos-section:not(:last-child),
+.app-container .cervezas-botella-section:not(:last-child),
+.app-container .tarros-section:not(:last-child),
+.app-container .vasos-cerveza-section:not(:last-child) {
+  border-bottom: 2px solid var(--color-gray-300);
+  padding-bottom: 1.5rem;
+}
+.app-container .refrescos-section h2,
+.app-container .jarras-section h2,
+.app-container .vasos-section h2,
+.app-container .cervezas-botella-section h2,
+.app-container .tarros-section h2,
+.app-container .vasos-cerveza-section h2 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  text-align: center;
+  /* Removed redundant border resets */
+}
+.app-container {
+  /* Page Header */
+}
+.app-container .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* Relative to container */
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.app-container {
+  /* ===== MIGRATED SECTIONS ===== */
+}
+.app-container .saved-orders {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.app-container .saved-orders h3 {
+  color: var(--primary-color);
+  font: 1.3rem "Playfair Display", serif;
+  margin-bottom: 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+}
+.app-container .saved-order-items {
+  margin-bottom: 10px;
+}
+.app-container .saved-order-item {
+  padding: 5px 0;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+}
+.app-container .section-wrapper, .app-container .refrescos-section,
+.app-container .jarras-section,
+.app-container .vasos-section,
+.app-container .cervezas-botella-section,
+.app-container .tarros-section,
+.app-container .vasos-cerveza-section {
+  margin-bottom: 2rem;
+}
+.app-container .section-wrapper:not(:last-child), .app-container .refrescos-section:not(:last-child),
+.app-container .jarras-section:not(:last-child),
+.app-container .vasos-section:not(:last-child),
+.app-container .cervezas-botella-section:not(:last-child),
+.app-container .tarros-section:not(:last-child),
+.app-container .vasos-cerveza-section:not(:last-child) {
+  border-bottom: 2px solid var(--color-gray-300);
+  padding-bottom: 1.5rem;
+}
+.app-container .section-wrapper h2, .app-container .refrescos-section h2,
+.app-container .jarras-section h2,
+.app-container .vasos-section h2,
+.app-container .cervezas-botella-section h2,
+.app-container .tarros-section h2,
+.app-container .vasos-cerveza-section h2 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  text-align: center;
+  border-left: none;
+  padding-left: 0;
+}
+.app-container {
+  /* Apply wrapper to legacy classes */
+}
+/* =================================================================
+   VISIBILITY HELPERS (Required by app-init.js)
+   ================================================================= */
+.screen-hidden {
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.screen-visible {
+  /* Restore flow */
+  display: flex !important;
+  /* Main screens are usually flex */
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Specific override for main content which might need block */
+.main-content-screen.screen-visible {
+  display: block !important;
+}
+
 /* 5. Legacy (The Monolith) - DISSOLVED */
 /* All legacy imports removed */
 /* 6. Layout */
@@ -1964,6 +2313,30 @@ body.order-mode-active .order-sidebar {
 }
 .app-container {
   /* Apply wrapper to legacy classes */
+}
+/* =================================================================
+   VISIBILITY HELPERS (Required by app-init.js)
+   ================================================================= */
+.screen-hidden {
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.screen-visible {
+  /* Restore flow */
+  display: flex !important;
+  /* Main screens are usually flex */
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Specific override for main content which might need block */
+.main-content-screen.screen-visible {
+  display: block !important;
 }
 
 /*# sourceMappingURL=main.css.map */

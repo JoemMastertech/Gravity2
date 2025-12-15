@@ -129,3 +129,27 @@ $bp-wide: 1200px;
         @content;
     }
 }
+
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
+@mixin stagger-children($count: 20, $initial-delay: 0.05s, $step: 0.05s) {
+    /* Base State: Invisible */
+    opacity: 0;
+    /* Action: Enter smoothly */
+    animation: fadeIn 0.6s ease-out forwards;
+
+    /* The Loop (Choreography) */
+    @for $i from 1 through $count {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$initial-delay + ($i * $step)};
+        }
+    }
+}

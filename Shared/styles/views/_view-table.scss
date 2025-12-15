@@ -109,16 +109,9 @@
         }
     }
 
-    /* Staggered Animation for Rows */
+    /* Staggered Animation (Robust System) */
     tr {
-        opacity: 0;
-        animation: fadeIn 0.5s ease-out forwards;
-    }
-
-    @for $i from 1 through 20 {
-        tr:nth-child(#{$i}) {
-            animation-delay: #{$i * 0.05}s;
-        }
+        @include stagger-children(30, 0.05s);
     }
 
     tr:hover td {
