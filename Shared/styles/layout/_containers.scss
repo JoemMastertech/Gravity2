@@ -253,3 +253,16 @@
 .main-content-screen.screen-visible {
     display: block !important;
 }
+
+/* =================================================================
+   TRANSITION HELPERS (ScreenManager.js Support)
+   ================================================================= */
+.fade-out {
+    opacity: 0 !important;
+    transition: opacity 1s ease-out !important;
+    pointer-events: none;
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}

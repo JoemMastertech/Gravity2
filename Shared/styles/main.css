@@ -2064,6 +2064,19 @@ body.order-mode-active .order-sidebar {
   display: block !important;
 }
 
+/* =================================================================
+   TRANSITION HELPERS (ScreenManager.js Support)
+   ================================================================= */
+.fade-out {
+  opacity: 0 !important;
+  transition: opacity 1s ease-out !important;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
 /* 5. Legacy (The Monolith) - DISSOLVED */
 /* All legacy imports removed */
 /* 6. Layout */
@@ -2337,6 +2350,19 @@ body.order-mode-active .order-sidebar {
 /* Specific override for main content which might need block */
 .main-content-screen.screen-visible {
   display: block !important;
+}
+
+/* =================================================================
+   TRANSITION HELPERS (ScreenManager.js Support)
+   ================================================================= */
+.fade-out {
+  opacity: 0 !important;
+  transition: opacity 1s ease-out !important;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
 }
 
 /*# sourceMappingURL=main.css.map */
