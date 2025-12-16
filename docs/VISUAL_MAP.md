@@ -58,7 +58,22 @@ Uses `tools/_mixins.scss` for responsive logic.
   - Controla la simetría global.
   - Hereda `padding: 15px 20px` a TODAS las celdas (Izquierda/Derecha balanceados).
 
-### 2. La Fila (Componente `tr`)
+### 2. The Twins Architecture (Gemelos)
+Hemos separado el diseño en dos entidades distintas:
+
+#### A. Tabla Estándar (`.standard-table`)
+Diseñada para Alitas, Snacks, Pizzas (información densa).
+- **Layout:** `auto` (Se adapta al contenido).
+- **Thumbnails:** `80px x 56px` (Landscape) - FIXED with `!important`.
+- **Ingredientes:** Ancho preferente `40%` (min `250px`).
+- **Nombres:** Min `150px`.
+
+#### B. Tabla Visual (`.liquor-table`)
+Diseñada para Licores, Cervezas, Refrescos (Impacto visual).
+- **Layout:** `fixed` (Control milimétrico).
+- **Ancho:** Compactado al 95% (Max 1080px).
+- **Imágenes:** `95px` (Grandes, aisladas).
+- **Precios:** "Ghost Grid" (Alineación perfecta de 2 columnas).
 | Configuración | Valor Actual (Code) | Notas |
 | :--- | :--- | :--- |
 | **Padding Celda** | `15px 20px` | **Simetría Natural** (Antes asimétrico) |

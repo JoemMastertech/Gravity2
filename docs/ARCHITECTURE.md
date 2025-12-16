@@ -181,3 +181,13 @@ sequenceDiagram
   - Scans `Shared/styles/` recursively.
   - Parses `main.scss` imports.
   - **FATAL ERROR** if any file exists but is not imported (preventing "Ghost Styles").
+
+### 🐶 Husky (The Gatekeeper)
+- **Trigger**: `git commit`
+- **Action**: Runs `npm run build:css`.
+- **Purpose**: Prevents "Deformed UI" on deployment by forcing CSS compilation before code leaves the local machine.
+- **Hook**: `.husky/pre-commit` -> `git add Shared/styles/main.css`.
+
+### ☁️ Deployment Strategy (The CDN)
+- **Supabase JS**: Uses `esm.sh` (instead of jsdelivr) to ensure correct ESM bundling of complex dependencies (`AuthClient`).
+- **CSS**: Pre-compiled `main.css` linked in `index.html`.

@@ -1193,131 +1193,23 @@ const ProductRenderer = {
     try {
       const data = await productRepository.getCervezas();
 
-      // Organizar productos en 3 bloques
-      const cervezasEnBotella = [];
-      const tarros = [];
-      const vasos = [];
-
-      data.forEach(product => {
-        const nombre = product.nombre.toUpperCase();
-
-        if (nombre.startsWith('TARRO')) {
-          tarros.push(product);
-        } else if (nombre.startsWith('VASO')) {
-          vasos.push(product);
-        } else {
-          cervezasEnBotella.push(product);
-        }
+      this._renderSegmentedCategory(container, data, {
+        cssCategory: 'cervezas',
+        defaultTitle: 'Cervezas en botella',
+        defaultClass: 'cervezas-botella-section',
+        segments: [
+          {
+            title: 'Tarros',
+            cssClass: 'tarros-section',
+            matcher: (p, name) => name.startsWith('TARRO')
+          },
+          {
+            title: 'Vasos',
+            cssClass: 'vasos-cerveza-section',
+            matcher: (p, name) => name.startsWith('VASO')
+          }
+        ]
       });
-
-      // Ordenar alfabéticamente cada bloque
-      const sortByName = (a, b) => a.nombre.localeCompare(b.nombre);
-      cervezasEnBotella.sort(sortByName);
-      tarros.sort(sortByName);
-      vasos.sort(sortByName);
-
-      // Limpiar contenedor
-      container.innerHTML = '';
-
-      // Renderizar cada bloque
-      if (cervezasEnBotella.length > 0) {
-        const cervezasContainer = document.createElement('div');
-        cervezasContainer.className = 'cervezas-botella-section';
-
-        if (state.currentViewMode === 'grid') {
-          this.createProductGrid(cervezasContainer,
-            cervezasEnBotella,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'Cervezas en botella'
-          );
-          // Asegurar que el grid tenga el atributo data-category
-          const productGrid = cervezasContainer.querySelector('.product-grid');
-          if (productGrid) {
-            productGrid.setAttribute('data-category', 'cervezas');
-          }
-        } else {
-          this.createProductTable(cervezasContainer,
-            ['NOMBRE', 'IMAGEN', 'PRECIO'],
-            cervezasEnBotella,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'liquor-table',
-            'Cervezas en botella'
-          );
-          // Asegurar que la tabla tenga el atributo data-category
-          const productTable = cervezasContainer.querySelector('table');
-          if (productTable) {
-            productTable.setAttribute('data-category', 'cervezas');
-          }
-        }
-        container.appendChild(cervezasContainer);
-      }
-
-      if (tarros.length > 0) {
-        const tarrosContainer = document.createElement('div');
-        tarrosContainer.className = 'tarros-section';
-
-        if (state.currentViewMode === 'grid') {
-          this.createProductGrid(tarrosContainer,
-            tarros,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'Tarros'
-          );
-          // Asegurar que el grid tenga el atributo data-category
-          const productGrid = tarrosContainer.querySelector('.product-grid');
-          if (productGrid) {
-            productGrid.setAttribute('data-category', 'cervezas');
-          }
-        } else {
-          this.createProductTable(tarrosContainer,
-            ['NOMBRE', 'IMAGEN', 'PRECIO'],
-            tarros,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'liquor-table',
-            'Tarros'
-          );
-          // Asegurar que la tabla tenga el atributo data-category
-          const productTable = tarrosContainer.querySelector('table');
-          if (productTable) {
-            productTable.setAttribute('data-category', 'cervezas');
-          }
-        }
-        container.appendChild(tarrosContainer);
-      }
-
-      if (vasos.length > 0) {
-        const vasosContainer = document.createElement('div');
-        vasosContainer.className = 'vasos-cerveza-section';
-
-        if (state.currentViewMode === 'grid') {
-          this.createProductGrid(vasosContainer,
-            vasos,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'Vasos'
-          );
-          // Asegurar que el grid tenga el atributo data-category
-          const productGrid = vasosContainer.querySelector('.product-grid');
-          if (productGrid) {
-            productGrid.setAttribute('data-category', 'cervezas');
-          }
-        } else {
-          this.createProductTable(vasosContainer,
-            ['NOMBRE', 'IMAGEN', 'PRECIO'],
-            vasos,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'liquor-table',
-            'Vasos'
-          );
-          // Asegurar que la tabla tenga el atributo data-category
-          const productTable = vasosContainer.querySelector('table');
-          if (productTable) {
-            productTable.setAttribute('data-category', 'cervezas');
-          }
-        }
-        container.appendChild(vasosContainer);
-      }
-
-      // Ajustes específicos para dispositivos móviles en portrait - ELIMINADO: Se debe manejar por CSS
-      // setTimeout(() => { ... }, 100);
 
     } catch (error) {
       logError('Error rendering Cervezas:', error);
@@ -1428,6 +1320,90 @@ const ProductRenderer = {
     }
   },
 
+  /**
+   * Helper to render categories that need specific segmentation (e.g. Cervezas -> Botella/Tarro/Vaso)
+   * @param {HTMLElement} container - The DOM element to render into.
+   * @param {Array<Object>} data - The raw product data from repository.
+   * @param {Object} config - Configuration for segmentation.
+   * @param {string} config.cssCategory - The data-category attribute value (e.g., 'cervezas').
+   * @param {string} config.defaultTitle - Title for the "catch-all" segment (e.g. 'Cervezas en botella').
+   * @param {Array<{title: string, cssClass: string, matcher: Function}>} config.segments - Specific segments.
+   */
+  _renderSegmentedCategory: function (container, data, config) {
+    // 1. Prepare Buckets
+    const defaultBucket = [];
+    const segmentBuckets = config.segments.map(seg => ({ ...seg, items: [] }));
+
+    // 2. Distribute Data
+    data.forEach(product => {
+      const name = (product.nombre || '').toUpperCase();
+      let matched = false;
+
+      // Check specific segments first
+      for (const segment of segmentBuckets) {
+        if (segment.matcher(product, name)) {
+          segment.items.push(product);
+          matched = true;
+          break; // First match wins
+        }
+      }
+
+      // If no match, goes to default
+      if (!matched) {
+        defaultBucket.push(product);
+      }
+    });
+
+    // 3. Sort Buckets (Alphabetical)
+    const sortByName = (a, b) => a.nombre.localeCompare(b.nombre);
+    defaultBucket.sort(sortByName);
+    segmentBuckets.forEach(b => b.items.sort(sortByName));
+
+    // 4. Clean Container
+    container.innerHTML = '';
+
+    // 5. Render Helper
+    const renderSection = (items, title, cssClass) => {
+      if (items.length === 0) return;
+
+      const sectionContainer = document.createElement('div');
+      sectionContainer.className = cssClass || 'product-section';
+
+      // GRID VIEW
+      if (state.currentViewMode === 'grid') {
+        this.createProductGrid(sectionContainer,
+          items,
+          ['nombre', 'ruta_archivo', 'precio'],
+          title
+        );
+        const grid = sectionContainer.querySelector('.product-grid');
+        if (grid) grid.setAttribute('data-category', config.cssCategory);
+      }
+      // TABLE VIEW
+      else {
+        this.createProductTable(sectionContainer,
+          ['NOMBRE', 'IMAGEN', 'PRECIO'],
+          items,
+          ['nombre', 'ruta_archivo', 'precio'],
+          'liquor-table', // ALWAYS FORCE VISUAL TABLE
+          title
+        );
+        const table = sectionContainer.querySelector('table');
+        if (table) table.setAttribute('data-category', config.cssCategory);
+      }
+      container.appendChild(sectionContainer);
+    };
+
+    // 6. Execute Render Sequence
+    // Always Render Default First (e.g. Botellas / Refrescos)
+    renderSection(defaultBucket, config.defaultTitle, config.defaultClass || 'default-section');
+
+    // Then Render Segments in defined order
+    segmentBuckets.forEach(seg => {
+      renderSection(seg.items, seg.title, seg.cssClass);
+    });
+  },
+
   renderSopas: async function (container) {
     await this.renderFoodCategory(container, 'getSopas', 'Sopas');
   },
@@ -1462,116 +1438,23 @@ const ProductRenderer = {
     try {
       const data = await productRepository.getRefrescos();
 
-      // Organizar productos en 3 bloques
-      const refrescos = [];
-      const jarrasDeJugo = [];
-      const vasosDeJugo = [];
-
-      data.forEach(product => {
-        const nombre = product.nombre.toUpperCase();
-
-        if (nombre.startsWith('JARRA')) {
-          jarrasDeJugo.push(product);
-        } else if (nombre.startsWith('VASO DE JUGO')) {
-          vasosDeJugo.push(product);
-        } else {
-          refrescos.push(product);
-        }
+      this._renderSegmentedCategory(container, data, {
+        cssCategory: 'refrescos',
+        defaultTitle: 'Refrescos',
+        defaultClass: 'refrescos-section',
+        segments: [
+          {
+            title: 'Jarras de jugo',
+            cssClass: 'jarras-section',
+            matcher: (p, name) => name.startsWith('JARRA')
+          },
+          {
+            title: 'Vasos de jugo',
+            cssClass: 'vasos-section',
+            matcher: (p, name) => name.startsWith('VASO DE JUGO')
+          }
+        ]
       });
-
-      // Ordenar alfabéticamente cada bloque
-      const sortByName = (a, b) => a.nombre.localeCompare(b.nombre);
-      refrescos.sort(sortByName);
-      jarrasDeJugo.sort(sortByName);
-      vasosDeJugo.sort(sortByName);
-
-      // Limpiar contenedor
-      container.innerHTML = '';
-
-      // Renderizar cada bloque
-      if (refrescos.length > 0) {
-        const refrescosContainer = document.createElement('div');
-        refrescosContainer.className = 'refrescos-section';
-
-        if (state.currentViewMode === 'grid') {
-          this.createProductGrid(refrescosContainer,
-            refrescos,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'Refrescos'
-          );
-          // Asegurar category para estilos CSS
-          const grid = refrescosContainer.querySelector('.product-grid');
-          if (grid) grid.setAttribute('data-category', 'refrescos');
-        } else {
-          this.createProductTable(refrescosContainer,
-            ['NOMBRE', 'IMAGEN', 'PRECIO'],
-            refrescos,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'liquor-table',
-            'Refrescos'
-          );
-          // Asegurar category para estilos CSS
-          const table = refrescosContainer.querySelector('table');
-          if (table) table.setAttribute('data-category', 'refrescos');
-        }
-        container.appendChild(refrescosContainer);
-      }
-
-      if (jarrasDeJugo.length > 0) {
-        const jarrasContainer = document.createElement('div');
-        jarrasContainer.className = 'jarras-section';
-
-        if (state.currentViewMode === 'grid') {
-          this.createProductGrid(jarrasContainer,
-            jarrasDeJugo,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'Jarras de jugo'
-          );
-          // Asegurar category para estilos CSS (Heredar de refrescos)
-          const grid = jarrasContainer.querySelector('.product-grid');
-          if (grid) grid.setAttribute('data-category', 'refrescos');
-        } else {
-          this.createProductTable(jarrasContainer,
-            ['NOMBRE', 'IMAGEN', 'PRECIO'],
-            jarrasDeJugo,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'liquor-table',
-            'Jarras de jugo'
-          );
-          // Asegurar category para estilos CSS (Heredar de refrescos)
-          const table = jarrasContainer.querySelector('table');
-          if (table) table.setAttribute('data-category', 'refrescos');
-        }
-        container.appendChild(jarrasContainer);
-      }
-
-      if (vasosDeJugo.length > 0) {
-        const vasosContainer = document.createElement('div');
-        vasosContainer.className = 'vasos-section';
-
-        if (state.currentViewMode === 'grid') {
-          this.createProductGrid(vasosContainer,
-            vasosDeJugo,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'Vasos de jugo'
-          );
-          // Asegurar category para estilos CSS (Heredar de refrescos)
-          const grid = vasosContainer.querySelector('.product-grid');
-          if (grid) grid.setAttribute('data-category', 'refrescos');
-        } else {
-          this.createProductTable(vasosContainer,
-            ['NOMBRE', 'IMAGEN', 'PRECIO'],
-            vasosDeJugo,
-            ['nombre', 'ruta_archivo', 'precio'],
-            'liquor-table',
-            'Vasos de jugo'
-          );
-          // Asegurar category para estilos CSS (Heredar de refrescos)
-          const table = vasosContainer.querySelector('table');
-          if (table) table.setAttribute('data-category', 'refrescos');
-        }
-        container.appendChild(vasosContainer);
-      }
 
     } catch (error) {
       logError('Error rendering Refrescos:', error);

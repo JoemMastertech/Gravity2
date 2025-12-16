@@ -7,18 +7,20 @@
 @import '../tools/mixins';
 
 /* 1. THE SHELL (Shared Properties) */
-%table-shell {
+/* 1. MINISTRY OF AESTHETICS (Shared Identity) */
+%table-core {
+    /* Physics */
     border-collapse: separate;
     border-spacing: 0 10px;
-    padding: 20px;
-    width: var(--table-width, 100%);
-    max-width: var(--table-max-width, 1400px);
-    background: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 0 20px var(--border-color);
     position: relative;
     margin: var(--table-margin, 20px) auto;
 
+    /* Visuals */
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 0 20px var(--border-color);
+
+    /* The Border Guard */
     &::before {
         content: '';
         position: absolute;
@@ -34,7 +36,7 @@
         color: var(--primary-color);
         text-align: center;
         padding: 15px 20px;
-        /* Increased to 20px for Premium Spacing */
+        /* Base padding */
         border-bottom: 2px solid var(--border-color);
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -42,14 +44,13 @@
         &:first-child {
             text-align: left;
             padding-left: 10px;
-            /* Reduced from 15px for Symmetry */
         }
     }
 
     /* Common Body Text */
     td {
         padding: 15px 20px;
-        /* Increased to 20px for Premium Spacing */
+        /* Base padding */
         background: transparent;
         transition: all 0.3s ease;
         text-align: center;
@@ -58,7 +59,6 @@
         &:first-child {
             text-align: left;
             padding-left: 10px;
-            /* Reduced from 15px for Symmetry */
         }
 
         &.product-name {
@@ -82,7 +82,16 @@
 /* 2. SYSTEM: STANDARD TABLE (Food, Services) */
 /* Optimized for: Thumbnails, Ingredients, Single Prices */
 .standard-table {
-    @extend %table-shell;
+    @extend %table-core;
+
+    /* 1. MINISTRY OF STRUCTURE (Standard) */
+    /* Spacious, Full Width, Auto Layout */
+    width: 100%;
+    max-width: 1400px;
+    /* Standard Max */
+    padding: 20px;
+    /* Standard Padding */
+    table-layout: auto;
 
     /* Ingredients Specifics */
     td.product-ingredients {
@@ -195,50 +204,64 @@
 
 /* 3. SYSTEM: VISUAL TABLE (Liquor, Products) */
 /* Optimized for: Large Isolated Images, Stacked Prices, No Ingredients */
+/* 3. SYSTEM: VISUAL TABLE (Liquor, Products) */
+/* Optimized for: Large Isolated Images, Stacked Prices, No Ingredients */
 .liquor-table {
-    @extend %table-shell;
-    /* Force Layout Rules - FIXED for strict width/alignment control */
-    table-layout: fixed !important;
+    @extend %table-core;
 
-    /* COMPACTING: Reduce width by ~24% (1400 -> ~1080) & remove excess padding */
-    width: 95% !important;
-    max-width: 1080px !important;
-    padding: 10px 5px !important;
-    /* Minimal outer symmetric padding */
-    border-spacing: 0 8px !important;
-    /* Slightly tighter vertical spacing */
+    /* 1. MINISTRY OF STRUCTURE (Liquor) */
+    /* Compact, Fixed Layout, Strict control */
+    width: 95%;
+    /* Slight margin for breath */
+    max-width: 1080px;
+    /* Optimally Compact */
+    padding: 10px 5px;
+    /* Tighter padding */
+    table-layout: fixed;
+    /* Strict columns */
+    border-spacing: 0 8px;
+    /* Tighter vertical */
 
-    /* COL 1: Nombre (45%) */
-    th:nth-child(1),
+    /* COL 1: Nombre (40%) */
+    th:nth-child(1) {
+        text-align: center;
+        /* Enforce Header Centering */
+        width: 40%;
+        /* SYMMETRY: Matched to Price Column */
+    }
+
     td:nth-child(1) {
-        width: 45% !important;
-        white-space: normal !important;
-        word-break: normal !important;
-        overflow-wrap: break-word !important;
-        hyphens: none !important;
-        text-align: center !important;
-        /* Changed to CENTER */
-        vertical-align: middle !important;
-        /* UNIFIED SYMMETRY: Inherits 20px from Shell */
-        height: auto !important;
+        width: 40%;
+        /* SYMMETRY */
+        white-space: normal;
+        word-break: normal;
+        overflow-wrap: break-word;
+        hyphens: none;
+        text-align: justify;
+        /* Justified per request */
+        text-justify: inter-word;
+        /* Browser hint */
+        padding: 0 40px;
+        /* FIXED PADDING: Removed 12.5% constraint -> Text can breathe */
+        vertical-align: middle;
+        height: auto;
 
         /* CRITICAL RESET: The cell itself has class .product-name */
         &.product-name {
-            display: table-cell !important;
-            /* Override block */
-            height: auto !important;
-            /* Override clamp */
-            max-height: none !important;
-            margin: 0 !important;
-            line-height: 1.2 !important;
+            display: table-cell;
+            height: auto;
+            max-height: none;
+            margin: 0;
+            line-height: 1.2;
         }
     }
 
-    /* COL 2: Imagen (15%) */
+    /* COL 2: Imagen (20%) */
     th:nth-child(2),
     td:nth-child(2) {
-        width: 15% !important;
-        vertical-align: middle !important;
+        width: 20%;
+        /* SYMMETRY: Expanded to fit layout */
+        vertical-align: middle;
         text-align: center;
     }
 
@@ -263,14 +286,18 @@
     }
 
     /* COL 3: Precios Stacked (40%) */
-    th:nth-child(3),
-    td:nth-child(3) {
-        width: 40% !important;
-        vertical-align: middle !important;
-        width: 40% !important;
-        vertical-align: middle !important;
+    th:nth-child(3) {
+        width: 40%;
         text-align: center;
-        /* Changed to CENTER */
+        /* Header Centered */
+    }
+
+    td:nth-child(3) {
+        width: 40%;
+        vertical-align: middle;
+        text-align: center;
+        /* Inner Container handles justification */
+        padding: 0 10px;
     }
 
     /* --- Ghost Grid Price Container --- */
@@ -278,20 +305,16 @@
         display: grid;
         grid-template-columns: max-content max-content;
         /* PACKED TIGHTLY */
-        justify-content: start;
-        /* Align the pair to the start (or center?) - user said lessen gap */
-        /* Let's try start or center based on cell alignment. Cell is center. Let's center the block. */
-        justify-content: center;
-        /* Changed to CENTER */
-
+        justify-content: space-between;
+        /* JUSTIFIED: Label Left --- Price Right */
+        width: 75%;
+        /* THE CORSET: Relaxed to 75% as requested */
         column-gap: 8px;
-        /* Drastically reduced gap (was 30px then 15px) */
         row-gap: 8px;
         align-items: center;
-        width: 100%;
         max-width: none;
-        /* Remove constraint, let content dictate */
         margin: 0 auto;
+        /* Center the corset */
         padding: 5px 0;
     }
 
@@ -345,6 +368,7 @@
 
 
     /* Support for Standard Price Button (Non-Stacked) i.e. Cervezas/Refrescos */
+    /* Support for Standard Price Button (Non-Stacked) i.e. Cervezas/Refrescos */
     .price-button {
         padding: 6px 15px;
         font-size: 1rem;
@@ -356,7 +380,12 @@
         border-radius: 5px;
         cursor: pointer;
         transition: all 0.3s ease;
+
+        /* CORSET APPLIED TO SINGLE BUTTON */
+        display: block;
+        width: 75%;
         margin: 0 auto;
+
         box-shadow: var(--glow-shadow);
         backdrop-filter: blur(5px);
 
