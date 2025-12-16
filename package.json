@@ -22,7 +22,8 @@
     "css:analyze": "npx wallace Shared/styles/_legacy.css",
     "css:analyze:all": "npx wallace Shared/styles/legacy-responsive/media-queries.css && npx wallace Shared/styles/_legacy.css",
     "css:stats": "npx cssstats Shared/styles/_legacy.css",
-    "css:audit": "npm run css:analyze && npm run lint:css"
+    "css:audit": "npm run css:analyze && npm run lint:css",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "backstopjs": "^6.3.25",
     "cssnano": "^7.1.1",
     "cssstats-cli": "^4.0.5",
+    "husky": "^9.1.7",
     "jscpd": "^4.0.5",
     "madge": "^8.0.0",
     "postcss": "^8.5.6",

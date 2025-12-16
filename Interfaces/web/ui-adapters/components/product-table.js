@@ -1346,7 +1346,7 @@ const ProductRenderer = {
           ['NOMBRE', 'INGREDIENTES', 'VIDEO', 'PRECIO'],
           data,
           ['nombre', 'ingredientes', 'video', 'precio'],
-          'product-table',
+          'standard-table',
           'Pizzas'
         );
       }
@@ -1390,7 +1390,7 @@ const ProductRenderer = {
           finalHeaders,
           data,
           finalFields,
-          'product-table',
+          'standard-table',
           title
         );
       }
@@ -1418,7 +1418,7 @@ const ProductRenderer = {
           ['NOMBRE', 'INGREDIENTES', 'VIDEO', '10 PIEZAS', '25 PIEZAS'],
           data,
           ['nombre', 'ingredientes', 'video', 'precio_10_piezas', 'precio_25_piezas'],
-          'product-table',
+          'standard-table',
           'Alitas'
         );
       }

@@ -81,7 +81,7 @@
 
 /* 2. SYSTEM: STANDARD TABLE (Food, Services) */
 /* Optimized for: Thumbnails, Ingredients, Single Prices */
-.product-table {
+.standard-table {
     @extend %table-shell;
 
     /* Ingredients Specifics */
@@ -92,10 +92,13 @@
     }
 
     /* Video/Thumbnail Specifics (Landscape) */
+    /* Video/Thumbnail Specifics (Landscape) */
     td .video-thumb,
     td.image-icon img {
-        width: 80px;
-        height: 56px;
+        width: 80px !important;
+        height: 56px !important;
+        min-width: 80px;
+        /* Prevent collapse */
         object-fit: cover;
         border-radius: 8px;
         cursor: pointer;
@@ -106,6 +109,35 @@
         &:hover {
             transform: scale(1.05);
         }
+    }
+
+    /* Column Optimization (Desktop) */
+    th,
+    td {
+        /* Default Alignment */
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    td.product-name {
+        text-align: left;
+        font-weight: 600;
+        min-width: 150px;
+        /* Prevent wrapping on short names */
+    }
+
+    td.product-ingredients {
+        width: 40%;
+        /* Guide auto-layout to give priority */
+        min-width: 250px;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    /* Price Columns usually last */
+    td:last-child {
+        font-weight: 600;
+        white-space: nowrap;
     }
 
     /* Category Specific Overrides (Legacy) */

@@ -515,7 +515,7 @@
  * @param $step: Increment per item (default: 0.05s)
  */
 /* 1. THE SHELL (Shared Properties) */
-.liquor-table, .product-table {
+.liquor-table, .standard-table {
   border-collapse: separate;
   border-spacing: 0 10px;
   padding: 20px;
@@ -527,7 +527,7 @@
   position: relative;
   margin: var(--table-margin, 20px) auto;
 }
-.liquor-table::before, .product-table::before {
+.liquor-table::before, .standard-table::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -535,10 +535,10 @@
   border-radius: 15px;
   pointer-events: none;
 }
-.liquor-table, .product-table {
+.liquor-table, .standard-table {
   /* Common Header Text */
 }
-.liquor-table th, .product-table th {
+.liquor-table th, .standard-table th {
   font: 600 1rem "Montserrat", sans-serif;
   color: var(--primary-color);
   text-align: center;
@@ -548,15 +548,15 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.liquor-table th:first-child, .product-table th:first-child {
+.liquor-table th:first-child, .standard-table th:first-child {
   text-align: left;
   padding-left: 10px;
   /* Reduced from 15px for Symmetry */
 }
-.liquor-table, .product-table {
+.liquor-table, .standard-table {
   /* Common Body Text */
 }
-.liquor-table td, .product-table td {
+.liquor-table td, .standard-table td {
   padding: 15px 20px;
   /* Increased to 20px for Premium Spacing */
   background: transparent;
@@ -564,138 +564,141 @@
   text-align: center;
   vertical-align: middle;
 }
-.liquor-table td:first-child, .product-table td:first-child {
+.liquor-table td:first-child, .standard-table td:first-child {
   text-align: left;
   padding-left: 10px;
   /* Reduced from 15px for Symmetry */
 }
-.liquor-table td.product-name, .product-table td.product-name, .liquor-table td.product__title, .product-table td.product__title {
+.liquor-table td.product-name, .standard-table td.product-name, .liquor-table td.product__title, .standard-table td.product__title {
   font: 600 1rem "Montserrat", sans-serif;
   color: var(--primary-color);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
-.liquor-table, .product-table {
+.liquor-table, .standard-table {
   /* Staggered Animation */
 }
-.liquor-table tr, .product-table tr {
+.liquor-table tr, .standard-table tr {
   /* Base State: Invisible */
   opacity: 0;
   /* Action: Enter smoothly */
   animation: fadeIn 0.6s ease-out forwards;
   /* The Loop (Choreography) */
 }
-.liquor-table tr:nth-child(1), .product-table tr:nth-child(1) {
+.liquor-table tr:nth-child(1), .standard-table tr:nth-child(1) {
   animation-delay: 0.1s;
 }
-.liquor-table tr:nth-child(2), .product-table tr:nth-child(2) {
+.liquor-table tr:nth-child(2), .standard-table tr:nth-child(2) {
   animation-delay: 0.15s;
 }
-.liquor-table tr:nth-child(3), .product-table tr:nth-child(3) {
+.liquor-table tr:nth-child(3), .standard-table tr:nth-child(3) {
   animation-delay: 0.2s;
 }
-.liquor-table tr:nth-child(4), .product-table tr:nth-child(4) {
+.liquor-table tr:nth-child(4), .standard-table tr:nth-child(4) {
   animation-delay: 0.25s;
 }
-.liquor-table tr:nth-child(5), .product-table tr:nth-child(5) {
+.liquor-table tr:nth-child(5), .standard-table tr:nth-child(5) {
   animation-delay: 0.3s;
 }
-.liquor-table tr:nth-child(6), .product-table tr:nth-child(6) {
+.liquor-table tr:nth-child(6), .standard-table tr:nth-child(6) {
   animation-delay: 0.35s;
 }
-.liquor-table tr:nth-child(7), .product-table tr:nth-child(7) {
+.liquor-table tr:nth-child(7), .standard-table tr:nth-child(7) {
   animation-delay: 0.4s;
 }
-.liquor-table tr:nth-child(8), .product-table tr:nth-child(8) {
+.liquor-table tr:nth-child(8), .standard-table tr:nth-child(8) {
   animation-delay: 0.45s;
 }
-.liquor-table tr:nth-child(9), .product-table tr:nth-child(9) {
+.liquor-table tr:nth-child(9), .standard-table tr:nth-child(9) {
   animation-delay: 0.5s;
 }
-.liquor-table tr:nth-child(10), .product-table tr:nth-child(10) {
+.liquor-table tr:nth-child(10), .standard-table tr:nth-child(10) {
   animation-delay: 0.55s;
 }
-.liquor-table tr:nth-child(11), .product-table tr:nth-child(11) {
+.liquor-table tr:nth-child(11), .standard-table tr:nth-child(11) {
   animation-delay: 0.6s;
 }
-.liquor-table tr:nth-child(12), .product-table tr:nth-child(12) {
+.liquor-table tr:nth-child(12), .standard-table tr:nth-child(12) {
   animation-delay: 0.65s;
 }
-.liquor-table tr:nth-child(13), .product-table tr:nth-child(13) {
+.liquor-table tr:nth-child(13), .standard-table tr:nth-child(13) {
   animation-delay: 0.7s;
 }
-.liquor-table tr:nth-child(14), .product-table tr:nth-child(14) {
+.liquor-table tr:nth-child(14), .standard-table tr:nth-child(14) {
   animation-delay: 0.75s;
 }
-.liquor-table tr:nth-child(15), .product-table tr:nth-child(15) {
+.liquor-table tr:nth-child(15), .standard-table tr:nth-child(15) {
   animation-delay: 0.8s;
 }
-.liquor-table tr:nth-child(16), .product-table tr:nth-child(16) {
+.liquor-table tr:nth-child(16), .standard-table tr:nth-child(16) {
   animation-delay: 0.85s;
 }
-.liquor-table tr:nth-child(17), .product-table tr:nth-child(17) {
+.liquor-table tr:nth-child(17), .standard-table tr:nth-child(17) {
   animation-delay: 0.9s;
 }
-.liquor-table tr:nth-child(18), .product-table tr:nth-child(18) {
+.liquor-table tr:nth-child(18), .standard-table tr:nth-child(18) {
   animation-delay: 0.95s;
 }
-.liquor-table tr:nth-child(19), .product-table tr:nth-child(19) {
+.liquor-table tr:nth-child(19), .standard-table tr:nth-child(19) {
   animation-delay: 1s;
 }
-.liquor-table tr:nth-child(20), .product-table tr:nth-child(20) {
+.liquor-table tr:nth-child(20), .standard-table tr:nth-child(20) {
   animation-delay: 1.05s;
 }
-.liquor-table tr:nth-child(21), .product-table tr:nth-child(21) {
+.liquor-table tr:nth-child(21), .standard-table tr:nth-child(21) {
   animation-delay: 1.1s;
 }
-.liquor-table tr:nth-child(22), .product-table tr:nth-child(22) {
+.liquor-table tr:nth-child(22), .standard-table tr:nth-child(22) {
   animation-delay: 1.15s;
 }
-.liquor-table tr:nth-child(23), .product-table tr:nth-child(23) {
+.liquor-table tr:nth-child(23), .standard-table tr:nth-child(23) {
   animation-delay: 1.2s;
 }
-.liquor-table tr:nth-child(24), .product-table tr:nth-child(24) {
+.liquor-table tr:nth-child(24), .standard-table tr:nth-child(24) {
   animation-delay: 1.25s;
 }
-.liquor-table tr:nth-child(25), .product-table tr:nth-child(25) {
+.liquor-table tr:nth-child(25), .standard-table tr:nth-child(25) {
   animation-delay: 1.3s;
 }
-.liquor-table tr:nth-child(26), .product-table tr:nth-child(26) {
+.liquor-table tr:nth-child(26), .standard-table tr:nth-child(26) {
   animation-delay: 1.35s;
 }
-.liquor-table tr:nth-child(27), .product-table tr:nth-child(27) {
+.liquor-table tr:nth-child(27), .standard-table tr:nth-child(27) {
   animation-delay: 1.4s;
 }
-.liquor-table tr:nth-child(28), .product-table tr:nth-child(28) {
+.liquor-table tr:nth-child(28), .standard-table tr:nth-child(28) {
   animation-delay: 1.45s;
 }
-.liquor-table tr:nth-child(29), .product-table tr:nth-child(29) {
+.liquor-table tr:nth-child(29), .standard-table tr:nth-child(29) {
   animation-delay: 1.5s;
 }
-.liquor-table tr:nth-child(30), .product-table tr:nth-child(30) {
+.liquor-table tr:nth-child(30), .standard-table tr:nth-child(30) {
   animation-delay: 1.55s;
 }
-.liquor-table tr:hover td, .product-table tr:hover td {
+.liquor-table tr:hover td, .standard-table tr:hover td {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* 2. SYSTEM: STANDARD TABLE (Food, Services) */
 /* Optimized for: Thumbnails, Ingredients, Single Prices */
-.product-table {
+.standard-table {
   /* Ingredients Specifics */
 }
-.product-table td.product-ingredients, .product-table td.product__ingredients {
+.standard-table td.product-ingredients, .standard-table td.product__ingredients {
   text-align: left;
   color: var(--color-ingredientes, var(--text-color));
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
-.product-table {
+.standard-table {
+  /* Video/Thumbnail Specifics (Landscape) */
   /* Video/Thumbnail Specifics (Landscape) */
 }
-.product-table td .video-thumb,
-.product-table td.image-icon img {
-  width: 80px;
-  height: 56px;
+.standard-table td .video-thumb,
+.standard-table td.image-icon img {
+  width: 80px !important;
+  height: 56px !important;
+  min-width: 80px;
+  /* Prevent collapse */
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
@@ -703,58 +706,87 @@
   margin: 0 auto;
   transition: transform 0.3s ease;
 }
-.product-table td .video-thumb:hover,
-.product-table td.image-icon img:hover {
+.standard-table td .video-thumb:hover,
+.standard-table td.image-icon img:hover {
   transform: scale(1.05);
 }
-.product-table {
+.standard-table {
+  /* Column Optimization (Desktop) */
+}
+.standard-table th,
+.standard-table td {
+  /* Default Alignment */
+  text-align: center;
+  vertical-align: middle;
+}
+.standard-table td.product-name, .standard-table td.product__title {
+  text-align: left;
+  font-weight: 600;
+  min-width: 150px;
+  /* Prevent wrapping on short names */
+}
+.standard-table td.product-ingredients, .standard-table td.product__ingredients {
+  width: 40%;
+  /* Guide auto-layout to give priority */
+  min-width: 250px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.standard-table {
+  /* Price Columns usually last */
+}
+.standard-table td:last-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.standard-table {
   /* Category Specific Overrides (Legacy) */
   /* Responsive Logic for Standard Table */
 }
 @media (min-width: 481px) and (max-width: 1024px) and (orientation: portrait) {
-  .product-table {
+  .standard-table {
     padding: 8px 4px;
     font-size: 0.8rem;
     table-layout: fixed;
     width: 100%;
   }
-  .product-table th,
-  .product-table td {
+  .standard-table th,
+  .standard-table td {
     padding: 6px 3px;
   }
-  .product-table td.product-name, .product-table td.product__title {
+  .standard-table td.product-name, .standard-table td.product__title {
     font-size: 0.7rem;
     word-break: break-word;
     white-space: normal;
   }
 }
 @media (max-width: 480px) and (orientation: portrait) {
-  .product-table {
+  .standard-table {
     width: 100% !important;
     margin: 0 !important;
     table-layout: fixed !important;
   }
-  .product-table th,
-  .product-table td {
+  .standard-table th,
+  .standard-table td {
     padding-left: 2px !important;
     padding-right: 2px !important;
     font-size: 0.75rem;
   }
-  .product-table td:first-child,
-  .product-table td.product-name,
-  .product-table td.product__title {
+  .standard-table td:first-child,
+  .standard-table td.product-name,
+  .standard-table td.product__title {
     padding-left: 10px !important;
   }
-  .product-table td:nth-child(2),
-  .product-table td.product-ingredients,
-  .product-table td.product__ingredients {
+  .standard-table td:nth-child(2),
+  .standard-table td.product-ingredients,
+  .standard-table td.product__ingredients {
     padding-left: 6px !important;
   }
-  .product-table {
+  .standard-table {
     /* Tiny Images */
   }
-  .product-table td .video-thumb,
-  .product-table td.image-icon img {
+  .standard-table td .video-thumb,
+  .standard-table td.image-icon img {
     width: 30px;
     height: 30px;
   }
