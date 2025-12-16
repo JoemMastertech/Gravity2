@@ -54,11 +54,14 @@ Uses `tools/_mixins.scss` for responsive logic.
 ### 1. Estructura (Table Layout)
 - **Ancho:** 100% (Max 1400px).
 - **Estilo:** `border-collapse: separate` con `border-spacing: 0 10px` (Filas flotantes).
+- **El Contenedor Supremo (`%table-shell`):**
+  - Controla la simetría global.
+  - Hereda `padding: 15px 20px` a TODAS las celdas (Izquierda/Derecha balanceados).
 
 ### 2. La Fila (Componente `tr`)
 | Configuración | Valor Actual (Code) | Notas |
 | :--- | :--- | :--- |
-| **Padding Celda** | `15px 10px` | |
+| **Padding Celda** | `15px 20px` | **Simetría Natural** (Antes asimétrico) |
 | **Borde Inferior** | `2px solid` | Separador |
 | **Hover** | `rgba(0,0,0,0.4)` | Oscurecimiento |
 

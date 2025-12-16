@@ -250,6 +250,9 @@ const ProductRenderer = {
       this._createNameCell(td, item[field]);
     } else if (field === 'ingredientes') {
       this._createIngredientsCell(td, item[field]);
+    } else if (field === 'precios') {
+      // New Stacked Logic
+      this._createStackedPriceCell(td, item);
     } else if (isPriceField(field)) {
       this._createPriceCell(td, item, field);
     } else if (field === 'video') {
@@ -281,6 +284,55 @@ const ProductRenderer = {
       td.setAttribute('data-namespace', 'products');
       td.setAttribute('data-original-text', ingredientes || '');
     }
+  },
+
+  _createStackedPriceCell: function (td, item) {
+    td.className = 'stacked-price-cell';
+    const container = document.createElement('div');
+    container.className = 'stacked-price-container';
+
+    const prices = [
+      { key: 'precioBotella', label: 'Botella', class: 'price-chip--bottle' },
+      { key: 'precioLitro', label: 'Litro', class: 'price-chip--liter' },
+      { key: 'precioCopa', label: 'Copa', class: 'price-chip--cup' }
+    ];
+
+    prices.forEach(p => {
+      const priceValue = item[p.key];
+      // Condition: Only render if valid price
+      if (priceValue && priceValue !== '0' && priceValue !== '--' && priceValue !== 0) {
+
+        const priceItem = document.createElement('div');
+        priceItem.className = `price-chip ${p.class}`;
+
+        const label = document.createElement('span');
+        label.className = 'price-label-mini';
+        label.textContent = p.label;
+
+        const button = document.createElement('button');
+        button.className = 'price-button mobile-optimized';
+        button.textContent = formatPrice(priceValue);
+        button.dataset.productName = item.nombre;
+        button.dataset.price = priceValue;
+        button.dataset.field = p.key; // Critical for OrderSystem
+
+        // Attach Mixers logic (same as createPriceCell)
+        let mixers = null;
+        if (p.key === 'precioBotella') mixers = item.mixersBotella;
+        else if (p.key === 'precioLitro') mixers = item.mixersLitro;
+        else if (p.key === 'precioCopa') mixers = item.mixersCopa;
+
+        if (mixers && Array.isArray(mixers) && mixers.length > 0) {
+          button.dataset.mixers = JSON.stringify(mixers);
+        }
+
+        priceItem.appendChild(label);
+        priceItem.appendChild(button);
+        container.appendChild(priceItem);
+      }
+    });
+
+    td.appendChild(container);
   },
 
 
@@ -1039,8 +1091,9 @@ const ProductRenderer = {
 
   // Generic liquor renderer - eliminates code duplication
   renderLiquorCategory: async function (container, subcategory, title) {
-    const liquorFields = ['nombre', 'imagen', 'precioBotella', 'precioLitro', 'precioCopa'];
-    const liquorHeaders = ['NOMBRE', 'IMAGEN', 'PRECIO BOTELLA', 'PRECIO LITRO', 'PRECIO COPA'];
+    // UPDATED: 3-Column Standard (Name | Image | Prices)
+    const liquorFields = ['nombre', 'imagen', 'precios'];
+    const liquorHeaders = ['NOMBRE', 'IMAGEN', 'PRECIOS'];
 
     try {
       const data = await api.getLiquorSubcategory(subcategory);
@@ -1048,7 +1101,7 @@ const ProductRenderer = {
       if (state.currentViewMode === 'grid') {
         this.createProductGrid(container,
           data,
-          liquorFields,
+          ['nombre', 'imagen', 'precioBotella', 'precioLitro', 'precioCopa'], // Grid keeps all fields for internal logic
           title
         );
       } else {
@@ -1187,7 +1240,7 @@ const ProductRenderer = {
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
             cervezasEnBotella,
             ['nombre', 'ruta_archivo', 'precio'],
-            'product-table',
+            'liquor-table',
             'Cervezas en botella'
           );
           // Asegurar que la tabla tenga el atributo data-category
@@ -1219,7 +1272,7 @@ const ProductRenderer = {
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
             tarros,
             ['nombre', 'ruta_archivo', 'precio'],
-            'product-table',
+            'liquor-table',
             'Tarros'
           );
           // Asegurar que la tabla tenga el atributo data-category
@@ -1251,7 +1304,7 @@ const ProductRenderer = {
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
             vasos,
             ['nombre', 'ruta_archivo', 'precio'],
-            'product-table',
+            'liquor-table',
             'Vasos'
           );
           // Asegurar que la tabla tenga el atributo data-category
@@ -1454,7 +1507,7 @@ const ProductRenderer = {
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
             refrescos,
             ['nombre', 'ruta_archivo', 'precio'],
-            'product-table',
+            'liquor-table',
             'Refrescos'
           );
           // Asegurar category para estilos CSS
@@ -1482,7 +1535,7 @@ const ProductRenderer = {
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
             jarrasDeJugo,
             ['nombre', 'ruta_archivo', 'precio'],
-            'product-table',
+            'liquor-table',
             'Jarras de jugo'
           );
           // Asegurar category para estilos CSS (Heredar de refrescos)
@@ -1510,7 +1563,7 @@ const ProductRenderer = {
             ['NOMBRE', 'IMAGEN', 'PRECIO'],
             vasosDeJugo,
             ['nombre', 'ruta_archivo', 'precio'],
-            'product-table',
+            'liquor-table',
             'Vasos de jugo'
           );
           // Asegurar category para estilos CSS (Heredar de refrescos)
