@@ -300,69 +300,22 @@ const ProductRenderer = {
     }
   },
 
-  _createStackedPriceCell: function (td, item) {
+  /**
+   * GENERIC: Renders a grid of price buttons (e.g. for Liquor or Alitas).
+   * @param {HTMLElement} td - Target cell
+   * @param {Object} item - Product data
+   * @param {Array} config - Array of { key, label, mixerField? }
+   */
+  _createMultiPriceCell: function (td, item, config) {
     td.className = 'stacked-price-cell';
     const container = document.createElement('div');
     container.className = 'stacked-price-container';
 
-    const prices = [
-      { key: 'precioBotella', label: 'Botella', class: 'price-chip--bottle' },
-      { key: 'precioLitro', label: 'Litro', class: 'price-chip--liter' },
-      { key: 'precioCopa', label: 'Copa', class: 'price-chip--cup' }
-    ];
-
-    prices.forEach(p => {
+    config.forEach(p => {
       const priceValue = item[p.key];
-      // Condition: Only render if valid price
+      // Condition: Render only if valid price exists
       if (priceValue && priceValue !== '0' && priceValue !== '--' && priceValue !== 0) {
 
-        const priceItem = document.createElement('div');
-        priceItem.className = `price-chip ${p.class}`;
-
-        const label = document.createElement('span');
-        label.className = 'price-label-mini';
-        label.textContent = p.label;
-
-        const button = document.createElement('button');
-        button.className = 'price-button mobile-optimized';
-        button.textContent = formatPrice(priceValue);
-        button.dataset.productName = item.nombre;
-        button.dataset.price = priceValue;
-        button.dataset.field = p.key; // Critical for OrderSystem
-
-        // Attach Mixers logic (same as createPriceCell)
-        let mixers = null;
-        if (p.key === 'precioBotella') mixers = item.mixersBotella;
-        else if (p.key === 'precioLitro') mixers = item.mixersLitro;
-        else if (p.key === 'precioCopa') mixers = item.mixersCopa;
-
-        if (mixers && Array.isArray(mixers) && mixers.length > 0) {
-          button.dataset.mixers = JSON.stringify(mixers);
-        }
-
-        priceItem.appendChild(label);
-        priceItem.appendChild(button);
-        container.appendChild(priceItem);
-      }
-    });
-
-    td.appendChild(container);
-  },
-
-  _createAlitasPriceCell: function (td, item) {
-    td.className = 'stacked-price-cell';
-    const container = document.createElement('div');
-    container.className = 'stacked-price-container';
-
-    const prices = [
-      { key: 'precio_10_piezas', label: '10 pzas' },
-      { key: 'precio_25_piezas', label: '25 pzas' }
-    ];
-
-    prices.forEach(p => {
-      const priceValue = item[p.key];
-      // Render only if price exists
-      if (priceValue && priceValue !== '0' && priceValue !== '--') {
         const priceItem = document.createElement('div');
         priceItem.className = 'price-chip';
 
@@ -377,6 +330,14 @@ const ProductRenderer = {
         button.dataset.price = priceValue;
         button.dataset.field = p.key;
 
+        // Attach Mixers logic if configured
+        if (p.mixerField && item[p.mixerField]) {
+          const mixers = item[p.mixerField];
+          if (Array.isArray(mixers) && mixers.length > 0) {
+            button.dataset.mixers = JSON.stringify(mixers);
+          }
+        }
+
         priceItem.appendChild(label);
         priceItem.appendChild(button);
         container.appendChild(priceItem);
@@ -384,6 +345,25 @@ const ProductRenderer = {
     });
 
     td.appendChild(container);
+  },
+
+  _createStackedPriceCell: function (td, item) {
+    // Configuration for Liquor (3 Columns possible)
+    const liquorConfig = [
+      { key: 'precioBotella', label: 'Botella', mixerField: 'mixersBotella' },
+      { key: 'precioLitro', label: 'Litro', mixerField: 'mixersLitro' },
+      { key: 'precioCopa', label: 'Copa', mixerField: 'mixersCopa' }
+    ];
+    this._createMultiPriceCell(td, item, liquorConfig);
+  },
+
+  _createAlitasPriceCell: function (td, item) {
+    // Configuration for Alitas (2 Columns)
+    const alitasConfig = [
+      { key: 'precio_10_piezas', label: '10 pzas' },
+      { key: 'precio_25_piezas', label: '25 pzas' }
+    ];
+    this._createMultiPriceCell(td, item, alitasConfig);
   },
 
 
@@ -1377,7 +1357,7 @@ const ProductRenderer = {
           ['NOMBRE', 'INGREDIENTES', 'VIDEO', 'PRECIOS'],
           data,
           ['nombre', 'ingredientes', 'video', 'precios_alitas'],
-          'standard-table',
+          'standard-table table-compact',
           'Alitas'
         );
       }
