@@ -81,33 +81,118 @@
 
 /* 2. SYSTEM: STANDARD TABLE (Food, Services) */
 /* Optimized for: Thumbnails, Ingredients, Single Prices */
+/* 2. SYSTEM: STANDARD TABLE (Food, Services) */
+/* Cloned from .liquor-table logic for robustness */
+/* Optimized for: Thumbnails, Ingredients (45%), Video (10%) */
 .standard-table {
     @extend %table-core;
 
     /* 1. MINISTRY OF STRUCTURE (Standard) */
-    /* Spacious, Full Width, Auto Layout */
     width: 100%;
     max-width: 1400px;
-    /* Standard Max */
-    padding: 20px;
-    /* Standard Padding */
-    table-layout: auto;
+    padding: 20px 10px;
+    /* Generous Horizontal Padding */
+    table-layout: fixed;
+    border-spacing: 0 10px;
 
-    /* Ingredients Specifics */
-    td.product-ingredients {
-        text-align: left;
-        color: var(--color-ingredientes, var(--text-color));
-        text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    /* --- TITLE ROW DEFENSE (Anti-Inheritance) --- */
+    tr.title-row td {
+        width: auto;
+        text-align: center;
+        padding: 15px 0;
+        background: transparent;
+        pointer-events: none;
     }
 
-    /* Video/Thumbnail Specifics (Landscape) */
-    /* Video/Thumbnail Specifics (Landscape) */
+    /* COL 1: Nombre (25%) */
+    col:nth-child(1),
+    th:nth-child(1) {
+        width: 25%;
+        text-align: center;
+    }
+
+    td:nth-child(1) {
+        width: 25%;
+        white-space: normal;
+        word-break: normal;
+        overflow-wrap: break-word;
+        hyphens: none;
+
+        text-align: left;
+        /* Clean Left Alignment */
+        padding: 0 20px;
+
+        vertical-align: middle;
+        height: auto;
+
+        /* DEFENSE: Force Table Cell Behavior (Anti-Grid block leak) */
+        &.product-name {
+            display: table-cell;
+            height: auto;
+            max-height: none;
+            margin: 0;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+    }
+
+    /* COL 2: Ingredientes (42%) */
+    col:nth-child(2),
+    th:nth-child(2) {
+        width: 42%;
+        text-align: center;
+    }
+
+    td:nth-child(2) {
+        width: 42%;
+        text-align: justify;
+        text-justify: inter-word;
+        padding: 0 20px;
+        color: var(--color-ingredientes, var(--text-color));
+        font-size: 0.95rem;
+        line-height: 1.4;
+        vertical-align: middle;
+    }
+
+    /* COL 3: Video/Thumb (13%) */
+    col:nth-child(3),
+    th:nth-child(3) {
+        width: 13%;
+        text-align: center;
+    }
+
+    td:nth-child(3) {
+        width: 13%;
+        text-align: center;
+        vertical-align: middle;
+        padding: 0 5px;
+    }
+
+    /* COL 4: Precio (20%) */
+    col:nth-child(4),
+    th:nth-child(4) {
+        width: 20%;
+        text-align: center;
+    }
+
+    td:nth-child(4) {
+        width: 20%;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    /* Video/Thumbnail Specifics */
     td .video-thumb,
     td.image-icon img {
-        width: 80px !important;
-        height: 56px !important;
-        min-width: 80px;
-        /* Prevent collapse */
+        width: 100%;
+        /* Fill container */
+        max-width: 125px;
+        /* Constraint Increased 25% */
+        height: auto;
+        aspect-ratio: 16/9;
+        /* Landscape Video Ratio */
         object-fit: cover;
         border-radius: 8px;
         cursor: pointer;
@@ -120,92 +205,126 @@
         }
     }
 
-    /* Column Optimization (Desktop) */
-    th,
-    td {
-        /* Default Alignment */
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    td.product-name {
-        text-align: left;
-        font-weight: 600;
-        min-width: 150px;
-        /* Prevent wrapping on short names */
-    }
-
-    td.product-ingredients {
-        width: 40%;
-        /* Guide auto-layout to give priority */
-        min-width: 250px;
-        font-size: 0.95rem;
-        line-height: 1.4;
-    }
-
-    /* Price Columns usually last */
-    td:last-child {
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    /* Category Specific Overrides (Legacy) */
-
-
-    /* Responsive Logic for Standard Table */
+    /* Responsive Logic */
     @include tablet-portrait {
         padding: 8px 4px;
         font-size: 0.8rem;
-        table-layout: fixed;
-        width: 100%;
 
-        th,
-        td {
-            padding: 6px 3px;
+        td:nth-child(1) {
+            padding: 0 10px;
+        }
+
+        /* Reduce padding */
+        td:nth-child(2) {
+            padding: 0 10px;
         }
 
         td.product-name {
-            font-size: 0.7rem;
-            word-break: break-word;
-            white-space: normal;
+            font-size: 0.8rem;
         }
     }
 
     @include mobile-portrait {
-        width: 100% !important;
-        margin: 0 !important;
-        table-layout: fixed !important;
 
+        /* Mobile Stack Logic would go here if needed, 
+           but currently inherited logic + overrides control it */
         th,
         td {
-            padding-left: 2px !important;
-            padding-right: 2px !important;
-            font-size: 0.75rem;
-        }
-
-        td:first-child,
-        td.product-name {
-            padding-left: 10px !important;
-        }
-
-        td:nth-child(2),
-        td.product-ingredients {
-            padding-left: 6px !important;
-        }
-
-        /* Tiny Images */
-        td .video-thumb,
-        td.image-icon img {
-            width: 30px;
-            height: 30px;
+            padding: 5px 2px;
         }
     }
 }
 
 /* 3. SYSTEM: VISUAL TABLE (Liquor, Products) */
 /* Optimized for: Large Isolated Images, Stacked Prices, No Ingredients */
-/* 3. SYSTEM: VISUAL TABLE (Liquor, Products) */
-/* Optimized for: Large Isolated Images, Stacked Prices, No Ingredients */
+/* 
+   GLOBAL PRICE SYSTEM (Shared) 
+   Must be declared before nested items or at root.
+*/
+/* --- Ghost Grid Price Container --- */
+.stacked-price-container {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    justify-content: space-between;
+    width: 75%;
+    column-gap: 8px;
+    row-gap: 8px;
+    align-items: center;
+    max-width: none;
+    margin: 0 auto;
+    padding: 5px 0;
+}
+
+/* Price Item */
+.price-chip {
+    display: contents;
+
+    .price-label-mini {
+        font-size: 0.85rem;
+        color: var(--text-color);
+        text-transform: capitalize;
+        font-weight: 500;
+        text-align: left;
+        padding-left: 5px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 8px;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+    }
+
+    .price-button {
+        padding: 6px 15px;
+        font-size: 1rem;
+        min-width: 90px;
+        text-align: center;
+        border: 1.4px solid var(--border-color);
+        background: transparent;
+        color: var(--text-color);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        justify-self: end;
+        margin-bottom: 8px;
+        box-shadow: var(--glow-shadow);
+        backdrop-filter: blur(5px);
+
+        &:hover {
+            background-color: transparent;
+            transform: scale(1.02);
+            border-color: var(--price-color);
+            color: var(--price-color);
+            box-shadow: var(--glow-shadow-hover);
+        }
+    }
+}
+
+/* Single Price Button Support */
+.price-button {
+    padding: 6px 15px;
+    font-size: 1rem;
+    min-width: 90px;
+    text-align: center;
+    border: 1.4px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 75%;
+    margin: 0 auto;
+    box-shadow: var(--glow-shadow);
+    backdrop-filter: blur(5px);
+
+    &:hover {
+        transform: scale(1.02);
+        border-color: var(--price-color);
+        color: var(--price-color);
+        box-shadow: var(--glow-shadow-hover);
+    }
+}
+
 .liquor-table {
     @extend %table-core;
 
@@ -223,6 +342,7 @@
     /* Tighter vertical */
 
     /* COL 1: Nombre (40%) */
+    col:nth-child(1),
     th:nth-child(1) {
         text-align: center;
         /* Enforce Header Centering */
@@ -257,6 +377,7 @@
     }
 
     /* COL 2: Imagen (20%) */
+    col:nth-child(2),
     th:nth-child(2),
     td:nth-child(2) {
         width: 20%;
@@ -286,6 +407,7 @@
     }
 
     /* COL 3: Precios Stacked (40%) */
+    col:nth-child(3),
     th:nth-child(3) {
         width: 40%;
         text-align: center;
@@ -300,102 +422,7 @@
         padding: 0 10px;
     }
 
-    /* --- Ghost Grid Price Container --- */
-    .stacked-price-container {
-        display: grid;
-        grid-template-columns: max-content max-content;
-        /* PACKED TIGHTLY */
-        justify-content: space-between;
-        /* JUSTIFIED: Label Left --- Price Right */
-        width: 75%;
-        /* THE CORSET: Relaxed to 75% as requested */
-        column-gap: 8px;
-        row-gap: 8px;
-        align-items: center;
-        max-width: none;
-        margin: 0 auto;
-        /* Center the corset */
-        padding: 5px 0;
-    }
 
-    /* Price Item (Display Contents for Grid Alignment) */
-    .price-chip {
-        display: contents;
-
-        .price-label-mini {
-            font-size: 0.85rem;
-            color: var(--text-color);
-            text-transform: capitalize;
-            font-weight: 500;
-            text-align: left;
-            padding-left: 5px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 8px;
-            align-self: stretch;
-            display: flex;
-            align-items: center;
-        }
-
-        .price-button {
-            /* REPLICA EXACTA DE .drawer-menu .nav-button (Sidebar) */
-            padding: 6px 15px;
-            font-size: 1rem;
-            min-width: 90px;
-            text-align: center;
-
-            /* BASE STATE - Subtle, no bright outline */
-            border: 1.4px solid var(--border-color);
-            background: transparent;
-            color: var(--text-color);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            justify-self: end;
-            margin-bottom: 8px;
-            box-shadow: var(--glow-shadow);
-            backdrop-filter: blur(5px);
-
-            &:hover {
-                /* HOVER STATE - Activates Color */
-                background-color: transparent;
-                transform: scale(1.02);
-                border-color: var(--price-color);
-                color: var(--price-color);
-                box-shadow: var(--glow-shadow-hover);
-            }
-        }
-    }
-
-
-    /* Support for Standard Price Button (Non-Stacked) i.e. Cervezas/Refrescos */
-    /* Support for Standard Price Button (Non-Stacked) i.e. Cervezas/Refrescos */
-    .price-button {
-        padding: 6px 15px;
-        font-size: 1rem;
-        min-width: 90px;
-        text-align: center;
-        border: 1.4px solid var(--border-color);
-        background: transparent;
-        color: var(--text-color);
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-
-        /* CORSET APPLIED TO SINGLE BUTTON */
-        display: block;
-        width: 75%;
-        margin: 0 auto;
-
-        box-shadow: var(--glow-shadow);
-        backdrop-filter: blur(5px);
-
-        &:hover {
-            transform: scale(1.02);
-            border-color: var(--price-color);
-            color: var(--price-color);
-            box-shadow: var(--glow-shadow-hover);
-        }
-    }
 
     /* Responsive Logic for Visual Table */
     @include nuclear-mobile {

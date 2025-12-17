@@ -152,6 +152,17 @@ const ProductRenderer = {
 
   createProductTable: function (container, headers, data, fields, tableClass, categoryTitle) {
     const table = this._createTableElement(tableClass, categoryTitle);
+
+    // FIX: Generate Colgroup to enforce widths (Critical for Title Row span)
+    if (headers && headers.length > 0) {
+      const colgroup = document.createElement('colgroup');
+      headers.forEach(() => {
+        const col = document.createElement('col');
+        colgroup.appendChild(col);
+      });
+      table.appendChild(colgroup);
+    }
+
     const titleRow = this._createTitleRow(categoryTitle, headers.length);
     const tableHead = this._createTableHeader(headers, titleRow);
     const tbody = this._createTableBody(data, fields, categoryTitle);
@@ -253,6 +264,9 @@ const ProductRenderer = {
     } else if (field === 'precios') {
       // New Stacked Logic
       this._createStackedPriceCell(td, item);
+    } else if (field === 'precios_alitas') {
+      // Stacked Alitas Logic
+      this._createAlitasPriceCell(td, item);
     } else if (isPriceField(field)) {
       this._createPriceCell(td, item, field);
     } else if (field === 'video') {
@@ -325,6 +339,43 @@ const ProductRenderer = {
         if (mixers && Array.isArray(mixers) && mixers.length > 0) {
           button.dataset.mixers = JSON.stringify(mixers);
         }
+
+        priceItem.appendChild(label);
+        priceItem.appendChild(button);
+        container.appendChild(priceItem);
+      }
+    });
+
+    td.appendChild(container);
+  },
+
+  _createAlitasPriceCell: function (td, item) {
+    td.className = 'stacked-price-cell';
+    const container = document.createElement('div');
+    container.className = 'stacked-price-container';
+
+    const prices = [
+      { key: 'precio_10_piezas', label: '10 pzas' },
+      { key: 'precio_25_piezas', label: '25 pzas' }
+    ];
+
+    prices.forEach(p => {
+      const priceValue = item[p.key];
+      // Render only if price exists
+      if (priceValue && priceValue !== '0' && priceValue !== '--') {
+        const priceItem = document.createElement('div');
+        priceItem.className = 'price-chip';
+
+        const label = document.createElement('span');
+        label.className = 'price-label-mini';
+        label.textContent = p.label;
+
+        const button = document.createElement('button');
+        button.className = 'price-button mobile-optimized';
+        button.textContent = formatPrice(priceValue);
+        button.dataset.productName = item.nombre;
+        button.dataset.price = priceValue;
+        button.dataset.field = p.key;
 
         priceItem.appendChild(label);
         priceItem.appendChild(button);
@@ -1193,6 +1244,21 @@ const ProductRenderer = {
     try {
       const data = await productRepository.getCervezas();
 
+      // Define Strategy for Cervezas (Visual Table)
+      const renderLiquorStrategy = (el, items, title) => {
+        if (state.currentViewMode === 'grid') {
+          this.createProductGrid(el, items, ['nombre', 'ruta_archivo', 'precio'], title);
+        } else {
+          this.createProductTable(el,
+            ['NOMBRE', 'IMAGEN', 'PRECIO'],
+            items,
+            ['nombre', 'ruta_archivo', 'precio'],
+            'liquor-table', // Strict Mapping
+            title
+          );
+        }
+      };
+
       this._renderSegmentedCategory(container, data, {
         cssCategory: 'cervezas',
         defaultTitle: 'Cervezas en botella',
@@ -1208,7 +1274,8 @@ const ProductRenderer = {
             cssClass: 'vasos-cerveza-section',
             matcher: (p, name) => name.startsWith('VASO')
           }
-        ]
+        ],
+        renderStrategy: renderLiquorStrategy // PASS STRATEGY
       });
 
     } catch (error) {
@@ -1307,9 +1374,9 @@ const ProductRenderer = {
         );
       } else {
         this.createProductTable(container,
-          ['NOMBRE', 'INGREDIENTES', 'VIDEO', '10 PIEZAS', '25 PIEZAS'],
+          ['NOMBRE', 'INGREDIENTES', 'VIDEO', 'PRECIOS'],
           data,
-          ['nombre', 'ingredientes', 'video', 'precio_10_piezas', 'precio_25_piezas'],
+          ['nombre', 'ingredientes', 'video', 'precios_alitas'],
           'standard-table',
           'Alitas'
         );
@@ -1362,35 +1429,38 @@ const ProductRenderer = {
     // 4. Clean Container
     container.innerHTML = '';
 
-    // 5. Render Helper
+    // 5. Render Helper Strategy
+    const defaultRenderStrategy = (sectionContainer, items, title) => {
+      // Fallback Strategy (Legacy Behavior)
+      if (state.currentViewMode === 'grid') {
+        this.createProductGrid(sectionContainer, items, ['nombre', 'ruta_archivo', 'precio'], title);
+      } else {
+        // Default to Liquor Table if not specified 
+        this.createProductTable(sectionContainer,
+          ['NOMBRE', 'IMAGEN', 'PRECIO'],
+          items,
+          ['nombre', 'ruta_archivo', 'precio'],
+          'liquor-table',
+          title
+        );
+      }
+    };
+
+    const executeRender = config.renderStrategy || defaultRenderStrategy;
+
     const renderSection = (items, title, cssClass) => {
       if (items.length === 0) return;
 
       const sectionContainer = document.createElement('div');
       sectionContainer.className = cssClass || 'product-section';
 
-      // GRID VIEW
-      if (state.currentViewMode === 'grid') {
-        this.createProductGrid(sectionContainer,
-          items,
-          ['nombre', 'ruta_archivo', 'precio'],
-          title
-        );
-        const grid = sectionContainer.querySelector('.product-grid');
-        if (grid) grid.setAttribute('data-category', config.cssCategory);
-      }
-      // TABLE VIEW
-      else {
-        this.createProductTable(sectionContainer,
-          ['NOMBRE', 'IMAGEN', 'PRECIO'],
-          items,
-          ['nombre', 'ruta_archivo', 'precio'],
-          'liquor-table', // ALWAYS FORCE VISUAL TABLE
-          title
-        );
-        const table = sectionContainer.querySelector('table');
-        if (table) table.setAttribute('data-category', config.cssCategory);
-      }
+      // Execute the Strategy
+      executeRender(sectionContainer, items, title);
+
+      // Apply data attribute for styling hook if grid/table is found
+      const gridOrTable = sectionContainer.querySelector('.product-grid, table');
+      if (gridOrTable) gridOrTable.setAttribute('data-category', config.cssCategory);
+
       container.appendChild(sectionContainer);
     };
 
@@ -1438,6 +1508,21 @@ const ProductRenderer = {
     try {
       const data = await productRepository.getRefrescos();
 
+      // Define Strategy for Refrescos (Visual Table)
+      const renderLiquorStrategy = (el, items, title) => {
+        if (state.currentViewMode === 'grid') {
+          this.createProductGrid(el, items, ['nombre', 'ruta_archivo', 'precio'], title);
+        } else {
+          this.createProductTable(el,
+            ['NOMBRE', 'IMAGEN', 'PRECIO'],
+            items,
+            ['nombre', 'ruta_archivo', 'precio'],
+            'liquor-table', // Strict Mapping
+            title
+          );
+        }
+      };
+
       this._renderSegmentedCategory(container, data, {
         cssCategory: 'refrescos',
         defaultTitle: 'Refrescos',
@@ -1446,14 +1531,15 @@ const ProductRenderer = {
           {
             title: 'Jarras de jugo',
             cssClass: 'jarras-section',
-            matcher: (p, name) => name.startsWith('JARRA')
+            matcher: (p, name) => name.includes('JARRA')
           },
           {
             title: 'Vasos de jugo',
             cssClass: 'vasos-section',
-            matcher: (p, name) => name.startsWith('VASO DE JUGO')
+            matcher: (p, name) => name.includes('VASO') && !name.includes('VIDRIO')
           }
-        ]
+        ],
+        renderStrategy: renderLiquorStrategy // PASS STRATEGY
       });
 
     } catch (error) {
