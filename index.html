@@ -69,62 +69,9 @@
   </video>
 
   <div id="app" class="app-container">
-    <div id="drawer-overlay" class="drawer-overlay"></div>
-    <div id="drawer-menu" class="drawer-menu">
-      <div class="drawer-content">
-        <!-- Navigation buttons will be added here dynamically -->
-      </div>
-    </div>
+    <!-- Drawer moved to bottom of body -->
 
-    <!-- Settings Menu -->
-    <div id="settings-overlay" class="drawer-overlay"></div>
-    <div id="settings-menu" class="drawer-menu settings-menu">
-      <div class="drawer-content">
-        <!-- Main Settings Panel -->
-        <div id="main-settings-panel" class="settings-panel">
-          <button id="settings-back-btn" class="back-button">←</button>
-          <h3 class="settings-title"></h3>
-          <button id="languages-option" class="nav-button" data-translate="settings.languages">Idiomas</button>
-          <button id="dark-mode-option" class="nav-button" data-translate="settings.dark_mode">Modo Oscuro</button>
-          <button id="light-mode-option" class="nav-button" data-translate="settings.light_mode">Modo Claro</button>
-        </div>
-
-        <!-- Languages Panel -->
-        <div id="languages-panel" class="settings-panel screen-hidden">
-          <button id="back-to-main" class="back-button">←</button>
-          <h3 class="settings-title" data-translate="settings.languages">Idiomas</h3>
-          <button class="nav-button language-btn" data-lang="es" data-translate="languages.spanish">Español</button>
-          <button class="nav-button language-btn" data-lang="en" data-translate="languages.english">Inglés</button>
-          <button class="nav-button language-btn" data-lang="fr" data-translate="languages.french">Francés</button>
-          <button class="nav-button language-btn" data-lang="it" data-translate="languages.italian">Italiano</button>
-          <button class="nav-button language-btn" data-lang="zh" data-translate="languages.chinese">Chino</button>
-        </div>
-
-        <!-- Dark Mode Panel -->
-        <div id="dark-mode-panel" class="settings-panel screen-hidden">
-          <button id="back-from-dark" class="back-button">←</button>
-          <h3 class="settings-title" data-translate="settings.dark_mode">Modo Oscuro</h3>
-          <button class="nav-button theme-btn" data-theme="dark-blue"
-            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoolasazul.mp4"
-            data-translate="themes.dark_blue">Azul Oscuro</button>
-          <button class="nav-button theme-btn" data-theme="dark-red"
-            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4"
-            data-translate="themes.dark_red">Rojo Oscuro</button>
-        </div>
-
-        <!-- Light Mode Panel -->
-        <div id="light-mode-panel" class="settings-panel screen-hidden">
-          <button id="back-from-light" class="back-button">←</button>
-          <h3 class="settings-title" data-translate="settings.light_mode">Modo Claro</h3>
-          <button class="nav-button theme-btn" data-theme="light-blue"
-            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoazul.mp4"
-            data-translate="themes.light_blue">Azul Claro</button>
-          <button class="nav-button theme-btn" data-theme="light-white"
-            data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoblanco.mp4"
-            data-translate="themes.white">Blanco</button>
-        </div>
-      </div>
-    </div>
+    <!-- Settings moved to bottom of body -->
 
     <div class="screen welcome-screen">
       <h1 class="welcome-text" data-translate="main.welcome">¡BIENVENIDOS!</h1>
@@ -163,20 +110,7 @@
       <div class="content-wrapper">
         <div class="content-container-flex">
           <div id="content-container"></div>
-          <div id="order-sidebar" class="sidebar-hidden order-sidebar">
-            <div id="order-content">
-              <h3 class="order-sidebar__header" data-translate="order.your_order">Tu Orden</h3>
-              <div id="order-items" class="order-sidebar__items"></div>
-            </div>
-            <div class="order-total">
-              <h4><span data-translate="order.total">Total:</span> <span id="order-total-amount">$0.00</span></h4>
-            </div>
-            <div class="order-actions">
-              <button id="complete-order-btn" class="nav-button" data-translate="order.complete">Completar
-                Orden</button>
-              <button id="cancel-order-btn" class="nav-button" data-translate="order.cancel">Cancelar</button>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
@@ -285,6 +219,88 @@
         </div>
       </div>
     </template>
+  </div>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="drawer-menu" class="drawer-menu">
+    <div class="drawer-content">
+      <!-- Navigation buttons added dynamically -->
+    </div>
+  </div>
+
+  <!-- Settings Menu -->
+  <div id="settings-menu" class="drawer-menu settings-menu">
+    <div class="drawer-content">
+      <!-- Main Settings Panel -->
+      <div id="main-settings-panel" class="settings-panel">
+        <button id="settings-back-btn" class="back-button">←</button>
+        <h3 class="settings-title"></h3>
+        <button id="languages-option" class="nav-button" data-translate="settings.languages">Idiomas</button>
+        <button id="dark-mode-option" class="nav-button" data-translate="settings.dark_mode">Modo Oscuro</button>
+        <button id="light-mode-option" class="nav-button" data-translate="settings.light_mode">Modo Claro</button>
+      </div>
+
+      <!-- Languages Panel -->
+      <div id="languages-panel" class="settings-panel screen-hidden">
+        <button id="back-to-main" class="back-button">←</button>
+        <h3 class="settings-title" data-translate="settings.languages">Idiomas</h3>
+        <button class="nav-button language-btn" data-lang="es" data-translate="languages.spanish">Español</button>
+        <button class="nav-button language-btn" data-lang="en" data-translate="languages.english">Inglés</button>
+        <button class="nav-button language-btn" data-lang="fr" data-translate="languages.french">Francés</button>
+        <button class="nav-button language-btn" data-lang="it" data-translate="languages.italian">Italiano</button>
+        <button class="nav-button language-btn" data-lang="zh" data-translate="languages.chinese">Chino</button>
+      </div>
+
+      <!-- Dark Mode Panel -->
+      <div id="dark-mode-panel" class="settings-panel screen-hidden">
+        <button id="back-from-dark" class="back-button">←</button>
+        <h3 class="settings-title" data-translate="settings.dark_mode">Modo Oscuro</h3>
+        <button class="nav-button theme-btn" data-theme="dark-blue"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoolasazul.mp4"
+          data-translate="themes.dark_blue">Azul Oscuro</button>
+        <button class="nav-button theme-btn" data-theme="dark-red"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4"
+          data-translate="themes.dark_red">Rojo Oscuro</button>
+      </div>
+
+      <!-- Light Mode Panel -->
+      <div id="light-mode-panel" class="settings-panel screen-hidden">
+        <button id="back-from-light" class="back-button">←</button>
+        <h3 class="settings-title" data-translate="settings.light_mode">Modo Claro</h3>
+        <button class="nav-button theme-btn" data-theme="light-blue"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoazul.mp4"
+          data-translate="themes.light_blue">Azul Claro</button>
+        <button class="nav-button theme-btn" data-theme="light-white"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoblanco.mp4"
+          data-translate="themes.white">Blanco</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Sidebar (Right) -->
+  <div id="order-sidebar" class="order-sidebar">
+    <div class="drawer-content">
+      <h3 class="drawer-title">Tu Orden</h3>
+      <div id="order-items" class="order-items-scroll">
+        <!-- Order items injected here -->
+      </div>
+      <div class="drawer-footer">
+        <div class="order-summary">
+          <div class="total-row">
+            <span>Total:</span>
+            <span id="order-total-amount" class="total-amount">$0.00</span>
+          </div>
+        </div>
+        <div class="order-actions">
+          <button id="complete-order-btn" class="nav-button primary-btn" data-translate="menu.create_order">
+            Completar
+          </button>
+          <button id="cancel-order-btn" class="nav-button secondary-btn" data-translate="menu.cancel_order">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Load data providers -->

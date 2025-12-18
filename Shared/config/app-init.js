@@ -517,6 +517,13 @@ const AppInit = {
   initializeDrawerMenu: function () {
     const hamburgerBtn = document.getElementById('hamburger-btn');
     const drawerMenu = document.getElementById('drawer-menu');
+
+    // Idempotency check: Prevent multiple initializations
+    if (!drawerMenu || drawerMenu.getAttribute('data-init') === 'true') {
+      return;
+    }
+    drawerMenu.setAttribute('data-init', 'true');
+
     const drawerOverlay = document.getElementById('drawer-overlay');
     const drawerContent = document.querySelector('.drawer-content');
 
@@ -603,21 +610,33 @@ const AppInit = {
     drawerContent.appendChild(footerContainer);
 
     // Toggle drawer menu on hamburger button click
-    hamburgerBtn.addEventListener('click', () => {
-      drawerMenu.classList.toggle('open');
-      drawerOverlay.classList.toggle('active');
-    });
+    const sidebarManagerPath = '../../Interfaces/web/ui-adapters/managers/SidebarManager.js';
 
-    // Close drawer when clicking overlay
-    drawerOverlay.addEventListener('click', () => {
-      drawerMenu.classList.remove('open');
-      drawerOverlay.classList.remove('active');
-    });
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      import(sidebarManagerPath).then(module => {
+        module.default.toggle('drawer-menu');
+      }).catch(err => {
+        console.error('Failed to load SidebarManager', err);
+      });
+    }); // Close drawer when clicking overlay (Legacy cleanup)
+    // The new SidebarManager handles its own overlay. 
+    // We remove the legacy listener logic or keep it as a fallback if the new overlay isn't ready?
+    // Since SidebarManager creates .sidebar-backdrop, the old #drawer-overlay is effectively dead/unused.
+    // We will ensure the CSS hides the old overlay or we remove it from DOM in CSS phase.
+    if (drawerOverlay) {
+      // Optional: Hide legacy overlay explicitly just in case styles linger
+      drawerOverlay.style.display = 'none';
+    }
 
     // Menu item click handlers
     const menuButtons = drawerMenu.querySelectorAll('.nav-button');
     menuButtons.forEach(button => {
-      button.addEventListener('click', async () => {
+      button.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
         const target = button.getAttribute('data-target');
         const action = button.getAttribute('data-action');
 
@@ -628,8 +647,13 @@ const AppInit = {
         button.classList.add('active');
 
         // Close the drawer
-        drawerMenu.classList.remove('open');
-        drawerOverlay.classList.remove('active');
+        // Close the drawer
+        // Disabled for debugging: User reported "closes before selecting".
+        // import(sidebarManagerPath).then(module => {
+        //   module.default.close('drawer-menu');
+        // });
+        // Legacy cleanup
+        // drawerOverlay.classList.remove('active');
 
         // Execute the appropriate action
         if (target) {

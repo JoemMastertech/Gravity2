@@ -32,14 +32,14 @@ const ScreenManager = {
    */
   async transitionScreen(fromScreen, toScreen, logMessage) {
     Logger.info(logMessage);
-    
+
     // Start fade out
     if (fromScreen && fromScreen.classList) {
       fromScreen.classList.add('fade-out');
     }
-    
+
     await this.delay(DURATIONS.FADE);
-    
+
     // Switch screens
     if (fromScreen && fromScreen.classList) {
       fromScreen.classList.remove('screen-visible');
@@ -83,7 +83,7 @@ const ScreenManager = {
    */
   async loadInitialContent() {
     Logger.info('Loading initial content...');
-    
+
     try {
       const AppInit = window.AppInit;
       if (!AppInit || typeof AppInit.loadContent !== 'function') {
@@ -92,16 +92,16 @@ const ScreenManager = {
 
       // Small delay to ensure DOM is ready
       await this.delay(100);
-      
+
       Logger.info('Calling AppInit.loadContent("cocteleria")');
       await AppInit.loadContent('cocteleria');
       Logger.info('Welcome sequence completed successfully');
-      
+
     } catch (error) {
-        Logger.error('Error loading content:', error);
-        // Optionally show fallback content or error message
-        this.showErrorFallback(error);
-      }
+      Logger.error('Error loading content:', error);
+      // Optionally show fallback content or error message
+      this.showErrorFallback(error);
+    }
   },
 
   /**
@@ -127,7 +127,7 @@ const ScreenManager = {
    */
   async startWelcomeSequence() {
     Logger.info('Starting welcome sequence...');
-    
+
     try {
       // Validate all required elements
       const elements = this.validateScreenElements();
@@ -144,28 +144,28 @@ const ScreenManager = {
 
       // Step 2: Transition to logo screen
       await this.transitionScreen(
-        welcomeScreen, 
-        logoScreen, 
+        welcomeScreen,
+        logoScreen,
         '🔄 Transitioning from welcome to logo screen'
       );
-      
+
       Logger.info('Showing logo screen for', DURATIONS.LOGO, 'ms');
       await this.delay(DURATIONS.LOGO);
 
       // Step 3: Transition to category screen
       await this.transitionScreen(
-        logoScreen, 
-        categoryTitleScreen, 
+        logoScreen,
+        categoryTitleScreen,
         '🔄 Transitioning from logo to category screen'
       );
-      
+
       Logger.info('Showing category screen for', DURATIONS.CATEGORY, 'ms');
       await this.delay(DURATIONS.CATEGORY);
 
       // Step 4: Transition to main content
       await this.transitionScreen(
-        categoryTitleScreen, 
-        mainContentScreen, 
+        categoryTitleScreen,
+        mainContentScreen,
         '🔄 Transitioning to main content screen'
       );
 
@@ -180,12 +180,12 @@ const ScreenManager = {
 
       // Step 6: Load initial content
       await this.loadInitialContent();
-      
+
       // Step 7: Show top navigation bar after transitions complete
       await this.showTopNavigationBar();
-      
+
       Logger.info('Welcome sequence completed - Top navigation bar displayed');
-      
+
     } catch (error) {
       Logger.error('Error in welcome sequence:', error);
       // Ensure scrollbars are restored in case of error
@@ -199,24 +199,24 @@ const ScreenManager = {
    */
   async showTopNavigationBar() {
     Logger.info('Showing top navigation bar...');
-    
+
     try {
       const topNavBar = document.getElementById('top-nav-bar');
       const mainContentScreen = document.querySelector('.main-content-screen');
-      
+
       if (topNavBar) {
         // Add visible class to trigger animation
         topNavBar.classList.remove('top-nav-hidden');
         topNavBar.classList.add('top-nav-visible');
-        
+
         // Add padding to main content
         if (mainContentScreen) {
           mainContentScreen.classList.add('with-top-nav');
         }
-        
+
         // Add event listeners for navigation buttons
         this.attachTopNavEventListeners();
-        
+
         Logger.info('Top navigation bar displayed successfully');
       } else {
         Logger.warn('Top navigation bar element not found');
@@ -229,23 +229,13 @@ const ScreenManager = {
   /**
    * Attach event listeners to top navigation buttons
    */
+  /**
+   * Attach event listeners to top navigation buttons
+   * Deprecated: Logic moved to specific managers (SettingsManager, SidebarManager)
+   */
   attachTopNavEventListeners() {
-    const viewToggleBtn = document.getElementById('view-toggle-btn');
-    const settingsBtn = document.getElementById('settings-btn');
-    
-    if (viewToggleBtn) {
-      viewToggleBtn.addEventListener('click', () => {
-        Logger.info('View toggle button clicked');
-        this.handleViewToggle();
-      });
-    }
-    
-    if (settingsBtn) {
-      settingsBtn.addEventListener('click', () => {
-        Logger.info('Settings button clicked');
-        // Add settings functionality here
-      });
-    }
+    // Legacy cleanup: This method used to attach duplicate listeners.
+    // Now handled by individual component managers.
   },
 
   /**
@@ -256,23 +246,23 @@ const ScreenManager = {
       // Import ProductRenderer dynamically to avoid circular dependencies
       import('../components/product-table.js').then(module => {
         const ProductRenderer = module.default;
-        
+
         // Toggle the view mode
         const newMode = ProductRenderer.toggleViewMode();
-        
+
         // Update button appearance
         const viewToggleBtn = document.getElementById('view-toggle-btn');
         if (viewToggleBtn) {
           viewToggleBtn.textContent = newMode === 'table' ? '🔲' : '📋';
           viewToggleBtn.classList.toggle('active', newMode === 'grid');
         }
-        
+
         // Refresh the current view if there's content displayed
         const contentContainer = document.getElementById('content-container');
         if (contentContainer && contentContainer.children.length > 0) {
           ProductRenderer.refreshCurrentView(contentContainer);
         }
-        
+
         Logger.info(`View toggled to: ${newMode}`);
       }).catch(error => {
         Logger.error('Error importing ProductRenderer:', error);
@@ -287,7 +277,7 @@ const ScreenManager = {
    */
   skipToMainContent() {
     Logger.info('Skipping welcome sequence...');
-    
+
     const elements = this.validateScreenElements();
     if (!elements) return;
 

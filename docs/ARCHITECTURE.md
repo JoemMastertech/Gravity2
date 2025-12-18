@@ -188,6 +188,12 @@ sequenceDiagram
 - **Purpose**: Prevents "Deformed UI" on deployment by forcing CSS compilation before code leaves the local machine.
 - **Hook**: `.husky/pre-commit` -> `git add Shared/styles/main.css`.
 
+### ⚡ Developer Experience (DX)
+- **Concurrently**: 
+    - **Command**: `npm run dev`
+    - **Purpose**: Runs `vite` (App Server) and `sass --watch` (CSS Compiler) simultaneously in one terminal.
+    - **Benefit**: Real-time CSS updates without manual rebuilds.
+
 ### ☁️ Deployment Strategy (The CDN)
 - **Supabase JS**: Uses `esm.sh` (instead of jsdelivr) to ensure correct ESM bundling of complex dependencies (`AuthClient`).
 - **CSS**: Pre-compiled `main.css` linked in `index.html`.

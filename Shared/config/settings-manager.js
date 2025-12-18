@@ -66,19 +66,28 @@ class SettingsManager {
     else console.log(`SettingsManager: Found ${this.languageBtns.length} language buttons`);
 
     // Toggle settings menu
-    this.settingsBtn.addEventListener('click', () => {
+    this.settingsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
       this.toggleSettingsMenu();
-    });
-
-    // Close settings menu when clicking overlay
-    this.settingsOverlay.addEventListener('click', () => {
-      this.closeSettingsMenu();
     });
 
     // Close settings menu when clicking back button
     this.settingsBackBtn.addEventListener('click', () => {
       this.closeSettingsMenu();
     });
+
+    // Toggle settings menu
+    this.settingsBtn.addEventListener('click', () => {
+      this.toggleSettingsMenu();
+    });
+
+    // Close settings menu when clicking back button
+    this.settingsBackBtn.addEventListener('click', () => {
+      this.closeSettingsMenu();
+    });
+
+    // Note: Overlay click is now handled by SidebarManager globally.
 
     // Navigate to different panels
     this.languagesOption.addEventListener('click', () => {
@@ -111,14 +120,9 @@ class SettingsManager {
       this.languagesPanel.addEventListener('click', (e) => {
         const btn = e.target.closest('.language-btn');
         if (!btn) return;
-
-        console.log('SettingsManager: Language button clicked (delegated)', btn);
         const language = btn.getAttribute('data-lang');
-        console.log(`SettingsManager: Button has data-lang="${language}"`);
         this.changeLanguage(language);
       });
-    } else {
-      console.error('SettingsManager: languagesPanel not found for delegation');
     }
 
     // Theme selection
@@ -134,22 +138,36 @@ class SettingsManager {
   /**
    * Toggle the settings menu open/closed
    */
-  toggleSettingsMenu() {
-    this.settingsMenu.classList.toggle('open');
-    this.settingsOverlay.classList.toggle('active');
+  async toggleSettingsMenu() {
+    try {
+      const module = await import('../../Interfaces/web/ui-adapters/managers/SidebarManager.js');
+      const sidebarManager = module.default;
 
-    // If opening the menu, show the main panel
-    if (this.settingsMenu.classList.contains('open')) {
-      this.showPanel(this.mainPanel);
+      // Check current state via class check or manager?
+      // Manager toggle is safer
+      sidebarManager.toggle('settings-menu');
+
+      // If we just opened it, show main panel
+      setTimeout(() => {
+        if (this.settingsMenu.classList.contains('active') || this.settingsMenu.classList.contains('is-open')) {
+          this.showPanel(this.mainPanel);
+        }
+      }, 50);
+    } catch (err) {
+      console.error('SettingsManager: Failed to load SidebarManager', err);
     }
   }
 
   /**
    * Close the settings menu
    */
-  closeSettingsMenu() {
-    this.settingsMenu.classList.remove('open');
-    this.settingsOverlay.classList.remove('active');
+  async closeSettingsMenu() {
+    try {
+      const module = await import('../../Interfaces/web/ui-adapters/managers/SidebarManager.js');
+      module.default.close('settings-menu');
+    } catch (err) {
+      console.error('SettingsManager: Failed to load SidebarManager', err);
+    }
   }
 
   /**

@@ -35,14 +35,20 @@ Uses `tools/_mixins.scss` for responsive logic.
 | **Licores (Wide)** | `@include desktop-wide` | **5 Cols** | `var(--spacing-lg)` | - | Only for licores category |
 
 ### 2. La Tarjeta (Componente `.product-card`)
-- **Altura Imagen (Base):** `180px`.
-- **Altura Imagen (Móvil Land):** `140px` (Compact).
-- **Bordes:** `var(--radius-md)`.
-- **Padding Interno:** `clamp(15px, 1.8vw, 20px)` (Base) / `10px` (Móvil Land).
+**Architecture:** Uses `%card-shell` mixin (The Skeleton).
+- **Core Styles:** Shared border, shadow, transition, hover effect (Golden Glow).
+- **Altura Base:** `200px` (min).
+- **Twins Variant:**
+  - Standard: `min-height: 300px`, `object-fit: cover`.
+  - Liquor: `min-height: 200px` (variable), `object-fit: contain` (Bottles).
 
-### 3. Tipografía Grid
+### 3. Tipografía & Precios
 - **Título:** `.product-name` -> `1.1rem` (Bold 600).
-- **Precio:** `.price-button` -> `0.75rem` (Centralized).
+- **Precios (Unified Logic):**
+  - Renderizado por `_renderCardPrices` (JS Strategy Pattern).
+  - **Licores:** Alineación Vertical (Etiqueta + Botón).
+  - **Standard:** Flex Wrap Centered.
+  - **Estilo:** `.price-button` (Golden Standard).
 
 ---
 
@@ -53,10 +59,11 @@ Uses `tools/_mixins.scss` for responsive logic.
 
 ### 1. Estructura (Table Layout)
 - **Ancho:** 100% (Max 1400px).
-- **Estilo:** `border-collapse: separate` con `border-spacing: 0 10px` (Filas flotantes).
-- **El Contenedor Supremo (`%table-shell`):**
-  - Controla la simetría global.
-  - Hereda `padding: 15px 20px` a TODAS las celdas (Izquierda/Derecha balanceados).
+- **Estilo:** `border-collapse: separate` con `border-spacing` variable (ver Modifiers).
+- **El Esqueleto (`%table-core`):**
+  - Nuevo Mixin maestro que combate la duplicidad.
+  - Hereda `padding` y `text-align` centralizados.
+  - **Defensa de Títulos:** Protege `tr.title-row` de heredar bordes o estilos destructivos.
 
 ### 2. The Twins Architecture (Gemelos)
 Hemos separado el diseño en dos entidades distintas:
@@ -73,16 +80,34 @@ Diseñada para Licores, Cervezas, Refrescos (Impacto visual).
 - **Layout:** `fixed` (Control milimétrico).
 - **Ancho:** Compactado al 95% (Max 1080px).
 - **Imágenes:** `95px` (Grandes, aisladas).
-- **Precios:** "Ghost Grid" (Alineación perfecta de 2 columnas).
-| Configuración | Valor Actual (Code) | Notas |
-| :--- | :--- | :--- |
-| **Padding Celda** | `15px 20px` | **Simetría Natural** (Antes asimétrico) |
-| **Borde Inferior** | `2px solid` | Separador |
-| **Hover** | `rgba(0,0,0,0.4)` | Oscurecimiento |
 
-### 3. Elementos Internos
-- **Imagen Thumbnail:** `70px x 70px` (Cuadrada).
-- **Animación:** Glow `2s infinite`.
+### 3. Universal Optimizations (Grand Unification)
+*Features implementados en `Dec 15` para consistencia total.*
+
+#### A. El "Renglón" (Visual Separator)
+Todas las celdas (`td`) incluyen ahora un borde inferior sutil:
+- **Color:** `var(--border-color)` (Sincronizado con Tema).
+- **Grosor:** `1px` (Elegante).
+- **Excepción:** `tr.title-row` y `.compact` overrides.
+
+#### B. El Botón Dorado (`.price-button`)
+Estilo unificado para TODOS los precios (simples o múltiples).
+- **Visual:** Glassmorphism + Borde Dorado + Glow.
+- **Comportamiento Híbrido:**
+  - En tablas simples: Se centra (`margin: 0 auto`) y toma `75%` ancho.
+  - En grids (Alitas/Licores): Se alinea a la derecha (`justify-self: end`).
+
+#### C. The Ghost Grid (`.stacked-price-container`)
+Sistema universal para precios múltiples (Antes exclusivo de Licores).
+- Renderizado por `_createMultiPriceCell` (JS).
+- Alinea `Label (Izq)` vs `Button (Der)` perfectamente.
+- Usado ahora en: Licores, Alitas, Cervezas.
+
+#### D. Calibración de Spacing
+- **Padding Vertical:** `18px` (Reducido de 25px para balance).
+- **Modifiers:**
+  - `.table-compact`: `10px` spacing (Ideal para Alitas).
+  - `.table-spacious`: `20px` spacing (Standard Food).
 
 ### ⚠️ Zona de Conflicto (Overrides Móviles)
 **Source:** `_view-table.scss` -> `@mixin nuclear-mobile`

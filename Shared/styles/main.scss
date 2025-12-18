@@ -22,13 +22,14 @@
 @import "components/modals";
 @import "components/forms.css";
 @import "components/lists.css";
-@import "components/sidebar";
+
 @import "components/header";
 @import "components/orders";
 @import "components/drink-options.css";
 
 /* 6. Layout & Utilities */
 @import "layout/containers";
+@import "layout/sidebars";
 @import "layout/navigation.css";
 @import "utilities/display.css";
 @import "utilities/responsive";

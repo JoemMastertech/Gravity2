@@ -53,12 +53,9 @@
         margin-left: auto;
         margin-right: auto;
     }
-
-    /* Legacy "Squish" Protocol */
-    @include mobile-portrait {
-        // Only if needed specific overrides not covered by default 2 col
-    }
 }
+
+
 
 /* 2. Category Grid (Licores Special) */
 .category-grid {
@@ -88,8 +85,9 @@
 }
 
 /* 3. The Card Component */
-.category-card,
-.product-card {
+/* 3. The Card Component */
+/* --- 3.1 CARD SHELL (The Skeleton) --- */
+%card-shell {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -100,8 +98,6 @@
     gap: var(--spacing-sm);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    min-height: 200px;
-    /* Base */
     justify-content: center;
     position: relative;
     overflow: hidden;
@@ -113,8 +109,15 @@
         box-shadow: 0 5px 20px var(--price-color);
     }
 
-    /* Staggered Animation Logic (Robust System) */
+    /* Staggered Animation Logic */
     @include stagger-children(20, 0.05s);
+}
+
+.category-card,
+.product-card {
+    @extend %card-shell;
+    /* Base height logic */
+    min-height: 200px;
 }
 
 .product-card {
@@ -238,13 +241,14 @@
         height: auto;
     }
 
+    /* Liquor Price Layout (Columnar) */
     .product-prices {
-        display: flex;
+        /* Override default flex-wrap center */
         flex-direction: column;
         gap: clamp(3px, 1.5%, 8px);
-        width: 100%;
         min-height: clamp(75px, 25%, 140px);
         justify-content: space-between;
+        flex-wrap: nowrap;
     }
 
     .price-item {
@@ -256,6 +260,10 @@
         .price-label {
             font-size: clamp(0.55rem, 3% + 0.1rem, 0.8rem);
             min-width: clamp(35px, 20%, 60px);
+            text-align: left;
+            /* Ensure alignment */
+            color: var(--text-color);
+            font-weight: 500;
         }
 
         .price-button {
@@ -263,6 +271,7 @@
             font-size: 0.75rem;
             min-width: 50px;
             flex: 1;
+            /* Reset specific overrides if needed */
         }
     }
 }
@@ -301,32 +310,4 @@
         color: var(--color-black);
         box-shadow: 0 0 10px var(--accent-color);
     }
-}
-
-/* Subcategory Prompt */
-.subcategory-prompt {
-    grid-column: 1 / -1;
-    text-align: center;
-    margin-top: 20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    color: var(--text-color);
-    opacity: 0.8;
-}
-
-/* BEM Helpers (from cards.css) - kept for compatibility if HTML uses them */
-.product {
-    @extend .product-card;
-}
-
-.product__title {
-    @extend .product-name;
-}
-
-.product__image {
-    @extend .product-image;
-}
-
-.product__ingredients {
-    @extend .product-ingredients;
 }

@@ -124,9 +124,7 @@
     margin-right: auto;
   }
 }
-.product-grid {
-  /* Legacy "Squish" Protocol */
-}
+
 /* 2. Category Grid (Licores Special) */
 .category-grid {
   display: grid;
@@ -157,9 +155,10 @@
 }
 
 /* 3. The Card Component */
+/* 3. The Card Component */
+/* --- 3.1 CARD SHELL (The Skeleton) --- */
 .category-card,
-.product-card,
-.product {
+.product-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -170,24 +169,20 @@
   gap: var(--spacing-sm);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  min-height: 200px;
-  /* Base */
   justify-content: center;
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 10px var(--border-color);
 }
 .category-card:hover,
-.product-card:hover,
-.product:hover {
+.product-card:hover {
   transform: translateY(-5px);
   border-color: var(--accent-color);
   box-shadow: 0 5px 20px var(--price-color);
 }
 .category-card,
-.product-card,
-.product {
-  /* Staggered Animation Logic (Robust System) */
+.product-card {
+  /* Staggered Animation Logic */
   /* Base State: Invisible */
   opacity: 0;
   /* Action: Enter smoothly */
@@ -195,127 +190,113 @@
   /* The Loop (Choreography) */
 }
 .category-card:nth-child(1),
-.product-card:nth-child(1),
-.product:nth-child(1) {
+.product-card:nth-child(1) {
   animation-delay: 0.1s;
 }
 .category-card:nth-child(2),
-.product-card:nth-child(2),
-.product:nth-child(2) {
+.product-card:nth-child(2) {
   animation-delay: 0.15s;
 }
 .category-card:nth-child(3),
-.product-card:nth-child(3),
-.product:nth-child(3) {
+.product-card:nth-child(3) {
   animation-delay: 0.2s;
 }
 .category-card:nth-child(4),
-.product-card:nth-child(4),
-.product:nth-child(4) {
+.product-card:nth-child(4) {
   animation-delay: 0.25s;
 }
 .category-card:nth-child(5),
-.product-card:nth-child(5),
-.product:nth-child(5) {
+.product-card:nth-child(5) {
   animation-delay: 0.3s;
 }
 .category-card:nth-child(6),
-.product-card:nth-child(6),
-.product:nth-child(6) {
+.product-card:nth-child(6) {
   animation-delay: 0.35s;
 }
 .category-card:nth-child(7),
-.product-card:nth-child(7),
-.product:nth-child(7) {
+.product-card:nth-child(7) {
   animation-delay: 0.4s;
 }
 .category-card:nth-child(8),
-.product-card:nth-child(8),
-.product:nth-child(8) {
+.product-card:nth-child(8) {
   animation-delay: 0.45s;
 }
 .category-card:nth-child(9),
-.product-card:nth-child(9),
-.product:nth-child(9) {
+.product-card:nth-child(9) {
   animation-delay: 0.5s;
 }
 .category-card:nth-child(10),
-.product-card:nth-child(10),
-.product:nth-child(10) {
+.product-card:nth-child(10) {
   animation-delay: 0.55s;
 }
 .category-card:nth-child(11),
-.product-card:nth-child(11),
-.product:nth-child(11) {
+.product-card:nth-child(11) {
   animation-delay: 0.6s;
 }
 .category-card:nth-child(12),
-.product-card:nth-child(12),
-.product:nth-child(12) {
+.product-card:nth-child(12) {
   animation-delay: 0.65s;
 }
 .category-card:nth-child(13),
-.product-card:nth-child(13),
-.product:nth-child(13) {
+.product-card:nth-child(13) {
   animation-delay: 0.7s;
 }
 .category-card:nth-child(14),
-.product-card:nth-child(14),
-.product:nth-child(14) {
+.product-card:nth-child(14) {
   animation-delay: 0.75s;
 }
 .category-card:nth-child(15),
-.product-card:nth-child(15),
-.product:nth-child(15) {
+.product-card:nth-child(15) {
   animation-delay: 0.8s;
 }
 .category-card:nth-child(16),
-.product-card:nth-child(16),
-.product:nth-child(16) {
+.product-card:nth-child(16) {
   animation-delay: 0.85s;
 }
 .category-card:nth-child(17),
-.product-card:nth-child(17),
-.product:nth-child(17) {
+.product-card:nth-child(17) {
   animation-delay: 0.9s;
 }
 .category-card:nth-child(18),
-.product-card:nth-child(18),
-.product:nth-child(18) {
+.product-card:nth-child(18) {
   animation-delay: 0.95s;
 }
 .category-card:nth-child(19),
-.product-card:nth-child(19),
-.product:nth-child(19) {
+.product-card:nth-child(19) {
   animation-delay: 1s;
 }
 .category-card:nth-child(20),
-.product-card:nth-child(20),
-.product:nth-child(20) {
+.product-card:nth-child(20) {
   animation-delay: 1.05s;
 }
 
-.product-card, .product {
+.category-card,
+.product-card {
+  /* Base height logic */
+  min-height: 200px;
+}
+
+.product-card {
   min-height: clamp(300px, 35vh, 400px);
   height: auto;
   padding: clamp(15px, 1.8vw, 20px);
   gap: clamp(10px, 1.2vw, 15px);
 }
 @media (max-width: 768px) and (orientation: landscape) {
-  .product-card, .product {
+  .product-card {
     min-height: 250px;
     /* More compact */
     padding: 10px;
     gap: 8px;
   }
-  .product-card .product-image, .product-card .product__image, .product .product-image, .product .product__image {
+  .product-card .product-image {
     height: 140px;
     /* Squatter image */
   }
 }
 
 /* Card Elements */
-.product-name, .product__title,
+.product-name,
 .category-name {
   font-family: "Montserrat", sans-serif;
   color: var(--text-color);
@@ -332,7 +313,7 @@
   letter-spacing: 1px;
 }
 
-.product-name, .product__title {
+.product-name {
   order: 1;
   /* Level 1: Fixed space */
   height: clamp(1.92rem, 2.88vw + 0.8rem, 2.56rem);
@@ -346,7 +327,7 @@
 }
 
 /* Ingredients */
-.product-ingredients, .product__ingredients {
+.product-ingredients {
   font-size: 0.9rem;
   color: var(--color-gray-400);
   /* or text-color/opacity */
@@ -374,7 +355,7 @@
   margin-bottom: 15px;
 }
 
-.product-image, .product__image,
+.product-image,
 .video-thumbnail,
 .category-image {
   width: 100%;
@@ -394,7 +375,7 @@
 }
 
 /* Licores Special Logic */
-.product-card.liquor-card .product-name, .product-card.liquor-card .product__title, .liquor-card.product .product-name, .liquor-card.product .product__title {
+.product-card.liquor-card .product-name {
   /* Larger font, no truncation */
   font-size: clamp(0.63rem, 1.35vw + 0.375rem, 0.9rem);
   line-height: clamp(1.15, 1.8vw + 0.9rem, 1.35);
@@ -402,39 +383,47 @@
   height: clamp(1.62rem, 2.16vw + 0.864rem, 2.376rem);
   min-height: unset;
 }
-.product-card.liquor-card .product-image, .product-card.liquor-card .product__image, .liquor-card.product .product-image, .liquor-card.product .product__image {
+.product-card.liquor-card .product-image {
   height: clamp(120px, 15vw + 2vh, 200px);
   width: 100%;
   object-fit: contain;
   background: white;
 }
-.product-card.liquor-card .product-media, .liquor-card.product .product-media {
+.product-card.liquor-card .product-media {
   min-height: clamp(120px, 15vw + 2vh, 200px);
   height: auto;
 }
-.product-card.liquor-card .product-prices, .liquor-card.product .product-prices {
-  display: flex;
+.product-card.liquor-card {
+  /* Liquor Price Layout (Columnar) */
+}
+.product-card.liquor-card .product-prices {
+  /* Override default flex-wrap center */
   flex-direction: column;
   gap: clamp(3px, 1.5%, 8px);
-  width: 100%;
   min-height: clamp(75px, 25%, 140px);
   justify-content: space-between;
+  flex-wrap: nowrap;
 }
-.product-card.liquor-card .price-item, .liquor-card.product .price-item {
+.product-card.liquor-card .price-item {
   display: flex;
   align-items: center;
   gap: clamp(4px, 2%, 10px);
   width: 100%;
 }
-.product-card.liquor-card .price-item .price-label, .liquor-card.product .price-item .price-label {
+.product-card.liquor-card .price-item .price-label {
   font-size: clamp(0.55rem, 3% + 0.1rem, 0.8rem);
   min-width: clamp(35px, 20%, 60px);
+  text-align: left;
+  /* Ensure alignment */
+  color: var(--text-color);
+  font-weight: 500;
 }
-.product-card.liquor-card .price-item .price-button, .liquor-card.product .price-item .price-button {
+.product-card.liquor-card .price-item .price-button {
   padding: 4px 8px;
   font-size: 0.75rem;
   min-width: 50px;
   flex: 1;
+  /* Reset specific overrides if needed */
 }
 
 /* Price Buttons (Standard) */
@@ -471,18 +460,6 @@
   box-shadow: 0 0 10px var(--accent-color);
 }
 
-/* Subcategory Prompt */
-.subcategory-prompt {
-  grid-column: 1/-1;
-  text-align: center;
-  margin-top: 20px;
-  font-family: "Playfair Display", serif;
-  font-size: 1.5rem;
-  color: var(--text-color);
-  opacity: 0.8;
-}
-
-/* BEM Helpers (from cards.css) - kept for compatibility if HTML uses them */
 /* =============================================================================
    🎛️ PANEL B: TABLE VIEW (Listas)
    Source: _tables.scss
@@ -568,7 +545,7 @@
   text-align: left;
   padding-left: 10px;
 }
-.liquor-table td.product-name, .standard-table td.product-name, .liquor-table td.product__title, .standard-table td.product__title {
+.liquor-table td.product-name, .standard-table td.product-name {
   font: 600 1rem "Montserrat", sans-serif;
   color: var(--primary-color);
   letter-spacing: 0.5px;
@@ -689,7 +666,7 @@
 .liquor-table, .standard-table {
   /* --- PRODUCT NAME RESET (Shared) --- */
 }
-.liquor-table td.product-name, .standard-table td.product-name, .liquor-table td.product__title, .standard-table td.product__title {
+.liquor-table td.product-name, .standard-table td.product-name {
   display: table-cell;
   height: auto;
   max-height: none;
@@ -863,7 +840,7 @@
   .standard-table td:nth-child(2) {
     padding: 0 10px;
   }
-  .standard-table td.product-name, .standard-table td.product__title {
+  .standard-table td.product-name {
     font-size: 0.8rem;
   }
 }
@@ -1579,7 +1556,7 @@
   backdrop-filter: blur(10px);
 }
 
-.price-selection-mode .price-button:not(.product-grid .product-card.liquor-card .price-button):not(.product-grid .liquor-card.product .price-button) {
+.price-selection-mode .price-button:not(.product-grid .product-card.liquor-card .price-button) {
   transform: scale(1.02);
   box-shadow: 0 0 15px var(--price-color);
 }
@@ -1634,270 +1611,6 @@
     width: 80%;
   }
 }
-/* ==========================================================================
-   Component: Order Sidebar
-   ========================================================================== */
-.order-sidebar {
-  /* Base Layout (Desktop/Default) */
-  position: fixed;
-  top: 90px;
-  right: 20px;
-  width: 264px;
-  height: auto;
-  max-height: 70vh;
-  padding: 15px;
-  background: var(--card-bg, #fff);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--glow-shadow);
-  z-index: 900;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: none;
-  /* Hidden by default, toggled by .active */
-  flex-direction: column;
-  transition: all 0.3s ease;
-  /* State: Open */
-}
-.order-sidebar.active, .order-sidebar.is-open {
-  display: flex;
-}
-.order-sidebar {
-  /* Legacy JS Support */
-}
-body.order-mode-active .order-sidebar {
-  display: flex;
-}
-.order-sidebar {
-  /* --- Tablet Portrait Override (Migrated from legacy media-queries.css) --- */
-}
-@media (min-width: 481px) and (max-width: 1024px) and (orientation: portrait) and (orientation: portrait) and (max-width: 1024px) {
-  .order-sidebar {
-    /* Reset desktop positioning */
-    top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    /* Full width bottom sheet */
-    width: 100vw;
-    height: auto;
-    max-height: 50vh;
-    min-height: 200px;
-    border-radius: 15px 15px 0 0;
-    border-top: 2px solid var(--border-color);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-    padding: 16px;
-    margin: 0;
-    /* Animation state (Hidden) */
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-    /* Animation state (Active) */
-  }
-  .order-sidebar.active, .order-sidebar.is-open {
-    transform: translateY(0);
-    display: flex;
-    visibility: visible;
-    pointer-events: auto;
-  }
-}
-.order-sidebar {
-  /* --- Mobile Override (Migrated from sidebar.css) --- */
-  /* --- Mobile Override (Standardized Media Query) --- */
-}
-@media (max-width: 768px) {
-  .order-sidebar {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    top: auto !important;
-    /* Force override of top: 90px */
-    height: 42vh;
-    max-height: none;
-    border-radius: 20px 20px 0 0;
-    display: flex;
-    flex-direction: column;
-    transform: translateY(105%);
-    /* Hide initially */
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-  }
-  .order-sidebar.active, .order-sidebar.is-open {
-    transform: translateY(0);
-  }
-  .order-sidebar {
-    /* NESTED FLEX REPAIR for #order-content Wrapper */
-  }
-  .order-sidebar #order-content {
-    flex: 1 1 0px;
-    /* Grow to fill space above footer */
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    /* Allow shrinking */
-    overflow: hidden;
-  }
-  .order-sidebar .order-sidebar__header {
-    flex: 0 0 auto;
-    text-align: center;
-    padding: 10px;
-  }
-  .order-sidebar .order-sidebar__items {
-    flex: 1 1 auto;
-    /* Scrollable area */
-    overflow-y: auto;
-    min-height: 0;
-    padding: 10px;
-    /* Reduced padding to fit columns */
-    overscroll-behavior: contain;
-    /* 2-Column Grid Layout */
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    align-content: start;
-  }
-  .order-sidebar {
-    /* Pin Footer to Bottom */
-  }
-  .order-sidebar .order-total,
-  .order-sidebar .order-actions {
-    flex: 0 0 auto;
-    z-index: 10;
-    background: inherit;
-    /* Maintain opacity/blur if any */
-  }
-}
-
-/* =================================================================
-   RESCUED LEGACY LOGIC (Details & Components)
-   Migrated from media-queries.css
-   ================================================================= */
-/* =================================================================
-   MIGRATED ORDER ITEMS (from legacy sidebar.css)
-   ================================================================= */
-.order-item {
-  border-bottom: 1px solid var(--border-color);
-  padding: 10px 0;
-  margin-bottom: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-.order-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-.order-item-name {
-  font-weight: 600;
-  color: var(--primary-color);
-  margin-bottom: 5px;
-  width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  font-size: 0.9rem;
-}
-.order-item-price {
-  color: var(--price-color);
-  font-weight: 500;
-  white-space: nowrap;
-  font-size: 0.85rem;
-}
-.order-item-customization {
-  color: var(--color-gray-400);
-  font-size: 0.85rem;
-  font-style: italic;
-  margin-top: 5px;
-  width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-}
-
-.remove-order-item {
-  font-size: 0.9rem;
-  margin-left: 5px;
-  background: transparent;
-  border: none;
-  color: var(--color-error);
-  cursor: pointer;
-  padding: 4px;
-}
-.remove-order-item:hover {
-  opacity: 0.8;
-}
-
-.order-total {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 2px solid var(--border-color);
-  flex-shrink: 0;
-}
-.order-total h4 {
-  font: 1.2rem "Montserrat", sans-serif;
-  color: var(--price-color);
-  text-align: right;
-  margin: 0;
-}
-
-.order-actions {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  width: 100%;
-  box-sizing: border-box;
-  flex-direction: row;
-  flex-shrink: 0;
-}
-.order-actions .nav-button {
-  flex: 1;
-  min-width: 0;
-  padding: 10px 8px;
-  font-size: 0.9rem;
-  text-align: center;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
-/* Settings Sidebar (Legacy Adaptation) */
-.settings-menu {
-  /* Fallback for raw values or unknown names */
-}
-@media (max-width: mobile) {
-  .settings-menu {
-    width: 240px;
-    right: -240px;
-  }
-  .settings-menu.open {
-    right: 0;
-  }
-}
-@media (max-width: 768px) {
-  .settings-menu {
-    width: 250px;
-    right: -250px;
-  }
-  .settings-menu.open {
-    right: 0;
-  }
-}
-
-.settings-title {
-  /* Fallback for raw values or unknown names */
-}
-@media (max-width: mobile) {
-  .settings-title {
-    font-size: 1rem;
-    margin: 8px 0 15px 0;
-  }
-}
-
 /* ==========================================================================
    Component: Header
    ========================================================================== */
@@ -2077,15 +1790,6 @@ body.order-mode-active .order-sidebar {
   transition: padding-right 0.3s ease;
   /* Smooth layout shift */
   box-sizing: border-box;
-  /* --- LAYOUT SHIFT LOGIC (Hit #3) --- */
-}
-.app-container .content-wrapper.with-sidebar {
-  /* 
-    When JS detects sidebar is open in Landscape:
-    Add padding equal to Sidebar Width (264px) + Gap (~36px) = 300px.
-    This forces content to shrink, preventing overlap on ANY screen.
-  */
-  padding-right: 300px;
 }
 .app-container {
   /* Content Container */
@@ -2282,6 +1986,449 @@ body.order-mode-active .order-sidebar {
   animation: fadeIn 1s ease-out forwards;
 }
 
+/* ==========================================================================
+   Layout: Universal Sidebar System
+   ========================================================================== */
+/* 1. The Unified Overlay (Backdrop) */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+  display: none;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 2. Desktop Grid Logic (Legacy Restoration) */
+/* 2. Desktop Grid Logic (Legacy Restoration) */
+/* Activate Grid when Order Sidebar is Active (using :has for reliability) */
+@media (min-width: 1024px) {
+  body:has(#order-sidebar.active) .app-container,
+  body:has(.order-sidebar.is-open) .app-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 30px;
+    /* Reduced to 30px (10px Visual Gap) */
+    /* Separation between Content and Sidebar */
+    max-width: 100%;
+    width: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Ensure content wrapper fits in the grid cell */
+  }
+  body:has(#order-sidebar.active) .app-container .content-wrapper,
+  body:has(.order-sidebar.is-open) .app-container .content-wrapper {
+    padding-right: 20px !important;
+    width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+/* 3. The Sidebar Shell (Mixin) */
+#order-sidebar,
+.order-sidebar, #drawer-menu,
+.drawer-menu {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.9);
+  /* Legacy Dark Glass */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--glow-shadow);
+  z-index: 2000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* Active State (Unified) */
+}
+.active#order-sidebar,
+.active.order-sidebar, .active#drawer-menu,
+.active.drawer-menu, .is-open#order-sidebar,
+.is-open.order-sidebar, .is-open#drawer-menu,
+.is-open.drawer-menu {
+  transform: translate(0, 0);
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* 4. Components */
+/* A. Navigation Drawer (Left) */
+#drawer-menu,
+.drawer-menu {
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  border-right: 1px solid var(--border-color);
+  border-left: none;
+  transform: translateX(-100%);
+}
+@media (max-width: 480px) and (orientation: portrait) {
+  #drawer-menu,
+  .drawer-menu {
+    width: 80vw;
+  }
+}
+#drawer-menu,
+.drawer-menu {
+  /* Internal Layout */
+}
+#drawer-menu .drawer-content,
+.drawer-menu .drawer-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+#drawer-menu .drawer-logo-container,
+.drawer-menu .drawer-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+#drawer-menu .drawer-logo,
+.drawer-menu .drawer-logo {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
+  display: block;
+}
+#drawer-menu .drawer-footer,
+.drawer-menu .drawer-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  opacity: 0.8;
+  font-style: italic;
+}
+#drawer-menu,
+.drawer-menu {
+  /* Button Styles (Specific to Drawer) */
+}
+#drawer-menu .nav-button,
+.drawer-menu .nav-button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font: 700 0.77rem "Playfair Display", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  border: 1.4px solid var(--border-color);
+  box-shadow: var(--glow-shadow);
+  background: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+#drawer-menu .nav-button:hover, #drawer-menu .nav-button.active,
+.drawer-menu .nav-button:hover,
+.drawer-menu .nav-button.active {
+  transform: translateX(5px);
+  background-color: transparent;
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+}
+
+/* B. Settings Menu (Right) */
+.settings-menu {
+  border-right: none;
+  border-left: 1px solid var(--border-color);
+  left: auto !important;
+  right: 0;
+  transform: translateX(100%);
+}
+.settings-menu.active, .settings-menu.is-open {
+  transform: translateX(0);
+}
+.settings-menu {
+  /* Settings Internal Layout */
+}
+.settings-menu .settings-panel {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.settings-menu .back-button {
+  margin: 0 auto;
+  display: block;
+}
+
+/* Shared Button Styles (Settings/Theme) */
+.language-btn,
+.theme-btn {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font: 700 0.77rem "Playfair Display", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  border: 1.4px solid var(--border-color);
+  box-shadow: var(--glow-shadow);
+  background: transparent;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+.language-btn:hover,
+.theme-btn:hover {
+  transform: translateX(5px);
+  background-color: transparent;
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+}
+
+/* C. Order Sidebar (Right/Bottom) */
+#order-sidebar,
+.order-sidebar {
+  /* Legacy/Floating Positioning */
+  top: 110px;
+  /* Below top nav */
+  right: 20px !important;
+  /* Floating effect (margin right) */
+  height: auto !important;
+  /* Grow with content */
+  max-height: 80vh;
+  /* Don't overflow screen */
+  width: 300px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  /* Fully rounded */
+  transform: translateX(120%);
+  /* Hide off-screen */
+  display: flex !important;
+  background: rgba(0, 0, 0, 0.6);
+  /* Less intense background */
+  padding: 20px;
+  /* Global Padding (sides + bottom) to fix "stuck" text and button cutoff */
+  padding-top: 10px;
+  /* Smaller top padding as header has margin */
+  box-sizing: border-box;
+}
+@media (min-width: 1024px) {
+  #order-sidebar.active, #order-sidebar.is-open,
+  .order-sidebar.active,
+  .order-sidebar.is-open {
+    transform: none;
+    right: 20px !important;
+    opacity: 1;
+    visibility: visible !important;
+  }
+}
+#order-sidebar,
+.order-sidebar {
+  /* Mobile/Tablet Overrides */
+}
+@media (max-width: 1024px) {
+  #order-sidebar,
+  .order-sidebar {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    max-height: 60vh;
+    top: auto;
+    bottom: 0;
+    right: 0 !important;
+    left: 0;
+    border-radius: 20px 20px 0 0;
+    margin: 0;
+    transform: translateY(100%);
+    padding: 15px;
+    /* Mobile safe padding */
+  }
+  #order-sidebar.active, #order-sidebar.is-open,
+  .order-sidebar.active,
+  .order-sidebar.is-open {
+    transform: translateY(0);
+  }
+}
+#order-sidebar,
+.order-sidebar {
+  /* Internal Components (Legacy Styles Restored) */
+}
+#order-sidebar .drawer-title,
+.order-sidebar .drawer-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+#order-sidebar .order-items-scroll,
+.order-sidebar .order-items-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Remove gap if using borders */
+  padding-right: 5px;
+  /* Custom Scrollbar */
+}
+#order-sidebar .order-items-scroll::-webkit-scrollbar,
+.order-sidebar .order-items-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+#order-sidebar .order-items-scroll::-webkit-scrollbar-track,
+.order-sidebar .order-items-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+#order-sidebar .order-items-scroll::-webkit-scrollbar-thumb,
+.order-sidebar .order-items-scroll::-webkit-scrollbar-thumb {
+  background: var(--price-color);
+  border-radius: 4px;
+}
+#order-sidebar .order-item,
+.order-sidebar .order-item {
+  /* Removed "Button-like" styles (background/border) */
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Separator */
+  border-radius: 0;
+  padding: 12px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* Legacy Internal Styles */
+}
+#order-sidebar .order-item .order-item-header,
+.order-sidebar .order-item .order-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+#order-sidebar .order-item .order-item-name,
+.order-sidebar .order-item .order-item-name {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+  width: 100%;
+  word-wrap: break-word;
+  hyphens: auto;
+  font-size: 0.9rem;
+}
+#order-sidebar .order-item .order-item-price,
+.order-sidebar .order-item .order-item-price {
+  color: var(--price-color);
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+#order-sidebar .order-item .order-item-customization,
+.order-sidebar .order-item .order-item-customization {
+  color: var(--color-gray-400);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 5px;
+  width: 100%;
+}
+#order-sidebar .order-item,
+.order-sidebar .order-item {
+  /* The Red "X" (Legacy .remove-order-item) */
+}
+#order-sidebar .order-item .remove-btn,
+#order-sidebar .order-item .remove-order-item,
+.order-sidebar .order-item .remove-btn,
+.order-sidebar .order-item .remove-order-item {
+  font-size: 0.9rem;
+  margin-left: 5px;
+  background: transparent;
+  border: none;
+  color: var(--color-error, #ff4d4d);
+  cursor: pointer;
+  padding: 4px;
+}
+#order-sidebar .order-item .remove-btn:hover,
+#order-sidebar .order-item .remove-order-item:hover,
+.order-sidebar .order-item .remove-btn:hover,
+.order-sidebar .order-item .remove-order-item:hover {
+  opacity: 0.8;
+}
+#order-sidebar .order-summary,
+.order-sidebar .order-summary {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid var(--border-color);
+  flex-shrink: 0;
+}
+#order-sidebar .order-summary .total-row,
+.order-sidebar .order-summary .total-row {
+  display: flex;
+  justify-content: space-between;
+}
+#order-sidebar .order-summary .total-row h4,
+#order-sidebar .order-summary .total-row span,
+.order-sidebar .order-summary .total-row h4,
+.order-sidebar .order-summary .total-row span {
+  font: 1.2rem "Montserrat", sans-serif;
+  color: var(--price-color);
+  text-align: right;
+  margin: 0;
+}
+#order-sidebar,
+.order-sidebar {
+  /* Legacy Order Actions Structure */
+}
+#order-sidebar .order-actions,
+.order-sidebar .order-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+#order-sidebar .order-actions .nav-button,
+.order-sidebar .order-actions .nav-button {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* User Requirement: White Outline & Text */
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+}
+#order-sidebar .order-actions .nav-button:hover,
+.order-sidebar .order-actions .nav-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--price-color);
+  color: var(--price-color);
+}
+
+/* End #order-sidebar */
 /* ==========================================================================
    Responsive Utilities (The Output)
    ========================================================================== */

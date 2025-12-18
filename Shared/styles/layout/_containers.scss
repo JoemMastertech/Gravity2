@@ -72,15 +72,7 @@
         /* Smooth layout shift */
         box-sizing: border-box;
 
-        /* --- LAYOUT SHIFT LOGIC (Hit #3) --- */
-        &.with-sidebar {
-            /* 
-       When JS detects sidebar is open in Landscape:
-       Add padding equal to Sidebar Width (264px) + Gap (~36px) = 300px.
-       This forces content to shrink, preventing overlap on ANY screen.
-     */
-            padding-right: 300px;
-        }
+
     }
 
     /* Content Container */

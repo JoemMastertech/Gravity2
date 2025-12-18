@@ -592,9 +592,7 @@ const ProductRenderer = {
     }
     card.appendChild(mediaContainer);
 
-    // Prices container
-    const pricesContainer = document.createElement('div');
-    pricesContainer.className = 'product-prices';
+
 
     // Check if this is a liquor subcategory
     const liquorCategories = ['whisky', 'tequila', 'ron', 'vodka', 'ginebra', 'mezcal', 'cognac', 'brandy', 'digestivos', 'espumosos'];
@@ -608,90 +606,96 @@ const ProductRenderer = {
       card.classList.add('variant-card');
     }
 
-    // Price labels mapping for liquors
-    const priceLabels = {
-      'precioBotella': 'Botella',
-      'precioLitro': 'Litro',
-      'precioCopa': 'Copa'
-    };
+    // --- PRICES RENDER LOGIC (Unified) ---
+    const pricesContainer = document.createElement('div');
+    pricesContainer.className = 'product-prices';
 
-    // Add price buttons based on available fields
-    fields.forEach(field => {
-      if (field.includes('precio') || field === 'precioBotella' || field === 'precioLitro' || field === 'precioCopa') {
-        const priceValue = item[field];
-        if (priceValue && priceValue !== '--') {
-          if (isLiquorCategory && priceLabels[field]) {
-            // Create price item container for liquors
-            const priceItem = document.createElement('div');
-            priceItem.className = 'price-item';
-
-            // Create price label
-            const priceLabel = document.createElement('span');
-            priceLabel.className = 'price-label';
-            priceLabel.textContent = priceLabels[field] + ':';
-            const plKey = `price-label_${simpleHash((priceLabels[field] + ':').trim())}`;
-            priceLabel.setAttribute('data-translate', plKey);
-            priceLabel.setAttribute('data-namespace', 'products');
-            priceLabel.setAttribute('data-original-text', (priceLabels[field] + ':'));
-            priceItem.appendChild(priceLabel);
-
-            // Create price button
-            const priceButton = document.createElement('button');
-            priceButton.className = 'price-button';
-            // Add $ symbol for liquor subcategories
-            const formattedPrice = formatPrice(priceValue);
-            priceButton.textContent = formattedPrice;
-            priceButton.dataset.productName = item.nombre;
-            priceButton.dataset.price = priceValue;
-            priceButton.dataset.field = field;
-
-            // No individual event listener - handled by delegation
-
-            priceItem.appendChild(priceButton);
-            pricesContainer.appendChild(priceItem);
-          } else if (field.includes('_piezas')) {
-            // Logic for Alitas/Food variants (e.g. precio_10_piezas)
-            const pieces = field.replace('precio_', '').replace('_piezas', '');
-            const labelText = `${pieces} piezas`;
-
-            const priceItem = document.createElement('div');
-            priceItem.className = 'price-item';
-
-            const priceLabel = document.createElement('span');
-            priceLabel.className = 'price-label';
-            priceLabel.textContent = labelText + ':';
-
-            priceItem.appendChild(priceLabel);
-
-            const priceButton = document.createElement('button');
-            priceButton.className = 'price-button';
-            priceButton.textContent = formatPrice(priceValue);
-            priceButton.dataset.productName = item.nombre;
-            priceButton.dataset.price = priceValue;
-            priceButton.dataset.field = field;
-
-            priceItem.appendChild(priceButton);
-            pricesContainer.appendChild(priceItem);
-          } else {
-            // Regular price button for non-liquor categories
-            const priceButton = document.createElement('button');
-            priceButton.className = 'price-button';
-            // Fix: Format price for standard items (Refrescos, Cervezas, Platos, etc.)
-            priceButton.textContent = formatPrice(priceValue);
-            priceButton.dataset.productName = item.nombre;
-            priceButton.dataset.price = priceValue;
-            priceButton.dataset.field = field;
-
-            // No individual event listener - handled by delegation
-
-            pricesContainer.appendChild(priceButton);
-          }
-        }
-      }
-    });
+    // Helper to render prices based on strategy
+    this._renderCardPrices(pricesContainer, item, fields, isLiquorCategory, normalizedCategory);
 
     card.appendChild(pricesContainer);
     return card;
+  },
+
+  /**
+   * Helper: Renders prices in card view using config strategy
+   */
+  _renderCardPrices: function (container, item, fields, isLiquor, categoryName) {
+    /* Strategy Logic: 
+       1. Liquor: Vertical stack with labels (Botella: $X)
+       2. Alitas/Pizzas: Variant buttons (10 pzas: $X)
+       3. Standard: Single or simple buttons ($X)
+    */
+
+    // A. LIQUOR STRATEGY
+    if (isLiquor) {
+      const liquorConfig = [
+        { key: 'precioBotella', label: 'Botella' },
+        { key: 'precioLitro', label: 'Litro' },
+        { key: 'precioCopa', label: 'Copa' }
+      ];
+
+      liquorConfig.forEach(conf => {
+        const val = item[conf.key];
+        if (val && val !== '--' && val !== '0' && val !== 0) {
+          this._createPriceItemRow(container, conf.label, val, item, conf.key);
+        }
+      });
+      return;
+    }
+
+    // B. ALITAS STRATEGY (Variants)
+    if (categoryName === 'alitas') {
+      // Detect fields like 'precio_10_piezas'
+      fields.forEach(field => {
+        if (field.includes('_piezas') && item[field]) {
+          const pieces = field.replace('precio_', '').replace('_piezas', '');
+          const label = `${pieces} piezas`;
+          this._createPriceItemRow(container, label, item[field], item, field);
+        }
+      });
+      return;
+    }
+
+    // C. STANDARD STRATEGY (Fallback)
+    fields.forEach(field => {
+      if ((field.includes('precio') || field === 'precio') && item[field]) {
+        // Render simple button
+        const btn = this._createPriceButton(item[field], item, field);
+        container.appendChild(btn);
+      }
+    });
+  },
+
+  /**
+   * Helper: Creates a Row (Label + Button) for Liquor/Variants
+   */
+  _createPriceItemRow: function (container, labelText, priceValue, item, fieldKey) {
+    const row = document.createElement('div');
+    row.className = 'price-item';
+
+    const label = document.createElement('span');
+    label.className = 'price-label';
+    label.textContent = labelText + ':';
+
+    const btn = this._createPriceButton(priceValue, item, fieldKey);
+
+    row.appendChild(label);
+    row.appendChild(btn);
+    container.appendChild(row);
+  },
+
+  /**
+   * Helper: Create the Golden Button
+   */
+  _createPriceButton: function (priceValue, item, fieldKey) {
+    const btn = document.createElement('button');
+    btn.className = 'price-button'; // Golden Standard
+    btn.textContent = formatPrice(priceValue);
+    btn.dataset.productName = item.nombre;
+    btn.dataset.price = priceValue;
+    btn.dataset.field = fieldKey;
+    return btn;
   },
 
   // Create product grid view (Refactored: Orchestrator Pattern)

@@ -216,27 +216,30 @@ export class OrderUI {
     }
 
     _updateSidebarVisibility(sidebar, isActive) {
-        if (sidebar && sidebar.classList) {
-            const hasItems = this.controller.core && this.controller.core.getItems && this.controller.core.getItems().length > 0;
-            const shouldBeVisible = isActive || hasItems;
+        if (!sidebar) return;
 
-            sidebar.classList.toggle('sidebar-visible', shouldBeVisible);
-            sidebar.classList.toggle('sidebar-hidden', !shouldBeVisible);
-            sidebar.classList.toggle('is-open', shouldBeVisible);
+        // Import SidebarManager dynamically if needed, or assume it's available via DI/Global
+        // Since we are moving to a unified system, we'll try to use the imported module logic or global
+        // For now, let's assume we import it at top of file, or use a dynamic import.
+        // Given existing structure, we will update the imports next. 
+        // For this step, we delegate logic:
 
+        const hasItems = this.controller.core && this.controller.core.getItems && this.controller.core.getItems().length > 0;
+        const shouldBeVisible = isActive || hasItems;
+
+        import('../managers/SidebarManager.js').then(module => {
+            const sidebarManager = module.default;
             if (shouldBeVisible) {
-                document.body.classList.add('sidebar-open');
-                this._handleMobileOrientation(sidebar);
+                sidebarManager.open(sidebar.id || 'order-sidebar');
             } else {
-                document.body.classList.remove('sidebar-open');
-                this._handleMobileHiding(sidebar);
+                sidebarManager.close(sidebar.id || 'order-sidebar');
             }
-
-            const contentWrapper = document.querySelector('.content-wrapper');
-            if (contentWrapper) {
-                contentWrapper.classList.toggle('with-sidebar', shouldBeVisible && this._isLandscape());
-            }
-        }
+        }).catch(err => {
+            console.error('Failed to load SidebarManager', err);
+            // Fallback (Simple toggle) if manager fails
+            sidebar.classList.toggle('sidebar-visible', shouldBeVisible);
+            document.body.classList.toggle('sidebar-open', shouldBeVisible);
+        });
     }
 
     _handleMobileOrientation(sidebar) {
