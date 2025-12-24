@@ -1,0 +1,2 @@
+npm run build:css
+git add Shared/styles/main.css

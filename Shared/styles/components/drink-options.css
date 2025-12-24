@@ -1,0 +1,215 @@
+/* ===== DRINK OPTIONS COMPONENT ===== */
+/* Migrated from components/forms.css and _legacy.css */
+
+.drink-options-message {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    font-style: italic;
+    max-width: 100%;
+    word-wrap: break-word;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 0 5px;
+}
+
+@media (max-width: 768px) {
+    .drink-options-message {
+        font-size: 0.8rem;
+        line-height: 1.3;
+        margin-bottom: 12px;
+    }
+}
+
+.drink-option {
+    /* Alinear con estilo del sidebar: fondo del contenedor y contorno glow */
+    background: transparent;
+    border: 1.4px solid var(--border-color);
+    border-radius: 6px;
+    padding: 11px 8px;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-time) ease;
+    min-height: 60px;
+    text-align: center;
+    word-break: break-word;
+    font-size: 0.9rem;
+    /* Glow base por tema */
+    box-shadow: var(--glow-shadow);
+}
+
+.drink-option:hover {
+    background-color: transparent;
+    transform: scale(1.02);
+    border-color: var(--price-color);
+    color: var(--price-color);
+    box-shadow: 0 0 15px var(--price-color);
+}
+
+.drink-option.selected {
+    background-color: transparent;
+    border-color: var(--price-color);
+    color: var(--price-color);
+    box-shadow: 0 0 15px var(--price-color);
+    transform: scale(1.02);
+}
+
+/* Theme specific overrides */
+[data-theme="light-white"] .drink-modal .drink-option {
+    background: rgba(30, 64, 175, 0.05);
+    border: 1.4px solid var(--border-color);
+    color: var(--text-color);
+    box-shadow: var(--glow-shadow);
+}
+
+[data-theme="light-white"] .drink-modal .drink-option.selected {
+    background-color: rgba(133, 199, 255, 0.1);
+    border-color: var(--price-color);
+    color: var(--price-color);
+    box-shadow: var(--glow-shadow-hover);
+}
+
+.drink-option-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-align: center;
+    width: 100%;
+}
+
+.drink-option-price {
+    font-size: 0.9rem;
+    color: var(--price-color);
+    font-weight: bold;
+}
+
+.drink-option-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 6px 0;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-time) ease;
+    min-height: 64px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.drink-option-container.selected {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* =================================================================
+   COUNTERS
+   ================================================================= */
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.counter-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-time) ease;
+}
+
+.counter-btn:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+.counter-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments for counter */
+@media (max-width: 768px) {
+    .counter-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+}
+
+.count-display {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--price-color);
+    font-size: 1.1rem;
+    min-width: 30px;
+}
+
+@media (max-width: 768px) {
+    .count-display {
+        width: 25px;
+        font-size: 0.9rem;
+    }
+}
+
+.total-count-container {
+    width: 100%;
+    text-align: center;
+    margin: 15px 0;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--price-color);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .total-count-container {
+        font-size: 0.8rem;
+        padding: 5px;
+        margin: 10px 0;
+    }
+}
+
+/* =================================================================
+   RESPONSIVE OVERRIDES (Migrated from media-queries.css)
+   ================================================================= */
+@media (max-width: 480px) {
+    .options-grid:not(.drink-modal .options-grid) {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 8px;
+    }
+
+    .drink-option {
+        min-height: 40px;
+        padding: 10px 8px;
+    }
+
+    .drink-option-container {
+        padding: 10px;
+        min-height: 70px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        border-radius: 6px;
+    }
+}

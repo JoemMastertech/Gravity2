@@ -1,0 +1,165 @@
+/* =============================================================================
+   App Shell Layout (Phoenix Protocol)
+   =============================================================================
+   Enforces Grid Layout ONLY for Desktop (1280px+) to match SidebarManager.js
+   Prevents the "Tablet Limbo" crash.
+   ============================================================================= */
+
+/* 1. Base Mobile/Tablet State (< 1280px) */
+/* Behaves as normal Flow/Flex (Legacy Mode) */
+.app-container {
+    /* Ensure stacking context */
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+/* 2. Desktop State (>= 1280px) */
+@media (min-width: 1280px) {
+    .app-container {
+        display: grid;
+        /* height: 100vh; */
+        /* DISABLED: Let body scroll */
+        /* overflow: hidden; */
+        /* DISABLED: Let body scroll */
+        min-height: 100vh;
+        /* Ensure full height */
+
+        /* Grid Layout: Nav (Spacer Removed) + Content + Sidebar */
+        grid-template-columns: 0px 1fr 0px;
+        grid-template-areas: "nav content sidebar";
+        gap: 0;
+
+        /* Override legacy padding */
+        padding: 0 !important;
+        max-width: 100% !important;
+        /* Fix: 100vw causes overflow with scrollbars */
+    }
+
+    /* When Sidebar is OPEN (Triggered by SidebarManager) */
+    .app-container[data-sidebar-state="open"] {
+        /* Expand 3rd column */
+        grid-template-columns: 0px 1fr 350px;
+        /* 350px width for Order Sidebar */
+    }
+
+    /* Assign Areas */
+
+    /* Navigation Bar (Left sidebar) - RELEASED FROM GRID */
+    /* It remains 'fixed' (Overlay) to avoid the "Freeze" issue. */
+    /* The 'nav' area in the grid remains as a spacer or for the Hamburger button. */
+
+
+    /* Main Content */
+    .app-container .main-content-screen {
+        grid-area: content;
+        overflow-y: visible;
+        /* RELEASE SCROLL to Body */
+        height: auto;
+        /* ALIGNMENT FIX: Top padding matches Sidebar top (Height 56px + Gap 20px = 76px) */
+        padding: 76px 20px 20px 20px;
+
+    }
+
+    /* Order Sidebar (Right) */
+    /* Order Sidebar (Right) - Desktop Configuration */
+    .app-container #order-sidebar {
+        grid-area: sidebar;
+
+        /* Positioning & Sizing */
+        position: sticky;
+        top: 96px;
+        /* Matches Content (Header 56 + Gap 20 + Margin 20) */
+        right: 20px;
+        width: calc(100% - 20px);
+        height: auto;
+        max-height: calc(100vh - 116px);
+        /* 100vh - Top(96) - Bottom(20) */
+        margin: 0;
+        align-self: start;
+
+        /* Visual Style */
+        background-color: transparent;
+        background: rgba(0, 0, 0, 0.6);
+        /* 60% Opacity */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: none;
+        transform: none;
+        z-index: 10;
+
+        /* State Management (Natural Toggle) */
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+
+        &.active,
+        &.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Internal Layout: Flex Column */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        /* Clean corners */
+        padding: 10px 15px 20px 15px;
+
+        /* 1. Scrollable List (Body) */
+        .order-items-scroll {
+            display: block;
+            /* Natural flow */
+            height: auto;
+            max-height: 50vh;
+            /* Primary Limit: 50% of viewport height */
+            min-height: 60px;
+            /* Ensure never fully collapses */
+            overflow-y: auto;
+            /* Internal Scrolling */
+            padding-right: 5px;
+
+            /* Scrollbar Styling */
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: var(--price-color);
+                border-radius: 4px;
+            }
+        }
+
+        /* 2. Fixed Footer (Buttons) */
+        .order-summary {
+            flex: 0 0 auto;
+            /* Fixed Size */
+            width: 100%;
+        }
+
+        .order-actions {
+            flex: 0 0 auto;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 0;
+
+            /* Button Layout */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    }
+
+
+}

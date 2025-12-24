@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #2a2a2a;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            background-color: #4a1a1a;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+        }
+        .success {
+            background-color: #1a4a1a;
+            color: #51cf66;
+            border: 1px solid #51cf66;
+        }
+        .loading {
+            background-color: #4a4a1a;
+            color: #ffd43b;
+            border: 1px solid #ffd43b;
+        }
+        h1, h2 {
+            color: #fff;
+        }
+        .config-info {
+            background-color: #2d3748;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Integración con Supabase</h1>
+    
+    <div class="config-info">
+        <h3>📋 Configuración</h3>
+        <p><strong>URL:</strong> <span id="supabase-url"></span></p>
+        <p><strong>Key:</strong> <span id="supabase-key"></span></p>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Prueba de Conexión</h2>
+        <button onclick="testConnection()">Probar Conexión a Supabase</button>
+        <div id="connection-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🍹 Pruebas de Consultas de Productos</h2>
+        <button onclick="testCocteles()">🍸 Obtener Cócteles</button>
+        <button onclick="testRefrescos()">🥤 Obtener Refrescos</button>
+        <button onclick="testLicores()">🥃 Obtener Licores</button>
+        <button onclick="testCervezas()">🍺 Obtener Cervezas</button>
+        <button onclick="testPizzas()">🍕 Obtener Pizzas</button>
+        <button onclick="testAlitas()">🍗 Obtener Alitas</button>
+        <div id="query-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Prueba de ProductDataAdapter</h2>
+        <button onclick="testAdapter()">Probar Adapter Completo</button>
+        <div id="adapter-result" class="result"></div>
+    </div>
+
+    <script type="module">
+        // Configuración de Supabase
+        const SUPABASE_URL = 'https://udtlqjmrtbcpdqknwuro.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkdGxxam1ydGJjcGRxa253dXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5NDYyNzQsImV4cCI6MjA1ODUyMjI3NH0.5UW6IHyGVFfX5bnr5kv1XFIvevVxWvBoBy2a7_0visU';
+
+        // Mostrar configuración
+        document.getElementById('supabase-url').textContent = SUPABASE_URL;
+        document.getElementById('supabase-key').textContent = SUPABASE_KEY.substring(0, 20) + '...';
+
+        // Función para hacer consultas a Supabase
+        async function fetchFromSupabase(tableName) {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error(`Error fetching from ${tableName}:`, error);
+                throw error;
+            }
+        }
+
+        // Función para mostrar resultados
+        function showResult(elementId, data, isError = false, isLoading = false) {
+            const element = document.getElementById(elementId);
+            element.className = `result ${isError ? 'error' : isLoading ? 'loading' : 'success'}`;
+            
+            if (isLoading) {
+                element.textContent = '⏳ Cargando...';
+                return;
+            }
+            
+            if (isError) {
+                element.textContent = `❌ Error: ${data}`;
+            } else {
+                const formatted = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+                element.textContent = `✅ Éxito:\n${formatted}`;
+            }
+        }
+
+        // Funciones de prueba
+        window.testConnection = async function() {
+            showResult('connection-result', null, false, true);
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showResult('connection-result', 'Conexión exitosa a Supabase');
+                } else {
+                    showResult('connection-result', `Error de conexión: ${response.status}`, true);
+                }
+            } catch (error) {
+                showResult('connection-result', error.message, true);
+            }
+        };
+
+        window.testCocteles = async function() {
+            showResult('query-result', null, false, true);
+            try {
+                const data = await fetchFromSupabase('cocteles');
+                showResult('query-result', `Cócteles encontrados: ${data.length}\n${JSON.stringify(data.slice(0, 3), null, 2)}`);
+            } catch (error) {
+                showResult('query-result', error.message, true);
+            }
+        };
+
+        window.testRefrescos = async function() {
+            showResult('query-result', null, false, true);
+            try {
+                const data = await fetchFromSupabase('refrescos');
+                showResult('query-result', `Refrescos encontrados: ${data.length}\n${JSON.stringify(data.slice(0, 3), null, 2)}`);
+            } catch (error) {
+                showResult('query-result', error.message, true);
+            }
+        };
+
+        window.testLicores = async function() {
+            showResult('query-result', null, false, true);
+            try {
+                const data = await fetchFromSupabase('licores');
+                showResult('query-result', `Licores encontrados: ${data.length}\n${JSON.stringify(data.slice(0, 3), null, 2)}`);
+            } catch (error) {
+                showResult('query-result', error.message, true);
+            }
+        };
+
+        window.testCervezas = async function() {
+            showResult('query-result', null, false, true);
+            try {
+                const data = await fetchFromSupabase('cervezas');
+                showResult('query-result', `Cervezas encontradas: ${data.length}\n${JSON.stringify(data.slice(0, 3), null, 2)}`);
+            } catch (error) {
+                showResult('query-result', error.message, true);
+            }
+        };
+
+        window.testPizzas = async function() {
+            showResult('query-result', null, false, true);
+            try {
+                const data = await fetchFromSupabase('pizzas');
+                showResult('query-result', `Pizzas encontradas: ${data.length}\n${JSON.stringify(data.slice(0, 3), null, 2)}`);
+            } catch (error) {
+                showResult('query-result', error.message, true);
+            }
+        };
+
+        window.testAlitas = async function() {
+            showResult('query-result', null, false, true);
+            try {
+                const data = await fetchFromSupabase('alitas');
+                showResult('query-result', `Alitas encontradas: ${data.length}\n${JSON.stringify(data.slice(0, 3), null, 2)}`);
+            } catch (error) {
+                showResult('query-result', error.message, true);
+            }
+        };
+
+        window.testAdapter = async function() {
+            showResult('adapter-result', null, false, true);
+            try {
+                // Importar el ProductDataAdapter
+                const { default: ProductDataAdapter } = await import('./Infraestructura/adapters/ProductDataAdapter.js');
+                
+                const adapter = new ProductDataAdapter();
+                
+                // Probar varios métodos
+                const cocteles = await adapter.getCocteles();
+                const pizzas = await adapter.getPizzas();
+                const categoryProducts = await adapter.getProductsByCategory('cocteles');
+                
+                const results = {
+                    cocteles: cocteles.length,
+                    pizzas: pizzas.length,
+                    categoryProducts: categoryProducts.length,
+                    sampleCoctel: cocteles[0] || 'No hay cócteles',
+                    samplePizza: pizzas[0] || 'No hay pizzas'
+                };
+                
+                showResult('adapter-result', results);
+            } catch (error) {
+                showResult('adapter-result', error.message, true);
+            }
+        };
+
+        // Ejecutar prueba de conexión automáticamente
+        setTimeout(() => {
+            testConnection();
+        }, 1000);
+    </script>
+</body>
+</html>

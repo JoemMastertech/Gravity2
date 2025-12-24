@@ -1,0 +1,155 @@
+/* =============================================================================
+   📍 THE ORCHESTRATOR (SASS MIXINS)
+   =============================================================================
+   Centralized responsive logic to replace manual media queries.
+   Usage: @include mobile-portrait { ... }
+   ============================================================================= */
+
+// 1. Base Breakpoints (for reference, though we use them inside logic)
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+$bp-wide: 1200px;
+
+// 2. Orientation Logic
+@mixin landscape {
+    @media (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin portrait {
+    @media (orientation: portrait) {
+        @content;
+    }
+}
+
+// 3. Device + Orientation Combinations (Semantic Views)
+
+/* Mobile Portrait (Grid: 2 cols, Table: Compact) */
+@mixin mobile-portrait {
+    @media (max-width: #{$bp-mobile}) and (orientation: portrait) {
+        @content;
+    }
+}
+
+/* Mobile Landscape (Often treated as small tablet) */
+@mixin mobile-landscape {
+    @media (max-width: #{$bp-tablet}) and (orientation: landscape) {
+        @content;
+    }
+}
+
+/* Tablet Portrait */
+@mixin tablet-portrait {
+    @media (min-width: #{$bp-mobile + 1}) and (max-width: #{$bp-desktop}) and (orientation: portrait) {
+        @content;
+    }
+}
+
+/* Tablet Landscape / Small Desktop */
+@mixin tablet-landscape {
+    @media (min-width: #{$bp-tablet}) and (orientation: landscape) {
+        @content;
+    }
+}
+
+/* Standard Desktop */
+@mixin desktop {
+    @media (min-width: #{$bp-desktop}) {
+        @content;
+    }
+}
+
+/* Wide Desktop (Large screens, 5-col grids) */
+@mixin desktop-wide {
+    @media (min-width: #{$bp-wide}) {
+        @content;
+    }
+}
+
+/* 4. Legacy "Squish" Protocol (Nuclear Option) Helper */
+/* Use this for rules that MUST override everything else on tiny screens */
+@mixin nuclear-mobile {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+/* 5. Legacy Compatibility Layer (Backwards Compatibility) */
+/* Maps old 'respond-to' calls to new semantic mixins */
+@mixin respond-to($breakpoint) {
+    @if $breakpoint =='mobile-portrait' {
+        @include mobile-portrait {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='mobile-landscape' {
+        @include mobile-landscape {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='tablet-portrait' {
+        @include tablet-portrait {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='tablet-landscape' {
+        @include tablet-landscape {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='desktop' {
+        @include desktop {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='desktop-wide' {
+        @include desktop-wide {
+            @content;
+        }
+    }
+
+    @else {
+
+        /* Fallback for raw values or unknown names */
+        @media (max-width: $breakpoint) {
+            @content;
+        }
+    }
+}
+
+@mixin mobile-only {
+    @include mobile-portrait {
+        @content;
+    }
+}
+
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
+@mixin stagger-children($count: 20, $initial-delay: 0.05s, $step: 0.05s) {
+    /* Base State: Invisible */
+    opacity: 0;
+    /* Action: Enter smoothly */
+    animation: fadeIn 0.6s ease-out forwards;
+
+    /* The Loop (Choreography) */
+    @for $i from 1 through $count {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$initial-delay + ($i * $step)};
+        }
+    }
+}

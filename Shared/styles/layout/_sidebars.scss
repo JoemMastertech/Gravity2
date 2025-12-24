@@ -1,0 +1,406 @@
+/* ==========================================================================
+   Layout: Universal Sidebar System
+   ========================================================================== */
+
+/* 1. The Unified Overlay (Backdrop) */
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+    display: none;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+/* 2. Desktop Grid Logic (Legacy Restoration) */
+/* 2. Desktop Grid Logic (Legacy Restoration) - DISABLED FOR PHOENIX PROTOCOL */
+/* This logic used 1024px, causing the conflict with the 1280px Layout Shell. */
+/* 
+body:has(#order-sidebar.active) .app-container,
+body:has(.order-sidebar.is-open) .app-container {
+    @include desktop {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 30px;
+        max-width: 100%;
+        width: 100%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        .content-wrapper {
+            padding-right: 20px !important;
+            width: 100%;
+            overflow-x: hidden;
+        }
+    }
+}
+*/
+
+
+/* 3. The Sidebar Shell (Mixin) */
+%sidebar-shell {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.9);
+    /* Legacy Dark Glass */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--glow-shadow);
+    z-index: 2000;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    /* Active State (Unified) */
+    &.active,
+    &.is-open {
+        transform: translate(0, 0);
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* 4. Components */
+
+/* A. Navigation Drawer (Left) */
+#drawer-menu,
+.drawer-menu {
+    @extend %sidebar-shell;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    border-right: 1px solid var(--border-color);
+    border-left: none;
+    transform: translateX(-100%);
+
+    @include mobile-portrait {
+        width: 80vw;
+    }
+
+    /* Internal Layout */
+    .drawer-content {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .drawer-logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .drawer-logo {
+        width: 100px;
+        height: auto;
+        object-fit: contain;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .drawer-footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        opacity: 0.8;
+        font-style: italic;
+    }
+
+    /* Button Styles (Specific to Drawer) */
+    .nav-button {
+        width: 100%;
+        text-align: left;
+        padding: 8px 10px;
+        font: 700 0.77rem 'Playfair Display', serif;
+        text-transform: none;
+        transition: all 0.3s ease;
+        border: 1.4px solid var(--border-color);
+        box-shadow: var(--glow-shadow);
+        background: transparent;
+        border-radius: 5px;
+        cursor: pointer;
+        color: var(--primary-color);
+
+        &:hover,
+        &.active {
+            transform: translateX(5px);
+            background-color: transparent;
+            border-color: var(--price-color);
+            color: var(--price-color);
+            box-shadow: var(--glow-shadow-hover);
+        }
+    }
+}
+
+/* B. Settings Menu (Right) */
+.settings-menu {
+    @extend %sidebar-shell;
+    /* Ensure it floats above everything */
+    z-index: 2005 !important;
+
+    border-right: none;
+    border-left: 1px solid var(--border-color);
+    left: auto !important;
+    right: 0;
+    transform: translateX(100%);
+
+    &.active,
+    &.is-open {
+        transform: translateX(0);
+    }
+
+    /* Settings Internal Layout */
+    .settings-panel {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .back-button {
+        margin: 0 auto;
+        display: block;
+    }
+}
+
+/* Shared Button Styles (Settings/Theme) */
+.language-btn,
+.theme-btn {
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    font: 700 0.77rem 'Playfair Display', serif;
+    text-transform: none;
+    transition: all 0.3s ease;
+    border: 1.4px solid var(--border-color);
+    box-shadow: var(--glow-shadow);
+    background: transparent;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: var(--primary-color);
+
+    &:hover {
+        transform: translateX(5px);
+        background-color: transparent;
+        border-color: var(--price-color);
+        color: var(--price-color);
+        box-shadow: var(--glow-shadow-hover);
+    }
+}
+
+/* C. Order Sidebar (Right/Bottom) */
+#order-sidebar,
+.order-sidebar {
+    @extend %sidebar-shell;
+
+    /* DEFAULT (MOBILE/TABLET): Floating Bottom/Overlay Styles */
+    /* This applies UP TO 1279px. Desktop (1280px+) matches Grid Shell. */
+    @media (max-width: 1279px) {
+        top: auto;
+        /* Reset top */
+        bottom: 0;
+        right: 0 !important;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
+
+        border-radius: 20px 20px 0 0;
+        margin: 0;
+        transform: translateY(100%);
+        padding: 15px;
+
+        background: rgba(0, 0, 0, 0.9);
+        border: 1px solid var(--border-color);
+        border-bottom: none;
+
+        &.active,
+        &.is-open {
+            transform: translateY(0);
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    }
+
+    /* DESKTOP (1280px+): Handled entirely by _layout-shell.scss */
+    /* We strip all positioning logic here to avoid conflicts. */
+
+
+
+
+    /* Internal Components (Legacy Styles Restored) */
+    .drawer-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 10px;
+    }
+
+    .order-items-scroll {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        /* Remove gap if using borders */
+        padding-right: 5px;
+
+        /* Custom Scrollbar */
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--price-color);
+            border-radius: 4px;
+        }
+    }
+
+    .order-item {
+        /* Removed "Button-like" styles (background/border) */
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        /* Separator */
+        border-radius: 0;
+        padding: 12px 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        /* Legacy Internal Styles */
+        .order-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-item-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            width: 100%;
+            word-wrap: break-word;
+            hyphens: auto;
+            font-size: 0.9rem;
+        }
+
+        .order-item-price {
+            color: var(--price-color);
+            font-weight: 500;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+        .order-item-customization {
+            color: var(--color-gray-400);
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        /* The Red "X" (Legacy .remove-order-item) */
+        .remove-btn,
+        .remove-order-item {
+            font-size: 0.9rem;
+            margin-left: 5px;
+            background: transparent;
+            border: none;
+            color: var(--color-error, #ff4d4d);
+            cursor: pointer;
+            padding: 4px;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+
+    .order-summary {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 2px solid var(--border-color);
+        flex-shrink: 0;
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+
+            h4,
+            span {
+                font: 1.2rem "Montserrat", sans-serif;
+                color: var(--price-color);
+                text-align: right;
+                margin: 0;
+            }
+        }
+    }
+
+    /* Legacy Order Actions Structure */
+    .order-actions {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+        flex-direction: row;
+        flex-shrink: 0;
+
+        .nav-button {
+            flex: 1;
+            min-width: 0;
+            padding: 10px 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            /* User Requirement: White Outline & Text */
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: var(--price-color);
+                color: var(--price-color);
+            }
+        }
+    }
+}
+
+/* End #order-sidebar */
