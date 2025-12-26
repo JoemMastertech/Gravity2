@@ -180,7 +180,18 @@ class OrderSystem {
         this.logic.currentProduct.mixers.length > 0;
 
       if (this.logic.bottleCategory !== 'OTROS' || hasDynamicMixers) {
-        this.showDrinkOptionsModal();
+        // Safe check for UI method (handles HMR/Stale instance issues)
+        if (typeof this.ui.showDrinkOptionsModal === 'function') {
+          this.showDrinkOptionsModal();
+        } else {
+          Logger.error('OrderUI missing showDrinkOptionsModal - falling back to direct add');
+          this.addProductToOrder({
+            name: this._getFormattedProductName(),
+            price: this.logic.currentProduct.price,
+            category: this.logic.currentCategory,
+            customizations: []
+          });
+        }
       } else {
         this.addProductToOrder({
           name: this._getFormattedProductName(),

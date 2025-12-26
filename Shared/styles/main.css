@@ -2,11 +2,67 @@
 /* ITCSS Architecture (SASS) */
 /* 1. Settings */
 @import "settings/variables.css";
-/* 2. Base (Must come first) */
+/* ==========================================================================
+   SYSTEM DESIGN TOKENS (The DNA)
+   Centralizes control for Buttons, Effects, and Surfaces.
+   Extends variables.css.
+   ========================================================================== */
 @import "base/reset.css";
 @import "base/typography.css";
 @import "base/animations.css";
 @import "base/scrollbars.css";
+@import "components/buttons.css";
+@import "components/forms.css";
+@import "components/lists.css";
+@import "components/drink-options.css";
+@import "layout/navigation.css";
+@import "utilities/display.css";
+:root {
+  /* ----------------------------------------------------------------------
+      1. BUTTON SYSTEM
+      ---------------------------------------------------------------------- */
+  /* Structure */
+  --btn-height-std: auto;
+  /* Legacy: Padding-based */
+  --btn-height-sm: auto;
+  --btn-padding-y: 8px;
+  /* Legacy: 8px */
+  --btn-padding-x: 15px;
+  /* Legacy: 15px */
+  /* Radius */
+  --btn-radius: 8px;
+  /* Legacy: Consistent with .view-toggle-btn */
+  --btn-radius-pill: 50px;
+  /* Typography */
+  --btn-font-weight: 600;
+  /* Legacy: Semibold */
+  --btn-text-transform: none;
+  /* Legacy: Normal Case */
+  --btn-letter-spacing: normal;
+  --btn-font-size: 1rem;
+  --btn-font-size-sm: 0.875rem;
+  /* ----------------------------------------------------------------------
+      2. SURFACE SYSTEM (Glassmorphism Levels)
+      ---------------------------------------------------------------------- */
+  /* Level 1: Subtle (Cards) */
+  --surface-glass-1: rgba(0, 0, 0, 0.4);
+  /* Level 2: Standard (Modals/Sidebars) */
+  --surface-glass-2: rgba(0, 0, 0, 0.7);
+  /* Level 3: Heavy (Overlays) */
+  --surface-glass-3: rgba(0, 0, 0, 0.9);
+  /* ----------------------------------------------------------------------
+      3. EFFECTS SYSTEM (Animation & Depth)
+      ---------------------------------------------------------------------- */
+  /* Transitions */
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Shadows (Elevations) */
+  --elevation-1: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --elevation-2: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --elevation-glow: 0 0 15px var(--accent-color, #00f7ff);
+}
+
+/* 2. Base (Must come first) */
 /* 3. Tools */
 /* =============================================================================
    📍 THE ORCHESTRATOR (SASS MIXINS)
@@ -68,12 +124,6 @@
  */
 /* 1. The Container (Layout) */
 /* 1. The Wrapper (Table-Like Background) */
-@import "components/buttons.css";
-@import "components/forms.css";
-@import "components/lists.css";
-@import "components/drink-options.css";
-@import "layout/navigation.css";
-@import "utilities/display.css";
 .grid-view-container {
   /* Physics */
   position: relative;
@@ -1114,6 +1164,325 @@
 }
 
 /* 5. Components (Remaining independent parts) */
+/* ==========================================================================
+   BUTTON SYSTEM (The Factory)
+   Consumes: _tokens.scss
+   ========================================================================== */
+/* 1. Base Class (The Skeleton) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  /* Structure from Tokens */
+  height: var(--btn-height-std);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  /* Legacy Y/X logic */
+  border-radius: var(--btn-radius);
+  border: 2px solid transparent;
+  /* Reserve space for borders */
+  /* Typography from Tokens */
+  font-family: var(--font-primary, "Montserrat", sans-serif);
+  font-weight: var(--btn-font-weight);
+  text-transform: var(--btn-text-transform);
+  letter-spacing: var(--btn-letter-spacing);
+  font-size: var(--btn-font-size);
+  /* Legacy Color base */
+  color: var(--text-color);
+  /* Animation */
+  transition: all var(--transition-time, 0.3s) ease;
+  /* Accessibility */
+}
+.btn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 4px;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 2. Variants (The Species) */
+/* PRIMARY: Action (Legacy: Bordered -> Filled on Hover) */
+.btn-primary {
+  background: transparent;
+  /* Legacy: Transparent by default */
+  border-color: var(--primary-color);
+  color: var(--text-color);
+  box-shadow: none;
+  /* No Neon Glow in Legacy */
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border-color: var(--primary-color);
+  transform: none;
+  /* No lift */
+  box-shadow: none;
+}
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+  /* Subtle feedback allowed */
+}
+
+/* GHOST: Secondary Action (Ex: Cancel, Back) */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-color);
+  border-color: var(--border-color);
+  /* Subtle Border */
+}
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+.btn-ghost:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* ICON: Utility (Ex: Settings, Close) */
+.btn-icon {
+  width: var(--btn-height-std);
+  /* Square */
+  padding: 0;
+  /* Override standard padding */
+  border-radius: 50%;
+  /* Circle */
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  border: 1px solid transparent;
+}
+.btn-icon:hover:not(:disabled) {
+  background: var(--accent-color);
+  color: var(--background-color);
+  transform: rotate(15deg);
+  /* Playful micro-interaction */
+}
+
+/* 3. Sizes */
+.btn-sm {
+  height: var(--btn-height-sm);
+  font-size: var(--btn-font-size-sm);
+  padding: 0 16px;
+}
+
+/* Legacy Sidebar Style (Requested for Price Buttons) */
+/* High Contrast Variant (Black/White - Used for Prices & Modals) */
+.btn-contrast {
+  font-family: "Montserrat", sans-serif;
+  background-color: #000;
+  color: #fff;
+  border: 1.4px solid var(--border-color);
+  /* Match System Border exactly */
+  box-shadow: var(--glow-shadow);
+  justify-content: center;
+  text-transform: none;
+  transition: all 0.3s ease;
+}
+
+.btn-contrast:hover:not(:disabled) {
+  background-color: #111;
+  border-color: var(--price-color);
+  color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+  transform: translateY(-2px);
+  /* Subtle lift */
+}
+
+/* =============================================================================
+   SYSTEM: MODAL INFRASTRUCTURE
+   Version: 1.0 (Phase 1)
+   Description: Unified architecture for application modals.
+   Prefix: .sys-modal-
+   ============================================================================= */
+/* 1. The Overlay (Backdrop)
+   ----------------------------------------------------------------------------- */
+.sys-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Deep Dark Overlay */
+  backdrop-filter: blur(5px);
+  /* Glass Effect */
+  z-index: 1000;
+  /* High UI Layer */
+  display: none;
+  /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sys-modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* 2. The Container (The Shell)
+   ----------------------------------------------------------------------------- */
+.sys-modal-container {
+  background: var(--card-bg, rgba(20, 20, 20, 0.95));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 16px);
+  /* GLOW EFFECT (Static, Reduced Intensity) */
+  box-shadow: 0 0 25px var(--price-color);
+  /* 15% less than 30px, no animation */
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  /* Never exceed viewport height */
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  /* Critical for internal scroll */
+  /* Active Animation */
+}
+.sys-modal-overlay.active .sys-modal-container {
+  transform: translateY(0);
+}
+
+/* 3. The Header (Fixed Top)
+   ----------------------------------------------------------------------------- */
+.sys-modal-header {
+  flex-shrink: 0;
+  /* Never shrink */
+  padding: var(--spacing-lg, 16px);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+}
+.sys-modal-header h2 {
+  grid-column: 2;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  color: var(--primary-color, #fff);
+  text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+}
+.sys-modal-header .close-btn {
+  grid-column: 3;
+  justify-self: center;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.sys-modal-header .close-btn:hover {
+  opacity: 1;
+  color: var(--error-color, #ff4d4d);
+}
+
+/* 4. The Body (Scrollable Content)
+   ----------------------------------------------------------------------------- */
+.sys-modal-body {
+  flex: 1;
+  /* Take remaining space */
+  overflow-y: auto;
+  /* Internal Scroll */
+  padding: var(--spacing-lg, 16px);
+  position: relative;
+  /* Scrollbar Styling */
+}
+.sys-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.sys-modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+.sys-modal-body::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+  opacity: 0.5;
+}
+
+/* 5. The Footer (Fixed Bottom Actions)
+   ----------------------------------------------------------------------------- */
+.sys-modal-footer {
+  flex-shrink: 0;
+  /* Never shrink */
+  padding: var(--spacing-lg, 16px);
+  border-top: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.5);
+  /* Slightly darker */
+  display: flex;
+  justify-content: center;
+  /* Center buttons by default */
+  gap: var(--spacing-md, 12px);
+  /* Integration with Button System */
+}
+.sys-modal-footer button {
+  min-width: 120px;
+}
+
+/* 6. Variants & Grid Integration
+   ----------------------------------------------------------------------------- */
+.sys-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* Compact option (Buttons only) */
+.sys-modal-options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+}
+
+/* 7. Utilities (For Dynamic Interface Adapters)
+   ----------------------------------------------------------------------------- */
+.u-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  width: 100%;
+  /* Standardize buttons within this container naturally */
+}
+.u-modal-actions .btn {
+  min-width: 100px;
+}
+
+.u-modal-text-center {
+  text-align: center;
+}
+
+.u-modal-mb-sm {
+  margin-bottom: 10px;
+}
+
+.u-modal-mb-md {
+  margin-bottom: 15px;
+}
+
+.u-modal-mb-lg {
+  margin-bottom: 20px;
+}
+
+.u-modal-mt-md {
+  margin-top: 15px;
+}
+
+/* THE NEW FACTORY */
+/* Legacy (Pending Migration) */
 /* Extracted Modals Styles */
 /* === REGION: MODALES (BEM) === */
 /* Modal Component - BEM Structure */
@@ -2592,5 +2961,138 @@ body:has(.order-sidebar.is-open) .app-container {
 
    DO NOT USE THIS FILE FOR PERMANENT STYLES.
    ========================================================================== */
+/* Update to _modals.scss to support New Drink Option Cards */
+/* Container Grid */
+.drink-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+  padding: 10px;
+  /* Layout Logic for Scrolling */
+  flex: 1;
+  /* Takes available space */
+  overflow-y: auto;
+  /* Enables scrolling */
+  min-height: 0;
+  /* Flexbox scrolling fix */
+  width: 100%;
+}
+
+/* Option Card (Styled like Price Buttons/Sidebar) */
+.drink-option-card {
+  background: rgba(255, 255, 255, 0.02);
+  /* Slight fill */
+  border: 1.4px solid var(--border-color);
+  /* Match Sidebar Btn */
+  border-radius: 8px;
+  /* Closer to button shape */
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100px;
+  transition: all 0.3s ease;
+  box-shadow: var(--glow-shadow);
+  /* The Key Feature */
+  cursor: pointer;
+  /* Implies interactive */
+}
+
+/* Modifier: Compact for Single Select (Buttons) */
+.drink-option-card.compact {
+  min-height: 50px;
+  /* Half height, natural cascade */
+  padding: 10px;
+  justify-content: center;
+  /* Center text vertically */
+}
+
+.drink-option-card.compact .drink-option-title {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+  /* Slightly smaller for compact look */
+}
+
+/* Modal Actions Layout Override */
+.modal-actions .btn-contrast {
+  width: auto;
+  min-width: 120px;
+  margin: 5px;
+}
+
+.drink-option-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+  transform: translateY(-2px);
+  /* Slight lift instead of side-shift for grid */
+}
+
+.drink-option-card.active {
+  /* Mirrors Hover Effect (Cyan/Price Color) */
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--price-color);
+  box-shadow: var(--glow-shadow-hover);
+}
+
+/* Card Title */
+.drink-option-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+/* Counter Controls (Inside Card) */
+.drink-card-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 4px;
+}
+
+.drink-card-counter {
+  font-size: 1rem;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Toggle Button (For Litro/Copa) */
+.drink-toggle-btn {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--primary-color);
+  background: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.drink-toggle-btn.selected {
+  color: #000;
+  /* Contrast on primary */
+}
+
+/* Cooking Option Selected State (Natural Cascade) */
+.cooking-option.selected {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+  /* Fallback or specific accent var if available */
+}
+
+/* Ensure specificity if needed against hover/active states if they are stronger elsewhere */
+.cooking-option.selected:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.5);
+}
 
 /*# sourceMappingURL=main.css.map */

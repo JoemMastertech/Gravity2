@@ -15,6 +15,24 @@ These are the atoms of the design. Changes here ripple everywhere.
 | **Color Fondo** | `--background-color` | `#000000` | *User noted #0a0a0a* |
 | **Color Texto** | `--text-color` | `var(--color-gray-200)` | #ECE9D8 |
 | **Radio Borde** | `--radius-md` | `12px` | |
+| **Borde Sistema** | `--border-color` | `#00f7ff40` | Cyan (25% Opacity) |
+
+---
+
+## 🎛️ SYSTEM A: THE ACTION SYSTEM (Buttons)
+**Source:** `Shared/styles/components/_button-system.scss`
+**Status:** ✅ UNIFIED (Dec 24, 2025)
+
+The application now uses 4 Master Variants for all interactions, eliminating ad-hoc styles.
+
+| Variant | Class | Visual DNA | Usage |
+| :--- | :--- | :--- | :--- |
+| **Primary** | `.btn-primary` | Transparent BG + Cyan Border | Standard Actions |
+| **Contrast** | `.btn-contrast` | **Black BG** + Cyan Border | **Prices, Modals (High Priority)** |
+| **Ghost** | `.btn-ghost` | Transparent + No Border | Cancel, Secondary |
+| **Icon** | `.btn-icon` | Circular Gradient | Counters (+/-) |
+
+> **Unification Note:** Price Buttons and Modal Action Buttons now use the exact same `.btn-contrast` class, fully matching the Left Sidebar aesthetics (`var(--border-color)`).
 
 ---
 
@@ -124,9 +142,9 @@ Todas las celdas (`td`) incluyen ahora un borde inferior sutil:
 - **Grosor:** `1px` (Elegante).
 - **Excepción:** `tr.title-row` y `.compact` overrides.
 
-#### B. El Botón Dorado (`.price-button`)
-Estilo unificado para TODOS los precios (simples o múltiples).
-- **Visual:** Glassmorphism + Borde Dorado + Glow.
+#### B. El Botón de Contraste (`.btn-contrast`)
+Estilo unificado para TODOS los precios y acciones críticas.
+- **Visual:** Fondo Negro + Borde Sistema (Cian) + Texto Blanco.
 - **Comportamiento Híbrido:**
   - En tablas simples: Se centra (`margin: 0 auto`) y toma `75%` ancho.
   - En grids (Alitas/Licores): Se alinea a la derecha (`justify-self: end`).
@@ -210,3 +228,22 @@ El sistema de navegación (`app-init.js`, `ScreenManager.js`) depende de estas c
 
 > **Nota Crítica:** `.fade-out` usa `@keyframes` explícitos para garantizar que el elemento desaparezca visualmente antes de ser eliminado del flujo (display: none).
 
+---
+
+## 🎛️ SYSTEM D: MODAL ARCHITECTURE (v2)
+**Source:** `Shared/styles/components/_modal-system.scss` & `_modals_custom.scss`
+**Status:** ✅ REFACTORED (Dec 25, 2025)
+
+The Modal System has been rebuilt to follow a "Natural Configuration" philosophy (No Inline Styles, No `!important`).
+
+### 1. Visual DNA (The "Premium" Look)
+| Feature | Implementation | Style |
+| :--- | :--- | :--- |
+| **Global Glow** | `.sys-modal-container` | `box-shadow: 0 0 25px var(--price-color)` (Static Cyan Glow, 15% reduced) |
+| **Symmetry** | `.modal-actions` | "Yes/Confirm" buttons now match "No/Cancel" (`.btn-contrast`) for outline aesthetics. |
+| **Drink Options** | `.drink-option-card.active` | **Cyan Glow** (Matches Hover) instead of White. Mirror effect. |
+
+### 2. Technical Philosophy (Natural Config)
+- **Zero Inline Styles:** All button sizing (`min-width: 100px`) and layout is handled by utility classes (`.u-modal-actions`).
+- **Zero Forces:** Removed all `!important` flags; styling relies strictly on SCSS cascade and specificity.
+- **Unified Logic:** `OrderUI.js` delegates all styling to CSS classes.

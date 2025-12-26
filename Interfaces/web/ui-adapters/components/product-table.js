@@ -324,7 +324,7 @@ const ProductRenderer = {
         label.textContent = p.label;
 
         const button = document.createElement('button');
-        button.className = 'price-button mobile-optimized';
+        button.className = 'btn btn-contrast price-button mobile-optimized';
         button.textContent = formatPrice(priceValue);
         button.dataset.productName = item.nombre;
         button.dataset.price = priceValue;
@@ -377,10 +377,10 @@ const ProductRenderer = {
     const priceValue = item[field];
     if (!priceValue || priceValue === '--') {
       priceButton.textContent = '--';
-      priceButton.className = 'price-button non-selectable';
+      priceButton.className = 'btn btn-ghost price-button non-selectable';
       priceButton.disabled = true;
     } else {
-      priceButton.className = 'price-button';
+      priceButton.className = 'btn btn-contrast price-button';
       // Add $ symbol for liquor subcategories
       const formattedPrice = formatPrice(priceValue);
       priceButton.textContent = formattedPrice;
@@ -690,7 +690,7 @@ const ProductRenderer = {
    */
   _createPriceButton: function (priceValue, item, fieldKey) {
     const btn = document.createElement('button');
-    btn.className = 'price-button'; // Golden Standard
+    btn.className = 'btn btn-contrast price-button'; // Sidebar Style as requested
     btn.textContent = formatPrice(priceValue);
     btn.dataset.productName = item.nombre;
     btn.dataset.price = priceValue;

@@ -3,6 +3,7 @@ import { formatPrice } from '../../../../Shared/utils/formatters.js';
 import Logger from '../../../../Shared/utils/logger.js';
 import { CONSTANTS, simpleHash } from './OrderLogic.js';
 import { isJuiceOption } from '../../../../Shared/utils/calculationUtils.js';
+import { ModalSystem } from './ModalSystem.js';
 
 export class OrderUI {
     constructor(controller) {
@@ -49,7 +50,7 @@ export class OrderUI {
         modalTitle.textContent = message;
 
         const modalActions = this._createElement('div', 'modal-actions');
-        const confirmBtn = this._createElement('button', 'nav-button');
+        const confirmBtn = this._createElement('button', 'btn btn-primary nav-button');
         confirmBtn.textContent = buttonText;
         confirmBtn.addEventListener('click', () => {
             document.body.removeChild(modalBackdrop);
@@ -82,7 +83,9 @@ export class OrderUI {
             ];
 
             buttons.forEach(({ text, handler }) => {
-                const btn = this._createElement('button', 'nav-button');
+                // System Migration: Conditional Variant
+                const variant = text === 'Aceptar' ? 'btn-primary' : 'btn-ghost';
+                const btn = this._createElement('button', `btn ${variant} nav-button`);
                 btn.textContent = text;
                 btn.addEventListener('click', handler);
                 modalActions.appendChild(btn);
@@ -376,31 +379,70 @@ export class OrderUI {
         container.appendChild(optionsGrid);
     }
 
+    /**
+     * Set ups and opens the Drink Options Modal using the new ModalSystem.
+     * @private
+     */
     _setupDrinkModal() {
-        const { drinkOptions } = this.controller.logic.getDrinkOptionsForProduct(this.controller.logic.currentProduct.name);
-        const optionsContainer = document.getElementById('drink-options-container');
-        const priceType = this.controller.logic.currentProduct.priceType;
+        const product = this.controller.logic.currentProduct;
+        const { drinkOptions } = this.controller.logic.getDrinkOptionsForProduct(product.name);
+        const priceType = product.priceType;
 
-        if (optionsContainer) {
-            optionsContainer.innerHTML = '';
+        // 1. Build Content Wrapper
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'drink-options-wrapper';
 
-            // Use grid for Liter/Cup, standard list with counters for Bottle
-            if (priceType === CONSTANTS.PRICE_TYPES.LITER || priceType === CONSTANTS.PRICE_TYPES.CUP) {
-                this.renderOptionsGrid(optionsContainer, drinkOptions);
-                // Hide total count container for Liter/Cup as it's not relevant
-                const totalCount = document.getElementById('total-drinks-count');
-                if (totalCount && totalCount.parentElement) totalCount.parentElement.classList.add('hidden');
-            } else {
-                this.renderDrinkOptions(optionsContainer, drinkOptions);
-                // Ensure total count is visible for bottles
-                const totalCount = document.getElementById('total-drinks-count');
-                if (totalCount && totalCount.parentElement) totalCount.parentElement.classList.remove('hidden');
-                this.updateTotalDrinkCount();
-            }
+        // 2. Render Options based on Type
+        // LITRO/COPA (Single Select) -> Grid
+        if (priceType === CONSTANTS.PRICE_TYPES.LITER || priceType === CONSTANTS.PRICE_TYPES.CUP) {
+            this.renderOptionsGrid(contentWrapper, drinkOptions);
+        }
+        // BOTELLA (Multi Select) -> List with Counters
+        else {
+            this.renderDrinkOptions(contentWrapper, drinkOptions);
+
+            // Add Counter Display
+            const counterDiv = document.createElement('div');
+            counterDiv.id = 'total-drinks-count-container'; // ID required for logic updates
+            counterDiv.className = 'total-drinks-container text-center mt-3';
+            counterDiv.style.color = '#fff';
+            counterDiv.innerHTML = `Total seleccionados: <strong id="total-drinks-count">0</strong>`;
+            contentWrapper.appendChild(counterDiv);
         }
 
-        this._updateModalTitle();
-        this.showModal('drink-options-modal');
+        // 3. Launch Modal via System
+        ModalSystem.show({
+            title: `¿Con qué desea acompañar su ${product.name}?`,
+            content: contentWrapper,
+            actions: [
+                {
+                    label: 'Cancelar',
+                    type: 'ghost',
+                    onClick: () => {
+                        this.controller.cancelProductSelection();
+                        // ModalSystem handles the visual close
+                    }
+                },
+                {
+                    label: 'Confirmar',
+                    type: 'primary',
+                    onClick: () => {
+                        this.controller.confirmDrinkOptions();
+                        ModalSystem.show({}).close(); // Close the current modal instance
+                    }
+                }
+            ],
+            onClose: () => {
+                // Optional cleanup
+            }
+        });
+
+        // 4. Update Counters (After DOM injection)
+        setTimeout(() => {
+            if (priceType !== CONSTANTS.PRICE_TYPES.LITER && priceType !== CONSTANTS.PRICE_TYPES.CUP) {
+                this.updateTotalDrinkCount();
+            }
+        }, 50);
     }
 
     _updateModalTitle() {
@@ -741,292 +783,524 @@ export class OrderUI {
     }
 
     // Customization Modals
+    // Customization Modals
     showFoodCustomizationModal() {
-        this.renderModalFromTemplate('food-customization-modal', 'food-customization-template');
-        setTimeout(() => this._setupFoodModal(), 50);
+        this._setupFoodModal();
     }
 
+    /**
+     * Set ups and opens the Generic Food Customization Modal using ModalSystem.
+     * @private
+     */
     _setupFoodModal() {
-        const ingredientsContainer = document.getElementById('ingredients-input-container');
-        if (ingredientsContainer) ingredientsContainer.className = 'input-container-hidden';
-        const ingredientsInput = document.getElementById('ingredients-to-remove');
-        if (ingredientsInput) ingredientsInput.value = '';
+        const logic = this.controller.logic;
 
-        // Set up button event listeners
-        const keepIngredientsBtn = document.getElementById('keep-ingredients-btn');
-        const customizeIngredientsBtn = document.getElementById('customize-ingredients-btn');
-        const confirmIngredientsBtn = document.getElementById('confirm-ingredients-btn');
-        const cancelIngredientsBtn = document.getElementById('cancel-ingredients-btn');
+        // 1. Build Content Wrapper
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'food-customization-wrapper';
 
-        if (keepIngredientsBtn) {
-            keepIngredientsBtn.addEventListener('click', () => {
-                // Add product with 'Con todo' description
-                this.controller.addProductToOrder({
-                    name: this.controller.logic.currentProduct.name,
-                    price: this.controller.logic.currentProduct.price,
-                    category: this.controller.logic.currentCategory,
-                    customizations: ['Con todo']
-                });
-                this.hideModal('food-customization-modal');
+        // 1.1 Question (Centered)
+        const description = document.createElement('p');
+        description.textContent = '¿Desea agregar el producto con todos sus ingredientes?';
+        description.style.textAlign = 'center'; // Changed from justify
+        description.style.fontSize = '1.1rem';
+        description.className = 'mb-4';
+        contentWrapper.appendChild(description);
+
+        // 1.2 Initial Buttons (Centered - Utility Classes)
+        const initialButtons = document.createElement('div');
+        initialButtons.className = 'u-modal-actions u-modal-mb-lg';
+
+        const btnYes = document.createElement('button');
+        btnYes.className = 'btn btn-contrast'; // Matched to 'No'
+        btnYes.textContent = 'Sí';
+
+        const btnNo = document.createElement('button');
+        btnNo.className = 'btn btn-contrast';
+        btnNo.textContent = 'No';
+
+        initialButtons.appendChild(btnYes);
+        initialButtons.appendChild(btnNo);
+        contentWrapper.appendChild(initialButtons);
+
+        // 1.3 Form
+        const formContainer = document.createElement('div');
+        formContainer.className = 'hidden u-modal-mt-md';
+
+        // Guidance Text
+        const guidance = document.createElement('p');
+        guidance.textContent = 'Describa qué quiere cambiar del platillo:';
+        guidance.className = 'u-modal-text-center u-modal-mb-md text-sm text-gray-300';
+        formContainer.appendChild(guidance);
+
+        const ingredientsInput = document.createElement('textarea');
+        ingredientsInput.className = 'form-input ingredients-input w-full p-2 border rounded';
+        ingredientsInput.placeholder = 'Escriba las modificaciones (ej. Sin cebolla)...';
+        ingredientsInput.rows = 3;
+        formContainer.appendChild(ingredientsInput);
+
+        // Actions: Confirm (Left) / Cancel (Right) - Centered
+        const formActions = document.createElement('div');
+        formActions.className = 'u-modal-actions u-modal-mt-md';
+
+        const btnConfirm = document.createElement('button');
+        btnConfirm.className = 'btn btn-ghost'; // Changed to match Cancel
+        btnConfirm.textContent = 'Confirmar';
+
+        const btnCancel = document.createElement('button');
+        btnCancel.className = 'btn btn-ghost';
+        btnCancel.textContent = 'Cancelar';
+
+        formActions.appendChild(btnConfirm); // Confirm first
+        formActions.appendChild(btnCancel);  // Cancel second
+
+        formContainer.appendChild(formActions);
+
+        contentWrapper.appendChild(formContainer);
+
+        // 2. Logic Interaction
+
+        // ... (Listeners same as before, ensuring vars are captured) ...
+
+        // FLOW: YES
+        btnYes.onclick = () => {
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations: ['Con todo']
             });
+            new ModalSystem().close();
+        };
+
+        // FLOW: NO
+        btnNo.onclick = () => {
+            description.style.display = 'none'; // Hide Question
+            initialButtons.style.display = 'none'; // Hide Buttons
+            formContainer.classList.remove('hidden');
+            ingredientsInput.focus();
+        };
+
+        // FLOW: CANCEL
+        btnCancel.onclick = () => {
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations: ['Con todo']
+            });
+            new ModalSystem().close();
+        };
+
+        // FLOW: CONFIRM
+        btnConfirm.onclick = () => {
+            const modifications = ingredientsInput.value.trim();
+            const customizations = modifications ? [`Sin: ${modifications}`] : ['Con todo'];
+
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations
+            });
+            new ModalSystem().close();
+        };
+
+        // 3. Launch Modal
+        ModalSystem.show({
+            title: logic.currentProduct.name, // Removed 'Personalizar ' prefix
+            content: contentWrapper,
+            actions: []
+        });
+    }
+
+    /* DRINK OPTIONS MODAL (Restored & Systematized) */
+    showDrinkOptionsModal() {
+        this.renderModalFromTemplate('drink-options-modal', 'drink-options-template');
+        // Slight delay to ensure DOM is ready inside modal
+        setTimeout(() => this._setupDrinkModal(), 50);
+    }
+
+    _setupDrinkModal() {
+        const container = document.getElementById('drink-options-container');
+        if (!container) return;
+
+        container.innerHTML = '';
+        container.className = 'drink-options-grid'; // Defined in _modals_custom.scss
+
+        const productName = this.controller.logic.currentProduct.name;
+        const result = this.controller.getDrinkOptionsForProduct(productName);
+        const options = result.drinkOptions || [];
+
+        if (!options || options.length === 0) {
+            container.innerHTML = '<p>No hay opciones disponibles.</p>';
+            return;
         }
 
-        if (customizeIngredientsBtn) {
-            customizeIngredientsBtn.addEventListener('click', () => {
-                // Hide the Sí/No buttons
-                const ingredientsChoice = document.querySelector('.ingredients-choice');
-                if (ingredientsChoice) {
-                    ingredientsChoice.classList.add('hidden');
+        const priceType = this.controller.logic.currentProduct.priceType;
+        const isSingleSelection = (priceType === 'precioLitro' || priceType === 'precioCopa');
+
+        options.forEach(option => {
+            // Card Container
+            const card = this._createElement('div', 'drink-option-card');
+
+            // Title
+            const title = this._createElement('div', 'drink-option-title', option);
+            card.appendChild(title);
+
+            if (isSingleSelection) {
+                // SINGLE SELECTION (Litro/Copa)
+                // Compact style for simple buttons
+                card.classList.add('compact');
+
+                // Make the whole card clickable or use a selection indicator
+                card.style.cursor = 'pointer';
+                card.onclick = () => this._handleSingleDrinkSelection(option, card);
+
+                // Pre-select if already active
+                if (this.controller.logic.drinkCounts[option] > 0) {
+                    card.classList.add('active');
                 }
 
-                // Show textarea for ingredient customization
-                if (ingredientsContainer) {
-                    ingredientsContainer.className = 'input-container-visible';
-                }
-                if (ingredientsInput) {
-                    ingredientsInput.focus();
-                }
-            });
-        }
+            } else {
+                // MULTI SELECTION (Botella) => Counters
+                const controls = this._createElement('div', 'drink-card-controls');
 
-        if (confirmIngredientsBtn) {
-            confirmIngredientsBtn.addEventListener('click', () => {
-                // Add product with ingredient modifications
-                const modifications = ingredientsInput ? ingredientsInput.value.trim() : '';
-                const customizations = modifications ? [`Sin: ${modifications}`] : [];
+                const decBtn = this._createElement('button', 'btn btn-icon btn-sm action-btn decrement-btn');
+                decBtn.innerHTML = '-';
+                decBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const newCount = this.controller.handleDrinkDecrement(option);
+                    if (newCount !== null) countDisplay.textContent = newCount;
+                };
 
-                this.controller.addProductToOrder({
-                    name: this.controller.logic.currentProduct.name,
-                    price: this.controller.logic.currentProduct.price,
-                    category: this.controller.logic.currentCategory,
-                    customizations
-                });
-                this.hideModal('food-customization-modal');
-            });
-        }
+                const countDisplay = this._createElement('span', 'drink-card-counter', '0');
 
-        if (cancelIngredientsBtn) {
-            cancelIngredientsBtn.addEventListener('click', () => {
-                // Just close the modal without adding
-                this.hideModal('food-customization-modal');
-            });
-        }
+                const incBtn = this._createElement('button', 'btn btn-icon btn-sm action-btn increment-btn');
+                incBtn.innerHTML = '+';
+                incBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const newCount = this.controller.handleDrinkIncrement(option);
+                    if (newCount !== null) countDisplay.textContent = newCount;
+                };
 
-        this.showModal('food-customization-modal');
+                controls.appendChild(decBtn);
+                controls.appendChild(countDisplay);
+                controls.appendChild(incBtn);
+                card.appendChild(controls);
+            }
+
+            container.appendChild(card);
+        });
+
+        this.showModal('drink-options-modal');
+    }
+
+    _handleSingleDrinkSelection(option, cardElement) {
+        // Reset Logic State
+        this.controller.logic.drinkCounts = {};
+        this.controller.logic.selectedDrinks = [];
+
+        // Add new selection logic
+        // We use handleDrinkIncrement to safely add the new one, assuming 0 start
+        // Or manually set 1. Let's use controller method to be safe with validation logic if any.
+        // Actually, logic.maxDrinkCount might block if we don't reset. We reset above.
+
+        this.controller.handleDrinkIncrement(option);
+
+        // Update UI Visuals
+        const container = document.getElementById('drink-options-container');
+        Array.from(container.children).forEach(c => c.classList.remove('active'));
+        cardElement.classList.add('active');
     }
 
 
     showMeatCustomizationModal() {
-        this.renderModalFromTemplate('meat-customization-modal', 'meat-customization-template');
-        setTimeout(() => this._setupMeatModal(), 50);
+        this._setupMeatModal();
     }
 
     showPlatosCustomizationModal() {
-        this.renderModalFromTemplate('platos-customization-modal', 'platos-customization-template');
-        setTimeout(() => this._setupPlatosModal(), 50);
+        this._setupPlatosModal();
     }
 
+    /**
+     * Set ups and opens the Platos Fuertes Customization Modal using ModalSystem.
+     * @private
+     */
     _setupPlatosModal() {
-        const garnishContainer = document.getElementById('garnish-platos-input-container');
-        if (garnishContainer) garnishContainer.className = 'input-container-hidden';
+        const logic = this.controller.logic;
 
-        const garnishModifications = document.getElementById('garnish-platos-modifications');
-        if (garnishModifications) garnishModifications.value = '';
+        // 1. Build Content Wrapper
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'platos-customization-wrapper';
 
-        // Set up garnish choice buttons
-        const changeGarnishBtn = document.getElementById('change-garnish-platos-btn');
-        const keepGarnishBtn = document.getElementById('keep-garnish-platos-btn');
-        const confirmGarnishBtn = document.getElementById('confirm-garnish-platos-btn');
-        const cancelGarnishBtn = document.getElementById('cancel-garnish-platos-btn');
+        // 1.1 Question (Justified)
+        // 1.1 Question (Centered)
+        const description = document.createElement('p');
+        description.textContent = '¿Desea agregar el producto con todos sus ingredientes?';
+        description.className = 'u-modal-text-center u-modal-mb-lg';
+        description.style.fontSize = '1.1rem';
+        contentWrapper.appendChild(description);
 
-        if (changeGarnishBtn) {
-            changeGarnishBtn.addEventListener('click', () => {
-                // Hide the Sí/No buttons
-                const garnishChoice = document.querySelector('.garnish-choice-platos');
-                if (garnishChoice) {
-                    garnishChoice.classList.add('hidden');
-                }
+        // 1.2 Initial Buttons (Centered - Utility Classes)
+        const initialButtons = document.createElement('div');
+        initialButtons.className = 'u-modal-actions u-modal-mb-lg';
 
-                // Show textarea for garnish modifications
-                if (garnishContainer) {
-                    garnishContainer.className = 'input-container-visible';
-                }
-                if (garnishModifications) {
-                    garnishModifications.focus();
-                }
+        const btnYes = document.createElement('button');
+        btnYes.className = 'btn btn-contrast'; // Matched to 'No'
+        btnYes.textContent = 'Sí';
+
+        const btnNo = document.createElement('button');
+        btnNo.className = 'btn btn-contrast';
+        btnNo.textContent = 'No';
+
+        initialButtons.appendChild(btnYes);
+        initialButtons.appendChild(btnNo);
+        contentWrapper.appendChild(initialButtons);
+
+        // 1.3 Form
+        const formContainer = document.createElement('div');
+        formContainer.className = 'hidden u-modal-mt-md';
+
+        // Guidance Text
+        const guidance = document.createElement('p');
+        guidance.textContent = 'Describa qué quiere cambiar del platillo:';
+        guidance.className = 'u-modal-text-center u-modal-mb-md text-sm text-gray-300';
+        formContainer.appendChild(guidance);
+
+        const garnishInput = document.createElement('textarea');
+        garnishInput.className = 'form-input garnish-input w-full p-2 border rounded';
+        garnishInput.placeholder = 'Escriba las modificaciones...';
+        garnishInput.rows = 3;
+        formContainer.appendChild(garnishInput);
+
+        // Actions: Confirm (Left) / Cancel (Right) - Centered
+        const formActions = document.createElement('div');
+        formActions.className = 'u-modal-actions u-modal-mt-md';
+
+        const btnConfirm = document.createElement('button');
+        btnConfirm.className = 'btn btn-ghost'; // Changed to match Cancel
+        btnConfirm.textContent = 'Confirmar';
+
+        const btnCancel = document.createElement('button');
+        btnCancel.className = 'btn btn-ghost';
+        btnCancel.textContent = 'Cancelar';
+
+        formActions.appendChild(btnConfirm); // Confirm first
+        formActions.appendChild(btnCancel);  // Cancel second
+
+        formContainer.appendChild(formActions);
+
+        contentWrapper.appendChild(formContainer);
+
+        // 2. Logic Interaction
+
+        // FLOW: YES -> Add Standard
+        btnYes.onclick = () => {
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations: ['Estándar']
             });
-        }
+            new ModalSystem().close();
+        };
 
-        if (keepGarnishBtn) {
-            keepGarnishBtn.addEventListener('click', () => {
-                // Add product with standard garnish
-                this.controller.addProductToOrder({
-                    name: this.controller.logic.currentProduct.name,
-                    price: this.controller.logic.currentProduct.price,
-                    category: this.controller.logic.currentCategory,
-                    customizations: ['Guarnición estándar']
-                });
+        // FLOW: NO
+        btnNo.onclick = () => {
+            description.style.display = 'none'; // Hide Question
+            initialButtons.style.display = 'none'; // Hide Buttons
+            formContainer.classList.remove('hidden');
+            garnishInput.focus();
+        };
 
-                this.hideModal('platos-customization-modal');
+        // FLOW: CANCEL
+        btnCancel.onclick = () => {
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations: ['Estándar']
             });
-        }
+            new ModalSystem().close();
+        };
 
-        if (confirmGarnishBtn) {
-            confirmGarnishBtn.addEventListener('click', () => {
-                // Add product with garnish modifications
-                const garnishText = garnishModifications ? garnishModifications.value.trim() : '';
-                const customizations = garnishText ? [`Guarnición: ${garnishText}`] : ['Guarnición estándar'];
+        // FLOW: CONFIRM
+        btnConfirm.onclick = () => {
+            const modifications = garnishInput.value.trim();
+            const customizations = modifications ? [`Sin: ${modifications}`] : ['Estándar'];
 
-                this.controller.addProductToOrder({
-                    name: this.controller.logic.currentProduct.name,
-                    price: this.controller.logic.currentProduct.price,
-                    category: this.controller.logic.currentCategory,
-                    customizations
-                });
-
-                this.hideModal('platos-customization-modal');
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations
             });
-        }
+            new ModalSystem().close();
+        };
 
-        if (cancelGarnishBtn) {
-            cancelGarnishBtn.addEventListener('click', () => {
-                // Just close the modal without adding
-                this.hideModal('platos-customization-modal');
-            });
-        }
-
-        this.showModal('platos-customization-modal');
+        // 3. Launch Modal
+        ModalSystem.show({
+            title: logic.currentProduct.name, // Removed 'Personalizar ' prefix
+            content: contentWrapper,
+            actions: []
+        });
     }
 
+    /**
+     * Set ups and opens the Meat Customization Modal using ModalSystem.
+     * @private
+     */
     _setupMeatModal() {
-        const garnishContainer = document.getElementById('garnish-input-container');
-        if (garnishContainer) garnishContainer.classList.add('hidden');
+        const logic = this.controller.logic;
+        logic.selectedCookingTerm = null; // Reset selection
 
-        const garnishActions = document.querySelector('.garnish-actions');
-        if (garnishActions) garnishActions.classList.add('modal-actions', 'garnish-actions', 'hidden');
+        // 1. Build content
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'meat-customization-wrapper';
 
-        const garnishModifications = document.getElementById('garnish-modifications');
-        if (garnishModifications) garnishModifications.value = '';
+        // 1.1 Cooking Terms
+        const termsTitle = document.createElement('h3');
+        termsTitle.className = 'section-title u-modal-text-center u-modal-mb-md';
+        termsTitle.textContent = 'Término';
+        contentWrapper.appendChild(termsTitle);
 
-        this.controller.logic.selectedCookingTerm = null;
-        this._setupCookingOptions();
+        const termsContainer = document.createElement('div');
+        termsContainer.className = 'cooking-terms-grid u-modal-actions u-modal-mb-lg';
+        termsContainer.style.gap = '10px'; // Override standard gap if needed
 
-        // Set up garnish choice buttons
-        const changeGarnishBtn = document.getElementById('change-garnish-btn');
-        const keepGarnishBtn = document.getElementById('keep-garnish-btn');
-        const confirmGarnishBtn = document.getElementById('confirm-garnish-btn');
-        const cancelGarnishBtn = document.getElementById('cancel-garnish-btn');
+        const terms = [
+            { id: 'medio', label: 'Término ½' },
+            { id: 'tres-cuartos', label: 'Término ¾' },
+            { id: 'bien-cocido', label: 'Bien Cocido' }
+        ];
 
-        if (changeGarnishBtn) {
-            changeGarnishBtn.addEventListener('click', () => {
-                // Hide the Sí/No buttons
-                const garnishChoice = document.querySelector('.garnish-choice');
-                if (garnishChoice) {
-                    garnishChoice.classList.add('hidden');
-                }
+        terms.forEach(term => {
+            const btn = document.createElement('button');
+            btn.className = 'cooking-option btn-ghost';
+            btn.textContent = term.label;
+            btn.dataset.term = term.id;
+            btn.onclick = () => {
+                termsContainer.querySelectorAll('.cooking-option').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                logic.selectedCookingTerm = term.id;
+            };
+            termsContainer.appendChild(btn);
+        });
+        contentWrapper.appendChild(termsContainer);
 
-                // Show textarea for garnish modifications
-                if (garnishContainer) {
-                    garnishContainer.classList.remove('hidden');
-                    garnishContainer.classList.add('input-container-visible');
-                }
-                if (garnishModifications) {
-                    garnishModifications.focus();
-                }
+        // 1.2 Garnish Question
+        const garnishTitle = document.createElement('p');
+        garnishTitle.className = 'u-modal-text-center u-modal-mb-md text-sm text-gray-300';
+        garnishTitle.textContent = '¿Desea cambiar algo de su Guarnición?';
+        contentWrapper.appendChild(garnishTitle);
 
-                // Show Confirmar/Cancelar buttons
-                if (garnishActions) {
-                    garnishActions.classList.remove('hidden');
-                }
+        // 1.3 Initial Choice Buttons (Yes/No)
+        const choiceContainer = document.createElement('div');
+        choiceContainer.className = 'u-modal-actions u-modal-mb-lg';
+
+        const btnYes = document.createElement('button');
+        btnYes.className = 'btn btn-contrast'; // Changed to match No
+        btnYes.textContent = 'Sí';
+
+        const btnNo = document.createElement('button');
+        btnNo.className = 'btn btn-contrast';
+        btnNo.textContent = 'No';
+
+        choiceContainer.appendChild(btnYes);
+        choiceContainer.appendChild(btnNo);
+        contentWrapper.appendChild(choiceContainer);
+
+        // 1.4 Conditional Form (Input + Actions)
+        const formContainer = document.createElement('div');
+        formContainer.className = 'hidden u-modal-mt-md';
+
+        const garnishInput = document.createElement('textarea');
+        garnishInput.className = 'form-input garnish-input';
+        garnishInput.placeholder = 'Escriba cambios en la guarnición (Opcional)';
+        garnishInput.rows = 2;
+        formContainer.appendChild(garnishInput);
+
+        const actionsContainer = document.createElement('div');
+        actionsContainer.className = 'u-modal-actions u-modal-mt-md';
+
+        const btnConfirm = document.createElement('button');
+        btnConfirm.className = 'btn btn-ghost'; // Changed to match Cancel
+        btnConfirm.textContent = 'Confirmar';
+
+        const btnCancel = document.createElement('button');
+        btnCancel.className = 'btn btn-ghost';
+        btnCancel.textContent = 'Cancelar';
+
+        actionsContainer.appendChild(btnConfirm);
+        actionsContainer.appendChild(btnCancel);
+        formContainer.appendChild(actionsContainer);
+        contentWrapper.appendChild(formContainer);
+
+        // --- Logic Handlers ---
+
+        const validateAndAdd = (customText) => {
+            if (!logic.selectedCookingTerm) {
+                this.showValidationModal('Por favor seleccione un Término.');
+                return false;
+            }
+
+            const termLabels = {
+                'medio': 'Término ½',
+                'tres-cuartos': 'Término ¾',
+                'bien-cocido': 'Bien Cocido'
+            };
+            const termLabel = termLabels[logic.selectedCookingTerm] || logic.selectedCookingTerm;
+
+            // Build Customizations
+            const customizations = [termLabel];
+            if (customText) {
+                customizations.push(customText);
+            } else {
+                customizations.push('Guarnición Normal');
+            }
+
+            this.controller.addProductToOrder({
+                name: logic.currentProduct.name,
+                price: logic.currentProduct.price,
+                category: logic.currentCategory,
+                customizations
             });
-        }
+            new ModalSystem().close();
+            return true;
+        };
 
-        if (keepGarnishBtn) {
-            keepGarnishBtn.addEventListener('click', () => {
-                // Validate cooking term is selected first
-                if (!this.controller.logic.selectedCookingTerm) {
-                    this.showValidationModal('Por favor seleccione un término de cocción.');
-                    return;
-                }
+        // Click Logic
+        btnYes.onclick = () => {
+            // Hide choice buttons, show form
+            choiceContainer.style.display = 'none';
+            formContainer.classList.remove('hidden');
+            garnishInput.focus();
+        };
 
-                // Add product with cooking term and standard garnish
-                const termLabels = {
-                    'medio': 'Término ½',
-                    'tres-cuartos': 'Término ¾',
-                    'bien-cocido': 'Bien Cocido'
-                };
-                const customizations = [
-                    termLabels[this.controller.logic.selectedCookingTerm] || this.controller.logic.selectedCookingTerm,
-                    'Guarnición estándar'
-                ];
+        btnNo.onclick = () => {
+            // Validate Term and Add (Standard)
+            validateAndAdd(null); // Passing null triggers 'Guarnición Normal' logic
+        };
 
-                this.controller.addProductToOrder({
-                    name: this.controller.logic.currentProduct.name,
-                    price: this.controller.logic.currentProduct.price,
-                    category: this.controller.logic.currentCategory,
-                    customizations
-                });
+        btnCancel.onclick = () => {
+            // Close without adding
+            new ModalSystem().close();
+        };
 
-                this.hideModal('meat-customization-modal');
-            });
-        }
+        btnConfirm.onclick = () => {
+            // Validate Term and Add (Custom or Standard)
+            const text = garnishInput.value.trim();
+            const note = text ? `Guarnición: ${text}` : null;
+            validateAndAdd(note);
+        };
 
-        if (confirmGarnishBtn) {
-            confirmGarnishBtn.addEventListener('click', () => {
-                // Validate cooking term is selected
-                if (!this.controller.logic.selectedCookingTerm) {
-                    this.showValidationModal('Por favor seleccione un término de cocción.');
-                    return;
-                }
 
-                // Build customizations array
-                const customizations = [];
-
-                // Add cooking term
-                const termLabels = {
-                    'medio': 'Término ½',
-                    'tres-cuartos': 'Término ¾',
-                    'bien-cocido': 'Bien Cocido'
-                };
-                customizations.push(termLabels[this.controller.logic.selectedCookingTerm] || this.controller.logic.selectedCookingTerm);
-
-                // Add garnish modifications if any
-                const garnishText = garnishModifications ? garnishModifications.value.trim() : '';
-                if (garnishText) {
-                    customizations.push(`Guarnición: ${garnishText}`);
-                }
-
-                // Add product to order
-                this.controller.addProductToOrder({
-                    name: this.controller.logic.currentProduct.name,
-                    price: this.controller.logic.currentProduct.price,
-                    category: this.controller.logic.currentCategory,
-                    customizations
-                });
-
-                this.hideModal('meat-customization-modal');
-            });
-        }
-
-        if (cancelGarnishBtn) {
-            cancelGarnishBtn.addEventListener('click', () => {
-                // Just close the modal without adding
-                this.hideModal('meat-customization-modal');
-            });
-        }
-
-        this.showModal('meat-customization-modal');
-    }
-
-    _setupCookingOptions() {
-        const cookingOptions = document.querySelectorAll('.cooking-option');
-        cookingOptions.forEach(option => {
-            option.classList.remove('selected');
-            option.addEventListener('click', (e) => {
-                cookingOptions.forEach(opt => opt.classList.remove('selected'));
-                e.target.classList.add('selected');
-                this.controller.logic.selectedCookingTerm = e.target.getAttribute('data-term');
-            });
+        // 2. Launch
+        ModalSystem.show({
+            title: logic.currentProduct.name,
+            content: contentWrapper,
+            actions: []
         });
     }
 
@@ -1113,12 +1387,12 @@ export class OrderUI {
     _createOrdersHeader(isHistory) {
         const header = this._createElement('div', ' orders-screen-header');
 
-        const backBtn = this._createElement('button', 'nav-button orders-back-btn', 'Volver');
+        const backBtn = this._createElement('button', 'btn btn-ghost nav-button orders-back-btn', 'Volver');
         backBtn.addEventListener('click', async () => {
             await this.controller.hideOrdersScreen();
         });
 
-        const historyBtn = this._createElement('button', 'nav-button history-btn', isHistory ? 'Ver Activas' : 'Ver Historial');
+        const historyBtn = this._createElement('button', 'btn btn-ghost nav-button history-btn', isHistory ? 'Ver Activas' : 'Ver Historial');
         historyBtn.addEventListener('click', () => {
             this.controller.toggleOrderHistoryView();
         });
@@ -1183,7 +1457,7 @@ export class OrderUI {
 
         // Delete button if  needed
         if (includeDeleteButton) {
-            const deleteBtn = this._createElement('button', 'nav-button delete-order-btn', 'Eliminar');
+            const deleteBtn = this._createElement('button', 'btn btn-ghost nav-button delete-order-btn', 'Eliminar');
             deleteBtn.addEventListener('click', () => {
                 this.controller.handleDeleteOrder(order.id);
             });
@@ -1197,7 +1471,7 @@ export class OrderUI {
         const fixedContainer = this._createElement('div', 'fixed-bottom-actions');
         // Styles moved to .fixed-bottom-actions in _orders.scss
 
-        const button = this._createElement('button', 'nav-button clear-history-btn', buttonText);
+        const button = this._createElement('button', 'btn btn-primary nav-button clear-history-btn', buttonText);
         // Styles moved to .clear-history-btn in _orders.scss
         button.addEventListener('click', onClick);
 

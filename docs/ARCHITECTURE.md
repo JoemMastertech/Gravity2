@@ -138,6 +138,13 @@ sequenceDiagram
 *Modern SCSS Architecture (ITCSS-ish).*
 - **Entry Point**: `Shared/styles/main.scss` (The root).
 - **Tools**: `Shared/styles/tools/_mixins.scss` (The Orchestrator).
+- **System (New Architecture)**: 
+  - `Shared/styles/components/_button-system.scss` (The Action System).
+  - `Shared/styles/components/_modal-system.scss` (The Modal Foundation).
+  - `Interfaces/web/ui-adapters/components/ModalSystem.js` (The Builder Engine).
+- **Legacy (Deprecated/Transitioning)**:
+  - `Shared/styles/components/_modals.scss` (Old static modals).
+  - `Shared/styles/components/_modals_custom.scss` (Partially migrated).
 - **Views**:
   - `Shared/styles/views/_view-grid.scss` (The Grid).
   - `Shared/styles/views/_view-table.scss` (The logic-heavy Tables).
@@ -166,6 +173,14 @@ sequenceDiagram
     - `SidebarManager` detects "Persistent" sidebars (Order).
     - If active, it expands Col 3 to 350px.
     - If Overlay Sidebars (Settings) open, it **preserves** this grid state.
+
+### 6. The Modal Engine (The Builder)
+- **Source**: `ui-adapters/components/ModalSystem.js` & `OrderUI.js`
+- **Concept**: A centralized Builder Pattern for creating consistent, configuration-driven modals.
+- **Refactor (Dec 2025)**:
+    - **Natural Configuration**: All styles delegated to `_modal-system.scss` (Utility classes).
+    - **Zero Inline Styles**: No direct style manipulation in JS.
+    - **Visuals**: Static Cyan Glow (Premium) & Symmetric Buttons (`btn-contrast`).
 
 ### 1. Product Rendering
 - **Source**: `ui-adapters/components/product-table.js`

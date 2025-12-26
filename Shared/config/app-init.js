@@ -560,7 +560,7 @@ const AppInit = {
     // Create menu items with translation attributes
     navigationItems.forEach(item => {
       const button = document.createElement('button');
-      button.className = 'nav-button';
+      button.className = 'btn btn-primary nav-button'; /* System Migration: Added .btn .btn-primary */
       button.textContent = item.label;
 
       if (item.target) {
@@ -666,9 +666,13 @@ const AppInit = {
           }
         } else if (action === 'createOrder') {
           // Call the order system's toggle order mode function
+          console.log('[AppInit] Triggering Create Order...');
           const OrderSystem = window.OrderSystem;
           if (OrderSystem) {
+            console.log('[AppInit] OrderSystem found. Toggling mode.');
             OrderSystem.toggleOrderMode();
+          } else {
+            console.error('[AppInit] window.OrderSystem is NOT defined!');
           }
         }
       });

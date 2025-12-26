@@ -1,0 +1,135 @@
+/* Update to _modals.scss to support New Drink Option Cards */
+
+/* Container Grid */
+.drink-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 10px;
+
+    /* Layout Logic for Scrolling */
+    flex: 1;
+    /* Takes available space */
+    overflow-y: auto;
+    /* Enables scrolling */
+    min-height: 0;
+    /* Flexbox scrolling fix */
+    width: 100%;
+}
+
+/* Option Card (Styled like Price Buttons/Sidebar) */
+.drink-option-card {
+    background: rgba(255, 255, 255, 0.02);
+    /* Slight fill */
+    border: 1.4px solid var(--border-color);
+    /* Match Sidebar Btn */
+    border-radius: 8px;
+    /* Closer to button shape */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100px;
+    transition: all 0.3s ease;
+    box-shadow: var(--glow-shadow);
+    /* The Key Feature */
+    cursor: pointer;
+    /* Implies interactive */
+}
+
+/* Modifier: Compact for Single Select (Buttons) */
+.drink-option-card.compact {
+    min-height: 50px;
+    /* Half height, natural cascade */
+    padding: 10px;
+    justify-content: center;
+    /* Center text vertically */
+}
+
+.drink-option-card.compact .drink-option-title {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    /* Slightly smaller for compact look */
+}
+
+/* Modal Actions Layout Override */
+.modal-actions .btn-contrast {
+    width: auto;
+    min-width: 120px;
+    margin: 5px;
+}
+
+.drink-option-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--price-color);
+    box-shadow: var(--glow-shadow-hover);
+    transform: translateY(-2px);
+    /* Slight lift instead of side-shift for grid */
+}
+
+.drink-option-card.active {
+    /* Mirrors Hover Effect (Cyan/Price Color) */
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--price-color);
+    box-shadow: var(--glow-shadow-hover);
+}
+
+/* Card Title */
+.drink-option-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+/* Counter Controls (Inside Card) */
+.drink-card-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 4px;
+}
+
+.drink-card-counter {
+    font-size: 1rem;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Toggle Button (For Litro/Copa) */
+.drink-toggle-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.drink-toggle-btn.selected {
+    color: #000;
+    /* Contrast on primary */
+}
+
+/* Cooking Option Selected State (Natural Cascade) */
+.cooking-option.selected {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+    /* Fallback or specific accent var if available */
+}
+
+/* Ensure specificity if needed against hover/active states if they are stronger elsewhere */
+.cooking-option.selected:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.5);
+}

@@ -23,7 +23,7 @@ export const CONSTANTS = {
     },
     CATEGORIES: {
         FOOD: ['pizzas', 'alitas', 'sopas', 'ensaladas'],
-        MEAT: 'carnes',
+        MEAT: ['carnes', 'cortes_de_carne'],
         PLATOS_FUERTES: 'platos fuertes',
         SNACKS: 'snacks',
         DIGESTIVOS: 'digestivos',
@@ -181,7 +181,7 @@ export class OrderLogic {
     }
 
     isFoodProduct() { return CONSTANTS.CATEGORIES.FOOD.includes(this.currentCategory); }
-    isMeatProduct() { return this.currentCategory === CONSTANTS.CATEGORIES.MEAT; }
+    isMeatProduct() { return CONSTANTS.CATEGORIES.MEAT.includes(this.currentCategory); }
     isPlatosFuertesProduct() { return this.currentCategory === CONSTANTS.CATEGORIES.PLATOS_FUERTES; }
 
     calculateTotalJagerDrinkCount() {

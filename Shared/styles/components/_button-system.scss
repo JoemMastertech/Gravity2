@@ -1,0 +1,141 @@
+/* ==========================================================================
+   BUTTON SYSTEM (The Factory)
+   Consumes: _tokens.scss
+   ========================================================================== */
+
+/* 1. Base Class (The Skeleton) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+
+    /* Structure from Tokens */
+    height: var(--btn-height-std);
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    /* Legacy Y/X logic */
+    border-radius: var(--btn-radius);
+    border: 2px solid transparent;
+    /* Reserve space for borders */
+
+    /* Typography from Tokens */
+    font-family: var(--font-primary, 'Montserrat', sans-serif);
+    font-weight: var(--btn-font-weight);
+    text-transform: var(--btn-text-transform);
+    letter-spacing: var(--btn-letter-spacing);
+    font-size: var(--btn-font-size);
+    /* Legacy Color base */
+    color: var(--text-color);
+
+    /* Animation */
+    transition: all var(--transition-time, 0.3s) ease;
+
+    /* Accessibility */
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 4px;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+/* 2. Variants (The Species) */
+
+/* PRIMARY: Action (Legacy: Bordered -> Filled on Hover) */
+.btn-primary {
+    background: transparent;
+    /* Legacy: Transparent by default */
+    border-color: var(--primary-color);
+    color: var(--text-color);
+    box-shadow: none;
+    /* No Neon Glow in Legacy */
+
+    &:hover:not(:disabled) {
+        background-color: var(--primary-color);
+        color: var(--background-color);
+        border-color: var(--primary-color);
+        transform: none;
+        /* No lift */
+        box-shadow: none;
+    }
+
+    &:active:not(:disabled) {
+        transform: scale(0.98);
+        /* Subtle feedback allowed */
+    }
+}
+
+/* GHOST: Secondary Action (Ex: Cancel, Back) */
+.btn-ghost {
+    background: transparent;
+    color: var(--text-color);
+    border-color: var(--border-color);
+    /* Subtle Border */
+
+    &:hover:not(:disabled) {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    &:active:not(:disabled) {
+        transform: scale(0.98);
+    }
+}
+
+/* ICON: Utility (Ex: Settings, Close) */
+.btn-icon {
+    width: var(--btn-height-std);
+    /* Square */
+    padding: 0;
+    /* Override standard padding */
+    border-radius: 50%;
+    /* Circle */
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid transparent;
+
+    &:hover:not(:disabled) {
+        background: var(--accent-color);
+        color: var(--background-color);
+        transform: rotate(15deg);
+        /* Playful micro-interaction */
+    }
+}
+
+/* 3. Sizes */
+.btn-sm {
+    height: var(--btn-height-sm);
+    font-size: var(--btn-font-size-sm);
+    padding: 0 16px;
+}
+
+/* Legacy Sidebar Style (Requested for Price Buttons) */
+/* High Contrast Variant (Black/White - Used for Prices & Modals) */
+.btn-contrast {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000;
+    color: #fff;
+    border: 1.4px solid var(--border-color);
+    /* Match System Border exactly */
+    box-shadow: var(--glow-shadow);
+    justify-content: center;
+    text-transform: none;
+    transition: all 0.3s ease;
+}
+
+.btn-contrast:hover:not(:disabled) {
+    background-color: #111;
+    border-color: var(--price-color);
+    color: var(--price-color);
+    box-shadow: var(--glow-shadow-hover);
+    transform: translateY(-2px);
+    /* Subtle lift */
+}
