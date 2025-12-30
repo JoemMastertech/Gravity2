@@ -532,14 +532,35 @@ export class OrderUI {
     }
 
     showFoodCustomizationModal() {
+        this._showIngredientsCustomizationModal({
+            title: '¿Desea su platillo con todos los ingredientes?',
+            placeholder: 'Indique los ingredientes que desea quitar o cambios adicionales',
+            wrapperClass: 'food-customization-wrapper'
+        });
+    }
+
+    showPlatosCustomizationModal() {
+        this._showIngredientsCustomizationModal({
+            title: '¿Desea su plato con todos los ingredientes?',
+            placeholder: 'Indique si desea quitar algún ingrediente o guarnición',
+            wrapperClass: 'platos-customization-wrapper'
+        });
+    }
+
+    /**
+     * Internal helper to handle the common "Yes/No (Customize)" pattern 
+     * shared by Food, Snacks and Platos Fuertes.
+     * @private
+     */
+    _showIngredientsCustomizationModal(config) {
         const product = this.controller.logic.currentProduct;
 
         // 1. Build Content Shell
         const contentWrapper = document.createElement('div');
-        contentWrapper.className = 'food-customization-wrapper u-modal-text-center';
+        contentWrapper.className = `${config.wrapperClass} u-modal-text-center`;
 
         const question = document.createElement('h3');
-        question.textContent = '¿Desea su platillo con todos los ingredientes?';
+        question.textContent = config.title;
         question.className = 'modal-section-title';
         contentWrapper.appendChild(question);
 
@@ -559,7 +580,7 @@ export class OrderUI {
 
         const textarea = document.createElement('textarea');
         textarea.className = 'form-textarea';
-        textarea.placeholder = 'Indique los ingredientes que desea quitar o cambios adicionales';
+        textarea.placeholder = config.placeholder;
         customizationInputContainer.appendChild(textarea);
 
         btnNo.onclick = () => {
@@ -586,69 +607,7 @@ export class OrderUI {
             onConfirm: () => {
                 const customization = [];
                 const additionalText = textarea.value.trim();
-                customization.push(additionalText ? `Sin: ${additionalText}` : 'Sin cambios');
-                this.controller.confirmProductWithCustomization(customization);
-                ModalSystem.close();
-            }
-        });
-    }
-
-    showPlatosCustomizationModal() {
-        const product = this.controller.logic.currentProduct;
-
-        // 1. Build Content Shell
-        const contentWrapper = document.createElement('div');
-        contentWrapper.className = 'platos-customization-wrapper u-modal-text-center';
-
-        const question = document.createElement('h3');
-        question.textContent = '¿Desea su plato con todos los ingredientes?';
-        question.className = 'modal-section-title';
-        contentWrapper.appendChild(question);
-
-        const choiceContainer = document.createElement('div');
-        choiceContainer.className = 'ingredients-choice u-flex u-gap-md u-flex-center';
-
-        const btnNo = document.createElement('button');
-        btnNo.className = 'btn btn-ghost';
-        btnNo.textContent = 'No (Personalizar)';
-
-        const btnYes = document.createElement('button');
-        btnYes.className = 'btn btn-primary active';
-        btnYes.textContent = 'Sí (Normal)';
-
-        const capitalizationInputContainer = document.createElement('div');
-        capitalizationInputContainer.className = 'u-hidden u-fade-in u-mt-lg';
-
-        const textarea = document.createElement('textarea');
-        textarea.className = 'form-textarea';
-        textarea.placeholder = 'Indique si desea quitar algún ingrediente o guarnición';
-        capitalizationInputContainer.appendChild(textarea);
-
-        btnNo.onclick = () => {
-            btnNo.classList.add('active');
-            btnYes.classList.remove('active');
-            capitalizationInputContainer.classList.remove('u-hidden');
-            textarea.focus();
-        };
-
-        btnYes.onclick = () => {
-            btnYes.classList.add('active');
-            btnNo.classList.remove('active');
-            capitalizationInputContainer.classList.add('u-hidden');
-            textarea.value = '';
-        };
-
-        choiceContainer.append(btnYes, btnNo);
-        contentWrapper.appendChild(choiceContainer);
-        contentWrapper.appendChild(capitalizationInputContainer);
-
-        // 2. Launch using System Protocol
-        this._launchCustomizationModal({
-            content: contentWrapper,
-            onConfirm: () => {
-                const customization = [];
-                const additionalText = textarea.value.trim();
-                customization.push(additionalText ? `Sin: ${additionalText}` : 'Sin cambios');
+                customization.push(additionalText ? `Personalizado: ${additionalText}` : 'Sin cambios');
                 this.controller.confirmProductWithCustomization(customization);
                 ModalSystem.close();
             }

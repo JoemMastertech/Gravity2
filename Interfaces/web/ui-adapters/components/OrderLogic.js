@@ -180,7 +180,10 @@ export class OrderLogic {
         }) && row.querySelector('.product-price');
     }
 
-    isFoodProduct() { return CONSTANTS.CATEGORIES.FOOD.includes(this.currentCategory); }
+    isFoodProduct() {
+        return CONSTANTS.CATEGORIES.FOOD.includes(this.currentCategory) ||
+            this.currentCategory === CONSTANTS.CATEGORIES.SNACKS;
+    }
     isMeatProduct() { return CONSTANTS.CATEGORIES.MEAT.includes(this.currentCategory); }
     isPlatosFuertesProduct() { return this.currentCategory === CONSTANTS.CATEGORIES.PLATOS_FUERTES; }
 

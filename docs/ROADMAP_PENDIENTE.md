@@ -6,10 +6,10 @@ Este documento detalla los cabos sueltos identificados tras la auditoría de las
 
 ## 🏗️ 1. Unificación Total de Modales (Fase 4 - Final)
 **Estado actual:** Solo el modal de bebidas usa el `ModalSystem.js` (Builder Engine). El resto usa plantillas estáticas legacy.
-- [ ] **Migrar Modal de Carne**: Convertir `meat-customization-template` en una configuración dinámica del `ModalSystem`.
-- [ ] **Migrar Modal de Comida**: Convertir `food-customization-template` para Pizzas/Snacks.
-- [ ] **Limpieza de index.html**: Eliminar todos los tags `<template>` de modales una vez migrados.
-- [ ] **Visuales**: Asegurar que todos tengan el resplandor cian estandarizado y botones `.btn-contrast`.
+- [x] **Migrar Modal de Carne**: Convertir `meat-customization-template` en una configuración dinámica del `ModalSystem`.
+- [x] **Migrar Modal de Comida**: Convertir `food-customization-template` para Pizzas/Snacks.
+- [x] **Limpieza de index.html**: Eliminar todos los tags `<template>` de modales una vez migrados.
+- [x] **Visuales**: Asegurar que todos tengan el resplandor cian estandarizado y botones `.btn-contrast`.
 
 ## 🥩 2. Blindaje de Validaciones (Fase 11)
 **Estado actual:** La validación de términos de cocción existe pero no es "impenetrable".
@@ -31,4 +31,4 @@ Este documento detalla los cabos sueltos identificados tras la auditoría de las
 ---
 
 > [!IMPORTANT]
-> **Prioridad #1:** Migración de Modales de Carne y Comida. Es la mayor discrepancia visual actualmente.
+> **Estado Final:** Migración de Modales 100% Completada. Todos los componentes operan bajo el `ModalSystem` con estética Premium.

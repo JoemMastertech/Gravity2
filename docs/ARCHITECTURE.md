@@ -212,8 +212,7 @@ sequenceDiagram
     - `OrderUI.js`: DOM manipulation for the sidebar and modals.
 
 ### 4. Code Hygiene & Rules
-- **Ghost Files**: Run `node tools/detect-clones.cjs` to find duplicates.
-- **Imports**: Run `node tools/map-imports.cjs` to find unused files.
+- **Smart Cleaning (Anti-Regression)**: Refactoring must never sacrifice aesthetics. Legacy styles must be "absorbed" into the System of Truth (Tokens/Variables) before deletion. See `docs/technical/UI_CSS_METHODOLOGY.md` for the full protocol.
 - **Business Rules**: See `docs/BUSINESS_RULES.md` for specific logic constraints.
 
 ## 🛠️ Build Pipeline & Integrity (The Guards)

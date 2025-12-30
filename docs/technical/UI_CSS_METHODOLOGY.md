@@ -303,21 +303,27 @@ Priority areas for future reduction:
 2. **Phase 8**: Optimize responsive override patterns
 3. **Phase 9**: Refine theme-specific styling architecture
 
-## ✅ Verification Status
+## 🛡️ Smart Cleaning Protocol (Anti-Regression)
 
-### Functionality Testing
-- ✅ Desktop view: All features working
-- ✅ Mobile view: Responsive design intact
-- ✅ Theme switching: All themes functional
-- ✅ Navigation: Menu and sidebar working
-- ✅ Modals: Opening and closing properly
-- ✅ Product cards: Layout and interactions preserved
+To ensure that code refactoring for "cleanliness" never results in visual regressions, the following protocol must be followed:
 
-### Performance Metrics
-- ✅ CSS file size: Optimized through consolidation
-- ✅ Render performance: No degradation observed
-- ✅ Specificity conflicts: Significantly reduced
-- ✅ Maintainability: Greatly improved
+### 1. "Absorb" instead of "Delete"
+Before removing any legacy style (inline `style=""` or ghost CSS files), the developer MUST identify the visual intent.
+- **Action**: If a legacy style provides a specific "Premium Vibe" (e.g., a specific glow or margin), that value must be migrated to a CSS Token or a Component Variable BEFORE the legacy code is deleted.
+
+### 2. Global Tokenization
+Hardcoded values found during cleaning should be converted into the System of Truth (`_tokens.scss`). 
+- **Goal**: Zero hardcoded pixels in components. High-quality variables only.
+
+### 3. Kitchen Sink Verification
+Any component refactored to be "Native" must be verified against `_kitchen-sink.html`.
+- **Criteria**: The "Native" version must be indistinguishable from the "Legacy" version in terms of aesthetics.
+
+### 4. Visual Map Anchoring
+Once a specific premium look (like the Cyan Glow on modals) is consolidated into the system, it must be documented in `docs/VISUAL_MAP.md`. This becomes the "Legal Defense" for that style against future AI or human over-cleaning.
+
+> [!IMPORTANT]
+> **Estilo > Limpieza**: If a cleaning task threatens a specific design detail that makes the app feel premium, the task must be paused until that detail is successfully absorbed into the System of Truth.
 
 ## 📝 Conclusion
 

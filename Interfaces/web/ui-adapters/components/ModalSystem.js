@@ -89,6 +89,7 @@ export class ModalSystem {
 
                 btn.className = `btn ${btnClass}`;
                 btn.textContent = action.label;
+                btn.disabled = action.disabled || false;
                 btn.onclick = () => {
                     if (action.onClick) action.onClick();
                     // Optional: auto-close? Let handler decide usually.
