@@ -235,6 +235,28 @@ export class OrderLogic {
         return this.isSpecialBottleCategory() || this.isOnlySodaCategory(drinkOptions);
     }
 
+    hasAnyDynamicMixers() {
+        if (!this.currentProduct) return false;
+
+        const priceType = this.currentProduct.priceType;
+        let mixers = null;
+
+        if (priceType === CONSTANTS.PRICE_TYPES.BOTTLE) {
+            mixers = this.currentProduct.mixersBotella;
+        } else if (priceType === CONSTANTS.PRICE_TYPES.LITER) {
+            mixers = this.currentProduct.mixersLitro;
+        } else if (priceType === CONSTANTS.PRICE_TYPES.CUP) {
+            mixers = this.currentProduct.mixersCopa;
+        }
+
+        // Fallback to generic mixers
+        if (!mixers || (Array.isArray(mixers) && mixers.length === 0)) {
+            mixers = this.currentProduct.mixers;
+        }
+
+        return Array.isArray(mixers) && mixers.length > 0;
+    }
+
     getDrinkOptionsForProduct(productName) {
         if (!productName || typeof productName !== 'string') {
             Logger.error('getDrinkOptionsForProduct: Invalid productName:', productName);
@@ -246,8 +268,25 @@ export class OrderLogic {
         const priceType = this.currentProduct ? this.currentProduct.priceType : CONSTANTS.PRICE_TYPES.BOTTLE;
 
         // 1. Dynamic options from Database (Highest Priority)
-        if (this.currentProduct && this.currentProduct.mixers && Array.isArray(this.currentProduct.mixers) && this.currentProduct.mixers.length > 0) {
-            const options = this.currentProduct.mixers;
+        let dynamicOptions = null;
+        if (this.currentProduct) {
+            // Resolve specific mixers based on price type for liquors
+            if (priceType === CONSTANTS.PRICE_TYPES.BOTTLE) {
+                dynamicOptions = this.currentProduct.mixersBotella;
+            } else if (priceType === CONSTANTS.PRICE_TYPES.LITER) {
+                dynamicOptions = this.currentProduct.mixersLitro;
+            } else if (priceType === CONSTANTS.PRICE_TYPES.CUP) {
+                dynamicOptions = this.currentProduct.mixersCopa;
+            }
+
+            // Fallback to generic .mixers if specific ones are empty/undefined
+            if (!dynamicOptions || (Array.isArray(dynamicOptions) && dynamicOptions.length === 0)) {
+                dynamicOptions = this.currentProduct.mixers;
+            }
+        }
+
+        if (dynamicOptions && Array.isArray(dynamicOptions) && dynamicOptions.length > 0) {
+            const options = dynamicOptions;
             // Determine message based on options
             const isOnlySodas = this.isOnlySodaCategory(options);
             const message = isOnlySodas ?
@@ -337,7 +376,7 @@ export class OrderLogic {
         if (isBottle) {
             if (this.bottleCategory === 'VODKA' || this.bottleCategory === 'GINEBRA' || this.isSpecialBottleCategory()) {
                 subtitle = CONSTANTS.MESSAGES.SPECIAL;
-            } else if (message === "Puedes elegir 5 refrescos" || this.isOnlySodaCategory(this.currentProduct?.mixers)) {
+            } else if (message === "Puedes elegir 5 refrescos" || this.isOnlySodaCategory(this.hasAnyDynamicMixers() ? this.getDrinkOptionsForProduct(productName).drinkOptions : null)) {
                 subtitle = CONSTANTS.MESSAGES.ONLY_SODAS;
             }
         } else {

@@ -153,7 +153,7 @@ class OrderSystem {
     const priceType = this.logic.getPriceType(rowOrCard, clickedElement);
     const { category } = this.logic.getProductMetadata(rowOrCard);
 
-    // Extract dynamic mixers if available
+    // Extract dynamic mixers if available (camelCase prefered)
     let mixers = null;
     if (clickedElement.dataset.mixers) {
       try {
@@ -168,7 +168,10 @@ class OrderSystem {
       price: price,
       priceType: priceType,
       category: category,
-      mixers: mixers
+      mixers: mixers, // Legacy support
+      mixersBotella: clickedElement.dataset.mixersBotella ? JSON.parse(clickedElement.dataset.mixersBotella) : null,
+      mixersLitro: clickedElement.dataset.mixersLitro ? JSON.parse(clickedElement.dataset.mixersLitro) : null,
+      mixersCopa: clickedElement.dataset.mixersCopa ? JSON.parse(clickedElement.dataset.mixersCopa) : null
     };
 
     this.logic.setCurrentProduct(product, category);
@@ -187,11 +190,7 @@ class OrderSystem {
       this.logic.currentProduct.priceType === CONSTANTS.PRICE_TYPES.CUP) {
 
       // Check if we should show modal based on category or if dynamic mixers exist
-      const hasDynamicMixers = this.logic.currentProduct.mixers &&
-        Array.isArray(this.logic.currentProduct.mixers) &&
-        this.logic.currentProduct.mixers.length > 0;
-
-      if (this.logic.bottleCategory !== 'OTROS' || hasDynamicMixers) {
+      if (this.logic.bottleCategory !== 'OTROS' || this.logic.hasAnyDynamicMixers()) {
         // Safe check for UI method (handles HMR/Stale instance issues)
         if (typeof this.ui.showDrinkOptionsModal === 'function') {
           this.showDrinkOptionsModal();

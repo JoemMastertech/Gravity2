@@ -171,7 +171,8 @@ export const licorSchema = z.preprocess(normalizeLicorInput, baseLicorShape.pass
 // Categories that use the Liquor Schema
 const LIQUOR_CATEGORIES = [
     'vodka', 'whisky', 'tequila', 'ron', 'brandy',
-    'cognac', 'digestivos', 'ginebra', 'mezcal', 'licores'
+    'cognac', 'digestivos', 'ginebra', 'mezcal', 'licores',
+    'whiskies', 'tequilas', 'rones', 'brandies', 'cognacs', 'ginebras', 'mezcales'
 ];
 
 // Función helper para validar y limpiar un array de productos
