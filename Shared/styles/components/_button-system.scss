@@ -1,0 +1,97 @@
+/* ==========================================================================
+   BUTTON SYSTEM (The Factory)
+   Consumes: _tokens.scss
+   ========================================================================== */
+
+/* 1. Base Class (The Skeleton) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+
+    /* Structure from Tokens */
+    height: var(--btn-height-std);
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    /* Legacy Y/X logic */
+    border-radius: var(--btn-radius);
+    border: 2px solid transparent;
+    /* Reserve space for borders */
+
+    /* Typography from Tokens */
+    font-family: var(--font-primary, 'Montserrat', sans-serif);
+    font-weight: var(--btn-font-weight);
+    text-transform: var(--btn-text-transform);
+    letter-spacing: var(--btn-letter-spacing);
+    font-size: var(--btn-font-size);
+    /* Legacy Color base */
+    color: var(--text-color);
+
+    /* Animation */
+    transition: all var(--transition-time, 0.3s) ease;
+
+    /* Accessibility */
+    &:focus-visible {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 4px;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+/* 2. Variants (The Species) */
+
+/* PRIMARY: Action (Universal Glass Style) */
+.btn-primary,
+.btn-contrast {
+    @include glass-button-system;
+    min-width: 120px;
+}
+
+/* GHOST: Secondary Action (Ex: Cancel, Back) */
+.btn-ghost {
+    @include glass-button-system;
+    opacity: 0.8;
+    min-width: 120px;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+/* ICON: Utility (Ex: Settings, Close) */
+.btn-icon {
+    width: var(--btn-height-std);
+    /* Square */
+    padding: 0;
+    /* Override standard padding */
+    border-radius: 50%;
+    /* Circle */
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid transparent;
+
+    &:hover:not(:disabled) {
+        background: var(--accent-color);
+        color: var(--background-color);
+        transform: rotate(15deg);
+        /* Playful micro-interaction */
+    }
+}
+
+/* 3. Sizes */
+.btn-sm {
+    height: var(--btn-height-sm);
+    font-size: var(--btn-font-size-sm);
+    padding: 0 16px;
+}
+
+/* Legacy Sidebar Style (Requested for Price Buttons) */
+/* Standardized via glass-button-system mixin */

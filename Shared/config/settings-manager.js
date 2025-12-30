@@ -1,0 +1,476 @@
+/**
+ * Settings Manager - Handles the settings menu functionality
+ * 
+ * This module manages the settings menu interactions, including:
+ * - Toggling the settings menu open and closed
+ * - Navigating between different settings panels
+ * - Changing the language of the application with dynamic translation
+ * - Changing the theme and background video
+ */
+
+// Import translation services
+import TranslationService from '../services/TranslationService.js';
+import DOMTranslator from '../services/DOMTranslator.js';
+
+class SettingsManager {
+  constructor() {
+    // DOM elements
+    this.settingsBtn = document.getElementById('settings-btn');
+    this.settingsMenu = document.getElementById('settings-menu');
+    this.settingsOverlay = document.getElementById('settings-overlay');
+
+    // Panels
+    this.mainPanel = document.getElementById('main-settings-panel');
+    this.languagesPanel = document.getElementById('languages-panel');
+    this.darkModePanel = document.getElementById('dark-mode-panel');
+    this.lightModePanel = document.getElementById('light-mode-panel');
+
+    // Navigation buttons
+    this.settingsBackBtn = document.getElementById('settings-back-btn');
+    this.languagesOption = document.getElementById('languages-option');
+    this.darkModeOption = document.getElementById('dark-mode-option');
+    this.lightModeOption = document.getElementById('light-mode-option');
+
+    // Back buttons
+    this.backToMainBtn = document.getElementById('back-to-main');
+    this.backFromDarkBtn = document.getElementById('back-from-dark');
+    this.backFromLightBtn = document.getElementById('back-from-light');
+
+    // Theme and language buttons
+    this.languageBtns = document.querySelectorAll('.language-btn');
+    this.themeBtns = document.querySelectorAll('.theme-btn');
+
+    // Background video
+    this.backgroundVideo = document.getElementById('background-video');
+
+    // Translation services
+    this.translationService = TranslationService;
+    this.domTranslator = DOMTranslator;
+    this.isTranslationInitialized = false;
+
+    // Initialize event listeners
+    this.initListeners();
+
+    // Initialize translation system
+    this.initializeTranslation();
+  }
+
+  /**
+   * Initialize all event listeners for the settings menu
+   */
+  initListeners() {
+    console.log('SettingsManager: Initializing listeners');
+    if (!this.settingsBtn) console.error('SettingsManager: settingsBtn not found');
+    if (!this.settingsMenu) console.error('SettingsManager: settingsMenu not found');
+    if (!this.languageBtns || this.languageBtns.length === 0) console.error('SettingsManager: No language buttons found');
+    else console.log(`SettingsManager: Found ${this.languageBtns.length} language buttons`);
+
+    // Toggle settings menu
+    this.settingsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      this.toggleSettingsMenu();
+    });
+
+    // Close settings menu when clicking back button
+    this.settingsBackBtn.addEventListener('click', () => {
+      this.closeSettingsMenu();
+    });
+
+    // Note: Overlay click is now handled by SidebarManager globally.
+
+    // Navigate to different panels
+    this.languagesOption.addEventListener('click', () => {
+      this.showPanel(this.languagesPanel);
+    });
+
+    this.darkModeOption.addEventListener('click', () => {
+      this.showPanel(this.darkModePanel);
+    });
+
+    this.lightModeOption.addEventListener('click', () => {
+      this.showPanel(this.lightModePanel);
+    });
+
+    // Back to main panel
+    this.backToMainBtn.addEventListener('click', () => {
+      this.showPanel(this.mainPanel);
+    });
+
+    this.backFromDarkBtn.addEventListener('click', () => {
+      this.showPanel(this.mainPanel);
+    });
+
+    this.backFromLightBtn.addEventListener('click', () => {
+      this.showPanel(this.mainPanel);
+    });
+
+    // Language selection - Use Event Delegation
+    if (this.languagesPanel) {
+      this.languagesPanel.addEventListener('click', (e) => {
+        const btn = e.target.closest('.language-btn');
+        if (!btn) return;
+        const language = btn.getAttribute('data-lang');
+        this.changeLanguage(language);
+      });
+    }
+
+    // Theme selection
+    this.themeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-theme');
+        const videoUrl = btn.getAttribute('data-video');
+        this.changeTheme(theme, videoUrl);
+      });
+    });
+  }
+
+  /**
+   * Toggle the settings menu open/closed
+   */
+  async toggleSettingsMenu() {
+    try {
+      const module = await import('../../Interfaces/web/ui-adapters/components/SettingsDrawer.js');
+      const settingsDrawer = module.default;
+      settingsDrawer.toggle();
+    } catch (err) {
+      console.error('SettingsManager: Failed to load SettingsDrawer', err);
+    }
+  }
+
+  /**
+   * Close the settings menu
+   */
+  async closeSettingsMenu() {
+    try {
+      const module = await import('../../Interfaces/web/ui-adapters/components/SettingsDrawer.js');
+      module.default.close();
+    } catch (err) {
+      console.error('SettingsManager: Failed to load SettingsDrawer', err);
+    }
+  }
+
+  /**
+   * Show a specific settings panel and hide others
+   * @param {HTMLElement} panel - The panel to show
+   */
+  async showPanel(panel) {
+    if (!panel) return;
+    try {
+      const module = await import('../../Interfaces/web/ui-adapters/components/SettingsDrawer.js');
+      module.default.showPanel(panel.id);
+    } catch (err) {
+      // Fallback
+      const allPanels = document.querySelectorAll('.settings-panel');
+      allPanels.forEach(p => p.classList.add('u-hidden'));
+      panel.classList.remove('u-hidden');
+      panel.classList.add('u-fade-in');
+    }
+  }
+
+  /**
+   * Change the language of the application with dynamic translation
+   * @param {string} language - The language code to switch to
+   */
+  async changeLanguage(language) {
+    console.log(`Changing language to: ${language}`);
+
+    try {
+      // Ensure translation system is initialized
+      if (!this.isTranslationInitialized) {
+        await this.initializeTranslation();
+      }
+
+      // Reload configuration to ensure environment variables (like window.env) are picked up
+      // This fixes the issue where AppConfig is initialized before window.env is populated
+      if (this.translationService && typeof this.translationService.reloadConfig === 'function') {
+        this.translationService.reloadConfig();
+      } else if (this.translationService.config && typeof this.translationService.config.reload === 'function') {
+        // Fallback to direct config reload if service method not available
+        this.translationService.config.reload();
+      }
+
+      // Show loading indicator (optional)
+      this.showLanguageLoadingState(true);
+
+      // Translate the entire page to the selected language
+      await this.translationService.translatePage(language);
+
+      // Highlight the selected language button
+      this.languageBtns.forEach(btn => {
+        if (btn.getAttribute('data-lang') === language) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Store the selected language in localStorage
+      localStorage.setItem('selectedLanguage', language);
+
+      // Hide loading indicator
+      this.showLanguageLoadingState(false);
+
+      console.log(`✅ Language successfully changed to: ${language}`);
+
+      // Close settings menu after successful language change
+      setTimeout(() => {
+        this.closeSettingsMenu();
+      }, 500);
+
+    } catch (error) {
+      console.error('Error changing language:', error);
+      this.showLanguageLoadingState(false);
+
+      // Show error message to user (optional)
+      this.showLanguageError(language);
+    }
+  }
+
+  /**
+   * Change the theme and background video
+   * @param {string} theme - The theme to apply
+   * @param {string} videoUrl - The URL of the background video
+   */
+  changeTheme(theme, videoUrl) {
+    console.log(`Changing theme to: ${theme}`);
+
+    // Update data-theme attribute on body
+    document.body.setAttribute('data-theme', theme);
+
+    // Update logos according to theme
+    this.updateLogosForTheme(theme);
+
+    // Change background video if a URL is provided
+    if (videoUrl && this.backgroundVideo) {
+      // Create a new source element
+      const newSource = document.createElement('source');
+      newSource.src = videoUrl;
+      newSource.type = 'video/mp4';
+
+      // Clear existing sources
+      while (this.backgroundVideo.firstChild) {
+        this.backgroundVideo.removeChild(this.backgroundVideo.firstChild);
+      }
+
+      // Add the new source
+      this.backgroundVideo.appendChild(newSource);
+
+      // Reload and play the video
+      this.backgroundVideo.load();
+
+      // Ensure the video is muted and loops
+      this.backgroundVideo.muted = true;
+      this.backgroundVideo.loop = true;
+    }
+
+    // Handle white theme which doesn't have a video
+    if (this.backgroundVideo) {
+      if (theme === 'light-white') {
+        // For white theme: use video if provided; otherwise hide
+        if (videoUrl) {
+          this.backgroundVideo.classList.remove('u-hidden');
+          this.backgroundVideo.classList.add('u-block');
+          // Try to play the video; ignore autoplay errors
+          this.backgroundVideo.play().catch(() => { });
+        } else {
+          this.backgroundVideo.pause();
+          this.backgroundVideo.classList.remove('u-block');
+          this.backgroundVideo.classList.add('u-hidden');
+        }
+      } else {
+        // For other themes always show video
+        this.backgroundVideo.classList.remove('u-hidden');
+        this.backgroundVideo.classList.add('u-block');
+        this.backgroundVideo.play().catch(() => { });
+        this.backgroundVideo.style.display = ''; // Clear inline if present
+      }
+    }
+
+    // Remove inline background color to allow CSS variables to take effect
+    document.body.style.backgroundColor = '';
+
+    // Highlight the selected theme button
+    this.themeBtns.forEach(btn => {
+      if (btn.getAttribute('data-theme') === theme) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Store the selected theme in localStorage
+    try {
+      localStorage.setItem('selectedTheme', theme);
+      if (videoUrl) {
+        localStorage.setItem('selectedVideoUrl', videoUrl);
+      }
+    } catch (error) {
+      console.error('Error saving theme preference:', error);
+    }
+  }
+
+  /**
+   * Initialize the translation system
+   */
+  async initializeTranslation() {
+    try {
+      console.log('🔄 Initializing translation system...');
+
+      // Reload configuration to ensure environment variables (like window.env) are picked up
+      // This fixes the issue where AppConfig is initialized before window.env is populated
+      if (this.translationService && typeof this.translationService.reloadConfig === 'function') {
+        this.translationService.reloadConfig();
+      } else if (this.translationService.config && typeof this.translationService.config.reload === 'function') {
+        // Fallback to direct config reload if service method not available
+        this.translationService.config.reload();
+      }
+
+      // Initialize DOM translator
+      this.domTranslator.initialize();
+
+      this.isTranslationInitialized = true;
+      console.log('✅ Translation system initialized successfully');
+
+    } catch (error) {
+      console.error('❌ Error initializing translation system:', error);
+      this.isTranslationInitialized = false;
+    }
+  }
+
+  /**
+   * Show/hide language loading state
+   * @param {boolean} show - Whether to show loading state
+   */
+  showLanguageLoadingState(show) {
+    const languageButtons = document.querySelectorAll('.language-btn');
+
+    languageButtons.forEach(btn => {
+      if (show) {
+        btn.classList.add('u-opacity-60', 'u-pointer-events-none');
+        btn.classList.remove('u-pointer-events-auto', 'u-opacity-100');
+      } else {
+        btn.classList.add('u-pointer-events-auto', 'u-opacity-100');
+        btn.classList.remove('u-opacity-60', 'u-pointer-events-none');
+      }
+    });
+
+    // Optional: Add loading spinner to languages panel
+    const languagesPanel = document.getElementById('languages-panel');
+    if (languagesPanel) {
+      if (show) {
+        languagesPanel.classList.add('loading');
+      } else {
+        languagesPanel.classList.remove('loading');
+      }
+    }
+  }
+
+  /**
+   * Show language change error
+   * @param {string} language - Language that failed to load
+   */
+  showLanguageError(language) {
+    console.error(`Failed to change language to: ${language}`);
+
+    // Optional: Show user-friendly error message
+    // You could implement a toast notification here
+    const errorMessage = `Error al cambiar idioma a ${language}. Inténtalo de nuevo.`;
+
+    // Simple alert for now (you can replace with a better UI)
+    if (window.confirm(`${errorMessage}\n\n¿Quieres intentar de nuevo?`)) {
+      // Retry language change
+      setTimeout(() => {
+        this.changeLanguage(language);
+      }, 1000);
+    }
+  }
+
+  /**
+   * Apply saved preferences on page load
+   */
+  async applySavedPreferences() {
+    try {
+      // Apply saved language
+      const savedLanguage = localStorage.getItem('selectedLanguage');
+      if (savedLanguage) {
+        const languageBtn = document.querySelector(`.language-btn[data-lang="${savedLanguage}"]`);
+        if (languageBtn) {
+          // Wait a bit for DOM to be fully ready
+          setTimeout(async () => {
+            await this.changeLanguage(savedLanguage);
+          }, 200);
+        }
+      }
+
+      // Apply saved theme
+      const savedTheme = localStorage.getItem('selectedTheme');
+      const savedVideoUrl = localStorage.getItem('selectedVideoUrl');
+
+      if (savedTheme) {
+        // High-level attribute should already be set by Early Injector in index.html
+        // but we ensure it here just in case.
+        document.body.setAttribute('data-theme', savedTheme);
+
+        // Highlight the button and update logos
+        this.updateLogosForTheme(savedTheme);
+
+        const themeBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
+        if (themeBtn) {
+          themeBtn.classList.add('active');
+        }
+
+        // Only trigger changeTheme (which reloads video) if something went wrong 
+        // with the early injector or if we need to sync state.
+        if (!window.__initialThemeApplied) {
+          this.changeTheme(savedTheme, savedVideoUrl);
+        }
+      } else {
+        // Fallback default
+        const defaultTheme = 'light-blue';
+        document.body.setAttribute('data-theme', defaultTheme);
+        this.updateLogosForTheme(defaultTheme);
+      }
+    } catch (error) {
+      console.error('Error applying saved preferences:', error);
+    }
+  }
+
+  getLogoUrl(theme) {
+    const isWhite = theme === 'light-white';
+    return isWhite
+      ? 'https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo%201.png'
+      : 'https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo%203.jpeg';
+  }
+
+  updateLogosForTheme(theme) {
+    const url = this.getLogoUrl(theme);
+
+    const logoScreenImg = document.querySelector('.logo-screen .logo-container img.logo');
+    if (logoScreenImg) { logoScreenImg.src = url; }
+
+    const drawerLogoImg = document.querySelector('.drawer-logo');
+    if (drawerLogoImg) { drawerLogoImg.src = url; }
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    const twImage = document.querySelector('meta[property="twitter:image"]');
+    if (ogImage) ogImage.setAttribute('content', url);
+    if (twImage) twImage.setAttribute('content', url);
+  }
+}
+
+// Initialize the SettingsManager when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait a little to ensure other elements are loaded
+  setTimeout(async () => {
+    const settingsManager = new SettingsManager();
+
+    // Apply saved preferences (now async)
+    await settingsManager.applySavedPreferences();
+
+    // Make settingsManager available globally
+    window.SettingsManager = settingsManager;
+
+    console.log('✅ SettingsManager initialized with translation support');
+  }, 100);
+});

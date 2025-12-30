@@ -1,0 +1,100 @@
+/* ==========================================================================
+   SYSTEM DESIGN TOKENS (The DNA)
+   Centralizes control for Buttons, Effects, and Surfaces.
+   Extends variables.css.
+   ========================================================================== */
+
+:root {
+    /* ----------------------------------------------------------------------
+       1. TYPOGRAPHY SYSTEM (The Voice)
+       ---------------------------------------------------------------------- */
+    /* Font Families */
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Roboto', sans-serif;
+
+    /* Font Weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Font Scale (Type Ramp) 1.25 Ratio */
+    --text-h1: 2.5rem;
+    /* 40px */
+    --text-h2: 2rem;
+    /* 32px */
+    --text-h3: 1.5rem;
+    /* 24px */
+    --text-body: 1rem;
+    /* 16px */
+    --text-sm: 0.875rem;
+    /* 14px */
+    --text-xs: 0.75rem;
+    /* 12px */
+
+    /* ----------------------------------------------------------------------
+       2. SEMANTIC COLOR SYSTEM (The Mood)
+       ---------------------------------------------------------------------- */
+    /* Text Colors */
+    --text-primary: var(--color-white);
+    --text-secondary: var(--color-gray-200);
+    --text-muted: var(--color-gray-500);
+    --text-disabled: var(--color-gray-800);
+
+    /* Form/Input Colors */
+    --input-bg: rgba(255, 255, 255, 0.05);
+    /* Dark Glass */
+    --input-bg-focus: rgba(0, 0, 0, 0.8);
+    --input-border: var(--border-color);
+    --input-border-focus: var(--accent-color);
+    --input-placeholder: rgba(255, 255, 255, 0.3);
+
+    /* ----------------------------------------------------------------------
+       3. BUTTON SYSTEM
+       ---------------------------------------------------------------------- */
+    /* Structure */
+    --btn-height-std: auto;
+    /* Legacy: Padding-based */
+    --btn-height-sm: auto;
+    --btn-padding-y: 8px;
+    /* Legacy: 8px */
+    --btn-padding-x: 15px;
+    /* Legacy: 15px */
+
+    /* Radius */
+    --btn-radius: 8px;
+    /* Legacy: Consistent with .view-toggle-btn */
+    --btn-radius-pill: 50px;
+
+    /* Typography */
+    --btn-font-weight: 600;
+    /* Legacy: Semibold */
+    --btn-text-transform: none;
+    /* Legacy: Normal Case */
+    --btn-letter-spacing: normal;
+    --btn-font-size: 1rem;
+    --btn-font-size-sm: 0.875rem;
+
+    /* ----------------------------------------------------------------------
+       2. SURFACE SYSTEM (Glassmorphism Levels)
+       ---------------------------------------------------------------------- */
+    /* Level 1: Subtle (Cards) */
+    --surface-glass-1: rgba(0, 0, 0, 0.4);
+
+    /* Level 2: Standard (Modals/Sidebars) */
+    --surface-glass-2: rgba(0, 0, 0, 0.7);
+
+    /* Level 3: Heavy (Overlays) */
+    --surface-glass-3: rgba(0, 0, 0, 0.9);
+
+    /* ----------------------------------------------------------------------
+       3. EFFECTS SYSTEM (Animation & Depth)
+       ---------------------------------------------------------------------- */
+    /* Transitions */
+    --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Shadows (Elevations) */
+    --elevation-1: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --elevation-2: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --elevation-glow: 0 0 15px var(--accent-color, #00f7ff);
+}

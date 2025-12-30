@@ -1,0 +1,95 @@
+/* =================================================================
+   CUSTOM SCROLLBARS - TEMA OSCURO
+   ================================================================= */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+/* Scrollbar vertical - mÃ¡s sutil */
+::-webkit-scrollbar:vertical {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border: none;
+}
+
+/* Track vertical - casi invisible */
+::-webkit-scrollbar-track:vertical {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg,
+            rgba(243, 246, 246, 0.6) 0%,
+            rgba(243, 246, 246, 0.4) 50%,
+            rgba(243, 246, 246, 0.6) 100%);
+    border-radius: 6px;
+    border: 1px solid rgba(0, 247, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Thumb vertical - mÃ¡s discreto */
+::-webkit-scrollbar-thumb:vertical {
+    background: linear-gradient(180deg,
+            rgba(243, 246, 246, 0.25) 0%,
+            rgba(243, 246, 246, 0.15) 50%,
+            rgba(243, 246, 246, 0.25) 100%);
+    border: 1px solid rgba(0, 247, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg,
+            rgba(0, 247, 255, 0.8) 0%,
+            rgba(0, 247, 255, 0.6) 50%,
+            rgba(0, 247, 255, 0.8) 100%);
+    border-color: rgba(0, 247, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 247, 255, 0.3);
+}
+
+/* Hover vertical - sutil pero visible */
+::-webkit-scrollbar-thumb:vertical:hover {
+    background: linear-gradient(180deg,
+            rgba(0, 247, 255, 0.4) 0%,
+            rgba(0, 247, 255, 0.3) 50%,
+            rgba(0, 247, 255, 0.4) 100%);
+    border-color: rgba(0, 247, 255, 0.3);
+    box-shadow: 0 0 4px rgba(0, 247, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg,
+            rgba(0, 247, 255, 1) 0%,
+            rgba(0, 247, 255, 0.8) 50%,
+            rgba(0, 247, 255, 1) 100%);
+    border-color: rgba(0, 247, 255, 0.8);
+    box-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
+}
+
+/* Active vertical - mÃ¡s visible al usar */
+::-webkit-scrollbar-thumb:vertical:active {
+    background: linear-gradient(180deg,
+            rgba(0, 247, 255, 0.6) 0%,
+            rgba(0, 247, 255, 0.5) 50%,
+            rgba(0, 247, 255, 0.6) 100%);
+    border-color: rgba(0, 247, 255, 0.5);
+    box-shadow: 0 0 6px rgba(0, 247, 255, 0.3);
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(243, 246, 246, 0.6) rgba(0, 0, 0, 0.4);
+}

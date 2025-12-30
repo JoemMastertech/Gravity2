@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: http://localhost:8000/sitemap.xml
+
+# Disallow sensitive directories
+Disallow: /.env
+Disallow: /config/
+Disallow: /Shared/testing/
+Disallow: /.git/
+
+# Allow important assets
+Allow: /Shared/styles/
+Allow: /modules/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.ico

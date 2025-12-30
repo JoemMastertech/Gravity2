@@ -1,0 +1,69 @@
+{
+  "name": "pruebas",
+  "version": "1.0.0",
+  "description": "**Aplicación web premium para gestión de pedidos con arquitectura hexagonal optimizada**",
+  "main": "test_fixes.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run watch:css\" \"vite --port 8081\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:visual": "backstop test",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "sass Shared/styles/main.scss Shared/styles/main.css && postcss Shared/styles/main.css -o dist/main.css",
+    "build:css:prod": "set NODE_ENV=production&& sass Shared/styles/main.scss Shared/styles/main.css --style=compressed && postcss Shared/styles/main.css -o dist/main.min.css",
+    "lint:css": "stylelint Shared/styles/main.scss",
+    "fix:css": "stylelint Shared/styles/main.scss --fix",
+    "watch:css": "sass --watch Shared/styles/main.scss:Shared/styles/main.css",
+    "build:css:report": "npm run build:css && node -e \"const fs=require('fs');const s=fs.statSync('dist/main.css');console.log('dist/main.css size:',s.size,'bytes');\"",
+    "build:css:prod:report": "set NODE_ENV=production&& npm run build:css:prod && node -e \"const fs=require('fs');const s=fs.statSync('dist/main.min.css');console.log('dist/main.min.css size:',s.size,'bytes');\"",
+    "css:analyze": "npx wallace Shared/styles/_legacy.css",
+    "css:analyze:all": "npx wallace Shared/styles/legacy-responsive/media-queries.css && npx wallace Shared/styles/_legacy.css",
+    "css:stats": "npx cssstats Shared/styles/_legacy.css",
+    "css:audit": "npm run css:analyze && npm run lint:css",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoemMastertech/antigravity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/JoemMastertech/NuevoJoel/issues"
+  },
+  "homepage": "https://github.com/JoemMastertech/NuevoJoel#readme",
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "@projectwallace/css-analyzer": "^7.6.3",
+    "autoprefixer": "^10.4.21",
+    "backstopjs": "^6.3.25",
+    "concurrently": "^9.2.1",
+    "cssnano": "^7.1.1",
+    "cssstats-cli": "^4.0.5",
+    "husky": "^9.1.7",
+    "jscpd": "^4.0.5",
+    "madge": "^8.0.0",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "postcss-import": "^16.1.1",
+    "sass": "^1.95.0",
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "vite": "^7.2.4",
+    "wallace-cli": "^3.2.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.74.0",
+    "dotenv": "^17.2.3",
+    "glob": "^13.0.0",
+    "jsdom": "^27.0.0",
+    "node-fetch": "^3.3.2",
+    "zod": "^4.1.13"
+  }
+}

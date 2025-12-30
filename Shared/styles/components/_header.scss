@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Component: Header
+   ========================================================================== */
+
+/* 
+ * Migrated from legacy-responsive/media-queries.css 
+ * Contains logic for .orders-screen-header and related navigation
+ */
+
+/* Mobile Header (Default / Base) */
+@include mobile-only {
+    .orders-screen-header {
+        min-height: 100px;
+        gap: 15px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .orders-screen-title {
+        font-size: 1.2rem;
+        position: static;
+        transform: none;
+        left: auto;
+        margin: 0;
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+
+    .orders-back-btn {
+        position: absolute;
+        top: 45px;
+        left: 0;
+        order: 2;
+        min-width: 80px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .history-btn {
+        position: absolute;
+        top: 45px;
+        right: 0;
+        order: 3;
+        margin-left: 0;
+        min-width: 80px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Tablet (max-width: 768px) Override */
+/* Tablet (max-width: 768px) Override */
+@media (max-width: 768px) {
+    .orders-screen-header {
+        min-height: 120px;
+        gap: 20px;
+    }
+
+    .orders-screen-title {
+        font-size: 1.5rem;
+    }
+
+    .orders-back-btn,
+    .history-btn {
+        top: 60px;
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        min-width: 100px;
+    }
+}

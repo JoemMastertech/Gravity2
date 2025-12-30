@@ -1,0 +1,227 @@
+/* ==========================================================================
+   UTILITIES: The Utility Belt (Phase 3.5)
+   Standardized helper classes based on Design Tokens.
+   ========================================================================== */
+
+/* 1. SPACING MODULES (Using variables.css tokens)
+   Format: .u-[m|p][t|r|b|l|x|y]-{size}
+   Sizes: xs, sm, md, lg, xl, xxl
+   ========================================================================== */
+
+$spacing-map: (
+    "xs": var(--spacing-xs),
+    "sm": var(--spacing-sm),
+    "md": var(--spacing-md),
+    "lg": var(--spacing-lg),
+    "xl": var(--spacing-xl),
+    "xxl": var(--spacing-xxl)
+);
+
+@each $key, $val in $spacing-map {
+
+    /* Margins */
+    .u-m-#{$key} {
+        margin: $val !important;
+    }
+
+    .u-mt-#{$key} {
+        margin-top: $val !important;
+    }
+
+    .u-mr-#{$key} {
+        margin-right: $val !important;
+    }
+
+    .u-mb-#{$key} {
+        margin-bottom: $val !important;
+    }
+
+    .u-ml-#{$key} {
+        margin-left: $val !important;
+    }
+
+    .u-mx-#{$key} {
+        margin-left: $val !important;
+        margin-right: $val !important;
+    }
+
+    .u-my-#{$key} {
+        margin-top: $val !important;
+        margin-bottom: $val !important;
+    }
+
+    /* Paddings */
+    .u-p-#{$key} {
+        padding: $val !important;
+    }
+
+    .u-pt-#{$key} {
+        padding-top: $val !important;
+    }
+
+    .u-pr-#{$key} {
+        padding-right: $val !important;
+    }
+
+    .u-pb-#{$key} {
+        padding-bottom: $val !important;
+    }
+
+    .u-pl-#{$key} {
+        padding-left: $val !important;
+    }
+
+    .u-px-#{$key} {
+        padding-left: $val !important;
+        padding-right: $val !important;
+    }
+
+    .u-py-#{$key} {
+        padding-top: $val !important;
+        padding-bottom: $val !important;
+    }
+}
+
+/* 2. FLEXBOX MODULES
+   ========================================================================== */
+.u-flex {
+    display: flex !important;
+}
+
+.u-flex-column {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.u-flex-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.u-flex-between {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.u-flex-align-c {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.u-flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.u-gap-sm {
+    gap: var(--spacing-sm) !important;
+}
+
+.u-gap-md {
+    gap: var(--spacing-md) !important;
+}
+
+/* 3. VISIBILITY & SCREEN MODULES
+   ========================================================================== */
+.u-hidden {
+    display: none !important;
+}
+
+.u-block {
+    display: block !important;
+}
+
+.u-flex-display {
+    display: flex !important;
+}
+
+/* Screen Management (From display.css) */
+.u-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.u-screen-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+.u-screen-visible {
+    display: flex !important;
+    opacity: 1 !important;
+    z-index: 20 !important;
+}
+
+/* Transitions (Standardized) */
+.u-fade-in {
+    animation: fadeIn var(--transition-time) ease-in-out forwards;
+}
+
+.u-fade-out {
+    animation: fadeOut var(--transition-time) ease-in-out forwards;
+}
+
+/* 4. TEXT MODULES
+   ========================================================================== */
+.u-text-center {
+    text-align: center !important;
+}
+
+.u-text-right {
+    text-align: right !important;
+}
+
+.u-text-left {
+    text-align: left !important;
+}
+
+.u-text-price {
+    color: var(--price-color) !important;
+    font-weight: 700 !important;
+}
+
+.u-text-muted {
+    color: var(--text-muted) !important;
+    font-size: var(--text-xs) !important;
+}
+
+.u-text-uppercase {
+    text-transform: uppercase !important;
+}
+
+/* 5. MISC UTILITIES
+   ========================================================================== */
+.u-full-width {
+    width: 100% !important;
+}
+
+.u-full-height {
+    height: 100% !important;
+}
+
+.u-pointer {
+    cursor: pointer !important;
+}
+
+.u-no-border {
+    border: none !important;
+}
+
+.u-radius-md {
+    border-radius: var(--radius-md) !important;
+}
+
+.u-overflow-hidden {
+    overflow: hidden !important;
+}

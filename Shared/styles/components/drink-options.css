@@ -1,0 +1,192 @@
+/* ===== DRINK OPTIONS COMPONENT (Restored Master DNA Redux) ===== */
+
+.drink-options-message {
+    color: var(--primary-color);
+    margin: 0 0 20px 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* Grid for Litros/Copas (Dynamic) */
+.drink-modal__grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+    gap: 15px !important;
+    width: 100% !important;
+    margin-bottom: 20px;
+}
+
+/* Grid for Bottle Mixers (Locked 2-columns as requested) */
+.bottle-mixer-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-bottom: 10px;
+}
+
+/* Base Option Styling (Single Select - Litro/Copa) */
+.drink-option {
+    background: transparent;
+    border: 1.4px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    /* Reduced ~15% from 12px */
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 60px;
+    /* Reduced ~15% from 70px */
+    text-align: center;
+    box-shadow: none !important;
+}
+
+/* PARITY HOVER: Border/Glow ONLY (Contour-Only Recipe) */
+.drink-option:hover {
+    /* NO transform: translateY */
+    /* NO background change */
+    border-color: var(--price-color) !important;
+    box-shadow: var(--glow-shadow-hover) !important;
+}
+
+.drink-option.selected {
+    background-color: var(--primary-color) !important;
+    color: var(--background-color) !important;
+    border-color: var(--primary-color) !important;
+    transform: translateY(-2px);
+    box-shadow: none !important;
+}
+
+/* List Item Container (Bottles - Vertical Stack DNA) */
+.drink-option-container {
+    display: flex;
+    flex-direction: column;
+    /* Vertical Stack DNA */
+    align-items: center;
+    justify-content: center;
+    padding: 10px 5px;
+    margin: 0 auto 8px auto;
+    border: 1.4px solid var(--border-color);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+    width: 90%;
+    max-width: 180px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+/* 3. PARITY HOVER: Border/Glow ONLY (The "Sidebar Recipe") */
+.drink-option-container:hover {
+    border-color: var(--price-color) !important;
+    box-shadow: var(--glow-shadow-hover) !important;
+}
+
+.drink-option-container:hover .drink-option-name {
+    color: var(--text-color) !important;
+}
+
+.drink-option-container.selected {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.05);
+}
+
+/* 1. SCALE: -20% on internal text */
+.drink-option-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-align: center;
+    color: var(--text-color);
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+/* Counters (Circular DNA) */
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* 1. SCALE: -20% on counter buttons */
+.counter-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50% !important;
+    border: 1.2px solid var(--border-color) !important;
+    background: #000 !important;
+    color: var(--text-color) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 0.96rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+}
+
+.counter-btn:hover:not(:disabled) {
+    background: var(--primary-color) !important;
+    color: var(--background-color) !important;
+    border-color: var(--primary-color) !important;
+    transform: scale(1.1);
+}
+
+.counter-btn:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+}
+
+/* 1. SCALE: -20% on counter number */
+.count-display {
+    font-size: 1.04rem;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+    color: var(--price-color);
+}
+
+/* Total Display */
+.total-drinks-container {
+    padding: 15px;
+    margin-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    font-size: 1rem;
+    text-align: center;
+    color: var(--text-color);
+}
+
+#total-drinks-count {
+    color: var(--price-color);
+}
+
+@media (max-width: 768px) {
+    .drink-option-container {
+        padding: 15px;
+        width: 100%;
+        max-width: none;
+    }
+
+    .counter-btn {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* NOTE: BOTTLE MODAL SPECIFIC GEOMETRY MIGRATED TO _modal-system.scss TRAITS */
+.bottle-modal .bottle-mixer-grid {
+    gap: 8px !important;
+}

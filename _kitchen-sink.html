@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Laboratory (Kitchen Sink)</title>
+    <!-- Use the compiled output -->
+    <link rel="stylesheet" href="Shared/styles/main.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            padding: 40px;
+        }
+
+        .test-section {
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+        }
+
+        .bg-dark {
+            background: #000;
+            color: #fff;
+        }
+
+        .bg-white {
+            background: #eee;
+            color: #000;
+        }
+
+        .bg-glass {
+            background: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            position: relative;
+            color: #fff;
+        }
+
+        .glass-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 10px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .label {
+            min-width: 150px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body class="no-scrollbars">
+
+    <h1>🧪 The Laboratory: Button System</h1>
+    <p>Validating Phase B (Factory) before deploying to production.</p>
+
+    <!-- TEST 1: DARK THEME (Default) -->
+    <div class="test-section bg-dark">
+        <h2>1. Dark Background (Default Context)</h2>
+
+        <div class="btn-row">
+            <span class="label">Primary:</span>
+            <button class="btn btn-primary">Completar Orden</button>
+            <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+
+        <div class="btn-row">
+            <span class="label">Ghost:</span>
+            <button class="btn btn-ghost">Cancelar</button>
+            <button class="btn btn-ghost">← Regresar</button>
+            <button class="btn btn-ghost" disabled>Disabled</button>
+        </div>
+
+        <div class="btn-row">
+            <span class="label">Icon:</span>
+            <button class="btn btn-icon">⚙️</button>
+            <button class="btn btn-icon">🍔</button>
+        </div>
+
+        <div class="btn-row">
+            <span class="label">Small:</span>
+            <button class="btn btn-primary btn-sm">Small Action</button>
+        </div>
+    </div>
+
+    <!-- TEST 2: GLASS THEME -->
+    <div class="test-section bg-glass">
+        <div class="glass-overlay">
+            <h2>2. Glass Context (Real Usage)</h2>
+            <div class="btn-row">
+                <span class="label">Primary:</span>
+                <button class="btn btn-primary">Confirmar</button>
+            </div>
+            <div class="btn-row">
+                <span class="label">Ghost:</span>
+                <button class="btn btn-ghost">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEST 3: LIGHT THEME (Contrast Check) -->
+    <div class="test-section bg-white">
+        <h2>3. Light Background (Stress Test)</h2>
+        <div class="btn-row">
+            <span class="label">Primary:</span>
+            <button class="btn btn-primary">Action</button>
+        </div>
+        <div class="btn-row">
+            <span class="label">Ghost:</span>
+            <button class="btn btn-ghost" style="color:#000; border-color:#ccc">Manual Override</button>
+            <!-- Note: Ghost usually relies on context text color, which is white by default in our var system. 
+                 In a real light theme, variables would swap. -->
+        </div>
+    </div>
+
+    <!-- TEST 4: FORMS & TYPOGRAPHY (Phase 4) -->
+    <div class="test-section bg-dark">
+        <h2>4. Typography & Forms (The DNA)</h2>
+
+        <!-- Type Scale -->
+        <h1 style="color: var(--text-primary); margin-bottom: 20px;">Heading 1 (2.5rem)</h1>
+        <h2 style="color: var(--text-primary); margin-bottom: 20px;">Heading 2 (2rem)</h2>
+        <h3 style="color: var(--text-primary); margin-bottom: 20px;">Heading 3 (1.5rem)</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 40px;">Body Text (1rem): The quick brown fox jumps over
+            the lazy dog. Standard typography for content.</p>
+
+        <!-- Forms -->
+        <div style="max-width: 400px;">
+            <!-- Text Input -->
+            <div class="form-group">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-input" placeholder="E.g. Tequila Don Julio">
+            </div>
+
+            <!-- Focused State (Simulation) -->
+            <div class="form-group">
+                <label class="form-label">Focused Input</label>
+                <input type="text" class="form-input" placeholder="Type here..." autofocus>
+            </div>
+
+            <!-- Error State -->
+            <div class="form-group">
+                <label class="form-label">Invalid Field</label>
+                <input type="text" class="form-input error" value="Invalid Value">
+                <div class="form-feedback error">This field is required.</div>
+            </div>
+
+            <!-- Select -->
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-select">
+                    <option>Select an option...</option>
+                    <option>Licores</option>
+                    <option>Cervezas</option>
+                </select>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="form-label">Notes</label>
+                <textarea class="form-textarea" placeholder="Add details..."></textarea>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

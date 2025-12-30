@@ -1,0 +1,115 @@
+/* =============================================================================
+   SYSTEM: INPUTS & FORMS
+   Version: 1.0 (Phase 4)
+   Description: Standardized input fields using Design Tokens.
+   ============================================================================= */
+
+/* 1. Base Input Wrapper
+   ----------------------------------------------------------------------------- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-lg, 16px);
+    position: relative;
+}
+
+.form-label {
+    font-family: var(--font-primary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm, 8px);
+    transition: color 0.3s ease;
+}
+
+/* 2. The Input (Standard)
+   ----------------------------------------------------------------------------- */
+.form-input,
+.form-textarea,
+.form-select {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 100%;
+    padding: 12px 16px;
+
+    font-family: var(--font-secondary);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-primary);
+
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md, 12px);
+
+    transition: all 0.3s var(--ease-smooth, ease);
+    outline: none;
+}
+
+/* 3. States
+   ----------------------------------------------------------------------------- */
+/* Focus State (Glow) */
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    background: var(--input-bg-focus);
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+    /* Accent Glow */
+    transform: translateY(-1px);
+}
+
+/* Invalid/Error State */
+.form-input.error,
+.form-textarea.error,
+.form-select.error {
+    border-color: var(--color-error);
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
+}
+
+/* Disabled State */
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 4. Specific Components
+   ----------------------------------------------------------------------------- */
+/* Textarea */
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Select (Custom Chevron) */
+.form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ECE9D8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    /* Space for chevron */
+}
+
+/* Search Input (Icon Padding) */
+.form-input.search {
+    padding-left: 40px;
+    /* Icon should be positioned absolutely in wrapper */
+}
+
+/* 5. Validation Text
+   ----------------------------------------------------------------------------- */
+.form-feedback {
+    font-size: var(--text-xs);
+    margin-top: 4px;
+    display: none;
+}
+
+.form-feedback.error {
+    color: var(--color-error);
+    display: block;
+}

@@ -1,0 +1,356 @@
+/* =============================================================================
+   🎛️ PANEL A: GRID VIEW (Tarjetas)
+   Source: Unified from product-table-v2 + cards.css
+   Refactored: Dec 13, 2025
+   ============================================================================= */
+
+@import '../tools/mixins';
+
+/* 1. The Container (Layout) */
+/* 1. The Wrapper (Table-Like Background) */
+.grid-view-container {
+    /* Physics */
+    position: relative;
+    margin: var(--table-margin, var(--spacing-xxl)) auto;
+    width: 100%;
+    max-width: var(--table-max-width, 1400px);
+    /* Match Standard Table */
+
+    /* Visuals (Copied from %table-core) */
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--elevation-2);
+    border: 1px solid var(--border-color);
+    /* Direct border instead of pseudo for simplicity */
+
+    /* Handled by .u-p-xl */
+    display: flex;
+    flex-direction: column;
+    /* Enforce Vertical Stack (Title -> Grid -> Prompt) */
+    align-items: center;
+}
+
+/* 1.1 Valid Title inside Container */
+.grid-view-container .page-title {
+    margin-bottom: var(--spacing-xl);
+    width: 100%;
+    text-align: center;
+    border-bottom: none;
+    /* Reset if affected by global table rules */
+}
+
+/* 2. The Grid System */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Mobile Default */
+    gap: var(--spacing-md);
+    width: 100%;
+    /* Removed redundant padding/margin as container handles it now */
+    padding: 0;
+    margin-top: 0;
+    box-sizing: border-box;
+    justify-content: center;
+
+    /* Responsive Logic via Mixins */
+    @include mobile-portrait {
+        /* Defaults to 2 cols, nothing needed */
+    }
+
+    @include mobile-landscape {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-sm);
+        /* Tighter gap for density */
+
+        /* ⚠️ CRITICAL: Sidebar Aware Adjustment */
+        /* If the sidebar is open, the effective width decreases, so we drop to 2 cols */
+        .app-container.order-mode & {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--spacing-md);
+        }
+    }
+
+    @include tablet-portrait {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+
+    @include tablet-landscape {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include desktop {
+        gap: var(--spacing-xl);
+        padding: var(--spacing-xl);
+        max-width: var(--table-max-width, 1400px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+
+/* 2. Category Grid (Licores Special) */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+
+    @include tablet-portrait {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+
+    /* =========================================================================
+       2.1 NATURAL GRID TRAITS (Executive Protocols)
+       ========================================================================= */
+
+    /* Force 5 Columns (Desktop) - Ideal for 10-item selections (2x5) */
+    &.sys-grid-5 {
+        @include desktop {
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: var(--spacing-lg);
+            max-width: var(--table-max-width, 1400px);
+            margin: 0 auto;
+        }
+    }
+}
+
+/* 2.1 Navigation Prompt (Grid Footer) */
+.subcategory-prompt {
+    width: 100%;
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+    h3.page-title {
+        font-size: 1.5rem;
+        opacity: 0.8;
+        margin-top: 0;
+        /* Reset if grid margin is applied */
+    }
+}
+
+/* 3. The Card Component */
+/* 3. The Card Component */
+/* --- 3.1 CARD SHELL (The Skeleton) --- */
+%card-shell {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--elevation-1);
+
+    &:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-color);
+        box-shadow: var(--elevation-2);
+    }
+
+    /* Staggered Animation Logic */
+    @include stagger-children(20, 0.05s);
+}
+
+.category-card,
+.product-card {
+    @extend %card-shell;
+    /* Base height logic */
+    min-height: 200px;
+}
+
+.product-card {
+    min-height: clamp(300px, 35vh, 400px);
+    height: auto;
+    padding: clamp(15px, 1.8vw, 20px);
+    gap: clamp(10px, 1.2vw, 15px);
+
+    @include mobile-landscape {
+        min-height: 250px;
+        /* More compact */
+        padding: 10px;
+        gap: 8px;
+
+        .product-image {
+            height: 140px;
+            /* Squatter image */
+        }
+    }
+}
+
+/* Card Elements */
+.product-name,
+.category-name {
+    font-family: var(--font-primary);
+    color: var(--text-color);
+    /* Theme Color */
+    text-align: center;
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+}
+
+.category-name {
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-name {
+    order: 1;
+    /* Level 1: Fixed space */
+    height: clamp(1.92rem, 2.88vw + 0.8rem, 2.56rem);
+    /* Level 2: Adaptive content */
+    font-size: clamp(0.69rem, 1.46vw + 0.406rem, 0.975rem);
+    line-height: clamp(1.2, 1.5vw + 1rem, 1.4);
+    display: block;
+    overflow: visible;
+    word-wrap: break-word;
+    /* Ensure wrapping */
+}
+
+/* Ingredients */
+.product-ingredients {
+    font-size: var(--text-xs);
+    color: var(--color-ingredientes, var(--text-color));
+    /* Adapts to Theme */
+    text-align: justify;
+    font-style: italic;
+    order: 3;
+    flex-grow: 1;
+    margin-bottom: var(--spacing-lg);
+    /* Responsive sizing */
+    font-size: clamp(0.7rem, 1.5vw + 0.3rem, var(--text-xs));
+    line-height: clamp(1.2, 1.3vw + 1rem, 1.4);
+}
+
+/* Media (Image/Video) Container */
+.product-media {
+    width: 100%;
+    min-height: 180px;
+    border-radius: var(--btn-radius);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 2;
+    margin-bottom: var(--spacing-lg);
+}
+
+.product-image,
+.video-thumbnail,
+.category-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: var(--btn-radius);
+}
+
+/* Category Image Specifics */
+.category-image {
+    width: 80%;
+    height: 120px;
+    object-fit: contain;
+    background: white;
+    margin-bottom: 10px;
+}
+
+/* Licores Special Logic */
+.product-card.liquor-card {
+    .product-name {
+        /* Larger font, no truncation */
+        font-size: clamp(0.63rem, 1.35vw + 0.375rem, 0.9rem);
+        line-height: clamp(1.15, 1.8vw + 0.9rem, 1.35);
+        display: block;
+        height: clamp(1.62rem, 2.16vw + 0.864rem, 2.376rem);
+        min-height: unset;
+    }
+
+    .product-image {
+        height: clamp(120px, 15vw + 2vh, 200px);
+        width: 100%;
+        object-fit: contain;
+        background: white;
+    }
+
+    .product-media {
+        min-height: clamp(120px, 15vw + 2vh, 200px);
+        height: auto;
+    }
+
+    /* Liquor Price Layout (Columnar) */
+    .product-prices {
+        /* Override default flex-wrap center */
+        flex-direction: column;
+        gap: clamp(3px, 1.5%, 8px);
+        min-height: clamp(75px, 25%, 140px);
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+
+    .price-item {
+        display: flex;
+        align-items: center;
+        gap: clamp(4px, 2%, 10px);
+        width: 100%;
+
+        .price-label {
+            font-size: clamp(0.55rem, 3% + 0.1rem, 0.8rem);
+            min-width: clamp(35px, 20%, 60px);
+            text-align: left;
+            /* Ensure alignment */
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .price-button {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            min-width: 50px;
+            flex: 1;
+            /* Reset specific overrides if needed */
+        }
+    }
+}
+
+/* Price Buttons (Standard) */
+.product-prices {
+    display: flex;
+    flex-direction: column;
+    /* Or row wrapping */
+    gap: var(--spacing-sm);
+    margin-top: auto;
+    order: 4;
+    width: 100%;
+
+    /* Standard Card: prices stack or wrap? Original cards.css says wrap, but earlier product-table-v2 said column. 
+       Let's stick to centralized buttons.css or define here. 
+       Re-using logic from cards.css line 380: flex-wrap with center justify */
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.price-button {
+    @include glass-button-system('Montserrat');
+
+    /* Grid-specific context (keeps card layout logic) */
+    padding: var(--spacing-sm);
+    text-align: center;
+}

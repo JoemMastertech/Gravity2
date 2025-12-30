@@ -1,0 +1,29 @@
+# Variables de entorno - NO SUBIR AL REPOSITORIO
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+dist/
+build/
+
+# Misc
+.DS_Store
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# BackstopJS Generated Data
+backstop_data/

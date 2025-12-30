@@ -1,0 +1,44 @@
+/* ITCSS Architecture (SASS) */
+
+/* 1. Settings */
+@import "settings/variables.css";
+@import "settings/tokens";
+
+/* 2. Base (Must come first) */
+@import "base/reset.css";
+@import "base/typography.css";
+@import "base/animations.css";
+@import "base/scrollbars.css";
+
+/* 3. Tools */
+@import "tools/mixins";
+
+/* 5. Components (Remaining independent parts) */
+@import "components/button-system";
+@import "components/modal-system";
+/* THE NEW FACTORY */
+@import "components/buttons.css";
+@import "components/input-system";
+/* Phase 4: Inputs */
+
+/* Legacy (Pending Migration) - DECOMMISSIONED */
+/* DEPRECATED Phase 4 */
+@import "components/lists.css";
+
+@import "components/header";
+@import "components/orders";
+@import "components/drink-options.css";
+
+/* 6. Views (Final Specificity) */
+@import "views/view-grid";
+@import "views/view-table";
+
+/* 7. Layout & Utilities */
+@import "layout/containers";
+@import "layout/sidebars";
+@import "layout/layout-shell";
+@import "layout/navigation.css";
+@import "utilities/utils";
+@import "utilities/display.css";
+@import "utilities/responsive";
+@import "utilities/shame";

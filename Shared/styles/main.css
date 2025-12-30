@@ -1,0 +1,3384 @@
+@charset "UTF-8";
+/* ITCSS Architecture (SASS) */
+/* 1. Settings */
+@import "settings/variables.css";
+/* ==========================================================================
+   SYSTEM DESIGN TOKENS (The DNA)
+   Centralizes control for Buttons, Effects, and Surfaces.
+   Extends variables.css.
+   ========================================================================== */
+@import "base/reset.css";
+@import "base/typography.css";
+@import "base/animations.css";
+@import "base/scrollbars.css";
+@import "components/buttons.css";
+@import "components/lists.css";
+@import "components/drink-options.css";
+@import "layout/navigation.css";
+@import "utilities/display.css";
+:root {
+  /* ----------------------------------------------------------------------
+     1. TYPOGRAPHY SYSTEM (The Voice)
+     ---------------------------------------------------------------------- */
+  /* Font Families */
+  --font-primary: 'Montserrat', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  /* Font Scale (Type Ramp) 1.25 Ratio */
+  --text-h1: 2.5rem;
+  /* 40px */
+  --text-h2: 2rem;
+  /* 32px */
+  --text-h3: 1.5rem;
+  /* 24px */
+  --text-body: 1rem;
+  /* 16px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-xs: 0.75rem;
+  /* 12px */
+  /* ----------------------------------------------------------------------
+     2. SEMANTIC COLOR SYSTEM (The Mood)
+     ---------------------------------------------------------------------- */
+  /* Text Colors */
+  --text-primary: var(--color-white);
+  --text-secondary: var(--color-gray-200);
+  --text-muted: var(--color-gray-500);
+  --text-disabled: var(--color-gray-800);
+  /* Form/Input Colors */
+  --input-bg: rgba(255, 255, 255, 0.05);
+  /* Dark Glass */
+  --input-bg-focus: rgba(0, 0, 0, 0.8);
+  --input-border: var(--border-color);
+  --input-border-focus: var(--accent-color);
+  --input-placeholder: rgba(255, 255, 255, 0.3);
+  /* ----------------------------------------------------------------------
+     3. BUTTON SYSTEM
+     ---------------------------------------------------------------------- */
+  /* Structure */
+  --btn-height-std: auto;
+  /* Legacy: Padding-based */
+  --btn-height-sm: auto;
+  --btn-padding-y: 8px;
+  /* Legacy: 8px */
+  --btn-padding-x: 15px;
+  /* Legacy: 15px */
+  /* Radius */
+  --btn-radius: 8px;
+  /* Legacy: Consistent with .view-toggle-btn */
+  --btn-radius-pill: 50px;
+  /* Typography */
+  --btn-font-weight: 600;
+  /* Legacy: Semibold */
+  --btn-text-transform: none;
+  /* Legacy: Normal Case */
+  --btn-letter-spacing: normal;
+  --btn-font-size: 1rem;
+  --btn-font-size-sm: 0.875rem;
+  /* ----------------------------------------------------------------------
+     2. SURFACE SYSTEM (Glassmorphism Levels)
+     ---------------------------------------------------------------------- */
+  /* Level 1: Subtle (Cards) */
+  --surface-glass-1: rgba(0, 0, 0, 0.4);
+  /* Level 2: Standard (Modals/Sidebars) */
+  --surface-glass-2: rgba(0, 0, 0, 0.7);
+  /* Level 3: Heavy (Overlays) */
+  --surface-glass-3: rgba(0, 0, 0, 0.9);
+  /* ----------------------------------------------------------------------
+     3. EFFECTS SYSTEM (Animation & Depth)
+     ---------------------------------------------------------------------- */
+  /* Transitions */
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Shadows (Elevations) */
+  --elevation-1: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --elevation-2: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --elevation-glow: 0 0 15px var(--accent-color, #00f7ff);
+}
+
+/* 2. Base (Must come first) */
+/* 3. Tools */
+/* =============================================================================
+   📍 THE ORCHESTRATOR (SASS MIXINS)
+   =============================================================================
+   Centralized responsive logic to replace manual media queries.
+   Usage: @include mobile-portrait { ... }
+   ============================================================================= */
+/* Mobile Portrait (Grid: 2 cols, Table: Compact) */
+/* Mobile Landscape (Often treated as small tablet) */
+/* Tablet Portrait */
+/* Tablet Landscape / Small Desktop */
+/* Standard Desktop */
+/* Wide Desktop (Large screens, 5-col grids) */
+/* 4. Legacy "Squish" Protocol (Nuclear Option) Helper */
+/* Use this for rules that MUST override everything else on tiny screens */
+/* 5. Legacy Compatibility Layer (Backwards Compatibility) */
+/* Maps old 'respond-to' calls to new semantic mixins */
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
+/* =================================================================
+   7. UI SYSTEMS (Standardization Layer)
+   ================================================================= */
+/**
+ * @mixin contour-hover-protocol
+ * The "Natural Protocol" for interactive elements.
+ * Ensures persistence by centralizing the recipe (Border + Glow only).
+ */
+/**
+ * @mixin glass-button-system
+ * The universal blueprint for "Glassmorphism" buttons.
+ * Guarantees identical styling across sidebars, prices, and menus.
+ */
+/* 5. Components (Remaining independent parts) */
+/* ==========================================================================
+   BUTTON SYSTEM (The Factory)
+   Consumes: _tokens.scss
+   ========================================================================== */
+/* 1. Base Class (The Skeleton) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  /* Structure from Tokens */
+  height: var(--btn-height-std);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  /* Legacy Y/X logic */
+  border-radius: var(--btn-radius);
+  border: 2px solid transparent;
+  /* Reserve space for borders */
+  /* Typography from Tokens */
+  font-family: var(--font-primary, "Montserrat", sans-serif);
+  font-weight: var(--btn-font-weight);
+  text-transform: var(--btn-text-transform);
+  letter-spacing: var(--btn-letter-spacing);
+  font-size: var(--btn-font-size);
+  /* Legacy Color base */
+  color: var(--text-color);
+  /* Animation */
+  transition: all var(--transition-time, 0.3s) ease;
+  /* Accessibility */
+}
+.btn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 4px;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 2. Variants (The Species) */
+/* PRIMARY: Action (Universal Glass Style) */
+.btn-primary,
+.btn-contrast {
+  padding: 8px 10px;
+  font: 700 0.77rem "Playfair Display", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  /* Variable-driven aesthetics */
+  background: transparent;
+  border: 1.4px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--glow-shadow);
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Interactive States (Standardized Protocol) */
+}
+.btn-primary:hover, .btn-primary.active,
+.btn-contrast:hover,
+.btn-contrast.active {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+.btn-primary:active,
+.btn-contrast:active {
+  transform: scale(0.98);
+}
+.btn-primary,
+.btn-contrast {
+  min-width: 120px;
+}
+
+/* GHOST: Secondary Action (Ex: Cancel, Back) */
+.btn-ghost {
+  padding: 8px 10px;
+  font: 700 0.77rem "Playfair Display", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  /* Variable-driven aesthetics */
+  background: transparent;
+  border: 1.4px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--glow-shadow);
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Interactive States (Standardized Protocol) */
+}
+.btn-ghost:hover, .btn-ghost.active {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+.btn-ghost {
+  opacity: 0.8;
+  min-width: 120px;
+}
+.btn-ghost:hover {
+  opacity: 1;
+}
+
+/* ICON: Utility (Ex: Settings, Close) */
+.btn-icon {
+  width: var(--btn-height-std);
+  /* Square */
+  padding: 0;
+  /* Override standard padding */
+  border-radius: 50%;
+  /* Circle */
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  border: 1px solid transparent;
+}
+.btn-icon:hover:not(:disabled) {
+  background: var(--accent-color);
+  color: var(--background-color);
+  transform: rotate(15deg);
+  /* Playful micro-interaction */
+}
+
+/* 3. Sizes */
+.btn-sm {
+  height: var(--btn-height-sm);
+  font-size: var(--btn-font-size-sm);
+  padding: 0 16px;
+}
+
+/* Legacy Sidebar Style (Requested for Price Buttons) */
+/* Standardized via glass-button-system mixin */
+/* =============================================================================
+   SYSTEM: MODAL INFRASTRUCTURE
+   Version: 1.0 (Phase 1)
+   Description: Unified architecture for application modals.
+   Prefix: .sys-modal-
+   ============================================================================= */
+/* 1. The Overlay (Backdrop)
+   ----------------------------------------------------------------------------- */
+.sys-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Deep Dark Overlay */
+  backdrop-filter: blur(5px);
+  /* Glass Effect */
+  z-index: 1000;
+  /* High UI Layer */
+  display: none;
+  /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sys-modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* 2. The Container (The Shell)
+   ----------------------------------------------------------------------------- */
+.sys-modal-container {
+  background: var(--card-bg, rgba(20, 20, 20, 0.95));
+  border: 1.5px solid var(--price-color);
+  /* Vibrant premium border */
+  border-radius: var(--radius-lg, 16px);
+  /* GLOW EFFECT: Matches the button "recipe" requested by the user */
+  box-shadow: var(--glow-shadow-hover) !important;
+}
+.sys-modal-container.active {
+  box-shadow: 0 0 35px var(--price-color);
+  /* Extra emphasis on active state if needed */
+}
+.sys-modal-container {
+  /* =================================================================
+  PREMIUM CUSTOMIZATION COMPONENTS (Operation Phoenix)
+  ================================================================= */
+}
+.sys-modal-container .modal-section-title {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  text-align: center;
+  margin: 0 0 2vh 0;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  width: 100%;
+}
+.sys-modal-container .ingredients-choice,
+.sys-modal-container .garnish-choice {
+  display: flex;
+  gap: 2vw;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 2vh;
+}
+.sys-modal-container .cooking-options.sys-modal-grid {
+  margin: 1vh 0 3vh 0;
+  row-gap: 2vh;
+}
+.sys-modal-container {
+  /* White Theme Specifics */
+}
+.sys-modal-container [data-theme=light-white] .modal-section-title {
+  color: var(--text-color);
+  text-shadow: none;
+}
+.sys-modal-container {
+  /* 15% less than 30px, no animation */
+  width: 90%;
+  max-width: 600px;
+}
+.sys-modal-container.sys-modal-large {
+  max-width: 750px;
+}
+.sys-modal-container {
+  max-height: 90vh;
+  /* Never exceed viewport height */
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  /* Critical for internal scroll */
+  /* Active Animation */
+}
+.sys-modal-overlay.active .sys-modal-container {
+  transform: translateY(0);
+}
+.sys-modal-container {
+  /* Trait: Compact Size (Requested for Bottle Mixer) */
+}
+.sys-modal-container.sys-modal-compact {
+  max-width: 480px !important;
+}
+.sys-modal-container {
+  /* Trait: Media Image (Optimized for vertical/square product photos) */
+}
+.sys-modal-container.sys-modal-media-image {
+  max-width: 560px !important;
+}
+.sys-modal-container.sys-modal-media-image .sys-modal-body {
+  padding: 0 !important;
+}
+.sys-modal-container.sys-modal-media-image .media-content {
+  width: 92%;
+  margin: 15px auto;
+  max-height: 68vh;
+  aspect-ratio: auto;
+}
+.sys-modal-container {
+  /* Trait: Top Alignment (Positioned below header) */
+}
+.sys-modal-container.sys-modal-top {
+  align-self: flex-start !important;
+  margin-top: 65px !important;
+  max-height: 85vh !important;
+  /* Optimized vertical space */
+}
+.sys-modal-container {
+  /* Trait: Premium Compact Buttons (10% smaller from prev large base) */
+}
+.sys-modal-container.sys-modal-premium-buttons .sys-modal-footer .btn {
+  min-width: 100px !important;
+  height: 38px !important;
+  font-size: 0.8rem !important;
+  padding: 0 12px !important;
+}
+
+/* 3. The Header (Fixed Top)
+   ----------------------------------------------------------------------------- */
+.sys-modal-header {
+  flex-shrink: 0;
+  /* Never shrink */
+  padding: var(--spacing-lg, 16px);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+}
+.sys-modal-header h2 {
+  grid-column: 2;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--primary-color, #fff);
+  text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+}
+.sys-modal-header .close-btn {
+  grid-column: 3;
+  justify-self: center;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1.5px solid transparent;
+  /* Removed permanent outline */
+  border-radius: 50%;
+  color: var(--primary-color, #fff);
+  /* Default to White */
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.3s ease;
+  /* Shadows removed from default state as requested */
+  box-shadow: none;
+  text-shadow: none;
+}
+.sys-modal-header .close-btn:hover {
+  transform: scale(1.1);
+  color: #ff4d4d;
+  /* Red on hover */
+  border-color: #ff4d4d;
+  /* Red outline on hover */
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+  /* Red glow effect */
+  text-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+}
+
+/* 9. Media Content Protocol (Universal Alignment)
+   ----------------------------------------------------------------------------- */
+.media-modal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.media-modal-wrapper .media-content {
+  max-width: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+  transition: all 0.3s ease;
+}
+.media-modal-wrapper {
+  /* Video Protocol: Theater scale */
+}
+.media-modal-wrapper.video-modal .media-content {
+  width: 100%;
+  max-height: 75vh;
+  aspect-ratio: 16/9;
+}
+.media-modal-wrapper {
+  /* Image Protocol is now naturally managed by sys-modal-media-image trait above */
+}
+
+/* 4. The Body (Scrollable Content)
+   ----------------------------------------------------------------------------- */
+.sys-modal-body {
+  flex: 1;
+  /* Take remaining space */
+  overflow-y: auto;
+  /* Internal Scroll */
+  padding: var(--spacing-lg, 16px);
+  position: relative;
+  /* Scrollbar Styling */
+}
+.sys-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.sys-modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+.sys-modal-body::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+  opacity: 0.5;
+}
+
+/* 5. The Footer (Fixed Bottom Actions)
+   ----------------------------------------------------------------------------- */
+.sys-modal-footer {
+  flex-shrink: 0;
+  /* Never shrink */
+  padding: var(--spacing-lg, 16px);
+  border-top: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.5);
+  /* Slightly darker */
+  display: flex;
+  justify-content: center;
+  /* Center buttons by default */
+  gap: var(--spacing-md, 12px);
+  /* Integration with Button System */
+  /* Standardize the "Matte Black" button look */
+}
+.sys-modal-footer .btn-contrast {
+  background: #000 !important;
+  color: #fff !important;
+  border: 1.4px solid var(--border-color) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+.sys-modal-footer .btn-contrast:hover {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+
+/* 6. Variants & Grid Integration
+   ----------------------------------------------------------------------------- */
+.sys-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* Compact option (Buttons only) */
+.sys-modal-options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+}
+
+/* 7. Utilities (For Dynamic Interface Adapters)
+   ----------------------------------------------------------------------------- */
+.u-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  width: 100%;
+  /* Standardize buttons within this container naturally */
+}
+.u-modal-actions .btn {
+  min-width: 100px;
+}
+
+.u-modal-text-center {
+  text-align: center;
+}
+
+.u-modal-mb-sm {
+  margin-bottom: 10px;
+}
+
+.u-modal-mb-md {
+  margin-bottom: 15px;
+}
+
+.u-modal-mb-lg {
+  margin-bottom: 20px;
+}
+
+.u-modal-mt-md {
+  margin-top: 15px;
+}
+
+/* 8. Validation Effects (Phase 11)
+   ----------------------------------------------------------------------------- */
+.u-validation-error {
+  border-color: var(--error-color, #ff4d4d) !important;
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4) !important;
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+/* THE NEW FACTORY */
+/* =============================================================================
+   SYSTEM: INPUTS & FORMS
+   Version: 1.0 (Phase 4)
+   Description: Standardized input fields using Design Tokens.
+   ============================================================================= */
+/* 1. Base Input Wrapper
+   ----------------------------------------------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacing-lg, 16px);
+  position: relative;
+}
+
+.form-label {
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm, 8px);
+  transition: color 0.3s ease;
+}
+
+/* 2. The Input (Standard)
+   ----------------------------------------------------------------------------- */
+.form-input,
+.form-textarea,
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-secondary);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md, 12px);
+  transition: all 0.3s var(--ease-smooth, ease);
+  outline: none;
+}
+
+/* 3. States
+   ----------------------------------------------------------------------------- */
+/* Focus State (Glow) */
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  background: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+  /* Accent Glow */
+  transform: translateY(-1px);
+}
+
+/* Invalid/Error State */
+.form-input.error,
+.form-textarea.error,
+.form-select.error {
+  border-color: var(--color-error);
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
+}
+
+/* Disabled State */
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 4. Specific Components
+   ----------------------------------------------------------------------------- */
+/* Textarea */
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Select (Custom Chevron) */
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ECE9D8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  /* Space for chevron */
+}
+
+/* Search Input (Icon Padding) */
+.form-input.search {
+  padding-left: 40px;
+  /* Icon should be positioned absolutely in wrapper */
+}
+
+/* 5. Validation Text
+   ----------------------------------------------------------------------------- */
+.form-feedback {
+  font-size: var(--text-xs);
+  margin-top: 4px;
+  display: none;
+}
+
+.form-feedback.error {
+  color: var(--color-error);
+  display: block;
+}
+
+/* Phase 4: Inputs */
+/* Legacy (Pending Migration) - DECOMMISSIONED */
+/* DEPRECATED Phase 4 */
+/* ==========================================================================
+   Component: Header
+   ========================================================================== */
+/* 
+ * Migrated from legacy-responsive/media-queries.css 
+ * Contains logic for .orders-screen-header and related navigation
+ */
+/* Mobile Header (Default / Base) */
+@media (max-width: 480px) and (orientation: portrait) {
+  .orders-screen-header {
+    min-height: 100px;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .orders-screen-title {
+    font-size: 1.2rem;
+    position: static;
+    transform: none;
+    left: auto;
+    margin: 0;
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+  .orders-back-btn {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    order: 2;
+    min-width: 80px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  .history-btn {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    order: 3;
+    margin-left: 0;
+    min-width: 80px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+/* Tablet (max-width: 768px) Override */
+/* Tablet (max-width: 768px) Override */
+@media (max-width: 768px) {
+  .orders-screen-header {
+    min-height: 120px;
+    gap: 20px;
+  }
+  .orders-screen-title {
+    font-size: 1.5rem;
+  }
+  .orders-back-btn,
+  .history-btn {
+    top: 60px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    min-width: 100px;
+  }
+}
+/* =================================================================
+   ORDERS SCREEN COMPONENT
+   Extracted from OrderUI.js to remove inline styles
+   ================================================================= */
+/* Confirmation Modal Message */
+.modal-confirmation-message {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+/* Empty State Message */
+.orders-empty-state {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 50px;
+  color: var(--primary-color);
+}
+
+/* Fixed Bottom Actions (Clear History Button) */
+.fixed-bottom-actions {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 100;
+}
+
+.fixed-bottom-actions .clear-history-btn {
+  width: 90%;
+  max-width: 300px;
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+/* 6. Views (Final Specificity) */
+/* =============================================================================
+   🎛️ PANEL A: GRID VIEW (Tarjetas)
+   Source: Unified from product-table-v2 + cards.css
+   Refactored: Dec 13, 2025
+   ============================================================================= */
+/* =============================================================================
+   📍 THE ORCHESTRATOR (SASS MIXINS)
+   =============================================================================
+   Centralized responsive logic to replace manual media queries.
+   Usage: @include mobile-portrait { ... }
+   ============================================================================= */
+/* Mobile Portrait (Grid: 2 cols, Table: Compact) */
+/* Mobile Landscape (Often treated as small tablet) */
+/* Tablet Portrait */
+/* Tablet Landscape / Small Desktop */
+/* Standard Desktop */
+/* Wide Desktop (Large screens, 5-col grids) */
+/* 4. Legacy "Squish" Protocol (Nuclear Option) Helper */
+/* Use this for rules that MUST override everything else on tiny screens */
+/* 5. Legacy Compatibility Layer (Backwards Compatibility) */
+/* Maps old 'respond-to' calls to new semantic mixins */
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
+/* =================================================================
+   7. UI SYSTEMS (Standardization Layer)
+   ================================================================= */
+/**
+ * @mixin contour-hover-protocol
+ * The "Natural Protocol" for interactive elements.
+ * Ensures persistence by centralizing the recipe (Border + Glow only).
+ */
+/**
+ * @mixin glass-button-system
+ * The universal blueprint for "Glassmorphism" buttons.
+ * Guarantees identical styling across sidebars, prices, and menus.
+ */
+/* 1. The Container (Layout) */
+/* 1. The Wrapper (Table-Like Background) */
+.grid-view-container {
+  /* Physics */
+  position: relative;
+  margin: var(--table-margin, var(--spacing-xxl)) auto;
+  width: 100%;
+  max-width: var(--table-max-width, 1400px);
+  /* Match Standard Table */
+  /* Visuals (Copied from %table-core) */
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-2);
+  border: 1px solid var(--border-color);
+  /* Direct border instead of pseudo for simplicity */
+  /* Handled by .u-p-xl */
+  display: flex;
+  flex-direction: column;
+  /* Enforce Vertical Stack (Title -> Grid -> Prompt) */
+  align-items: center;
+}
+
+/* 1.1 Valid Title inside Container */
+.grid-view-container .page-title {
+  margin-bottom: var(--spacing-xl);
+  width: 100%;
+  text-align: center;
+  border-bottom: none;
+  /* Reset if affected by global table rules */
+}
+
+/* 2. The Grid System */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Mobile Default */
+  gap: var(--spacing-md);
+  width: 100%;
+  /* Removed redundant padding/margin as container handles it now */
+  padding: 0;
+  margin-top: 0;
+  box-sizing: border-box;
+  justify-content: center;
+  /* Responsive Logic via Mixins */
+}
+@media (max-width: 480px) and (orientation: portrait) {
+  .product-grid {
+    /* Defaults to 2 cols, nothing needed */
+  }
+}
+@media (max-width: 768px) and (orientation: landscape) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-sm);
+    /* Tighter gap for density */
+    /* ⚠️ CRITICAL: Sidebar Aware Adjustment */
+    /* If the sidebar is open, the effective width decreases, so we drop to 2 cols */
+  }
+  .app-container.order-mode .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+@media (min-width: 481px) and (max-width: 1024px) and (orientation: portrait) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+  }
+}
+@media (min-width: 768px) and (orientation: landscape) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .product-grid {
+    gap: var(--spacing-xl);
+    padding: var(--spacing-xl);
+    max-width: var(--table-max-width, 1400px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* 2. Category Grid (Licores Special) */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+@media (min-width: 481px) and (max-width: 1024px) and (orientation: portrait) {
+  .category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+  }
+}
+.category-grid {
+  /* =========================================================================
+     2.1 NATURAL GRID TRAITS (Executive Protocols)
+     ========================================================================= */
+  /* Force 5 Columns (Desktop) - Ideal for 10-item selections (2x5) */
+}
+@media (min-width: 1024px) {
+  .category-grid.sys-grid-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: var(--spacing-lg);
+    max-width: var(--table-max-width, 1400px);
+    margin: 0 auto;
+  }
+}
+
+/* 2.1 Navigation Prompt (Grid Footer) */
+.subcategory-prompt {
+  width: 100%;
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-md) 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.subcategory-prompt h3.page-title {
+  font-size: 1.5rem;
+  opacity: 0.8;
+  margin-top: 0;
+  /* Reset if grid margin is applied */
+}
+
+/* 3. The Card Component */
+/* 3. The Card Component */
+/* --- 3.1 CARD SHELL (The Skeleton) --- */
+.category-card,
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--elevation-1);
+}
+.category-card:hover,
+.product-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+  box-shadow: var(--elevation-2);
+}
+.category-card,
+.product-card {
+  /* Staggered Animation Logic */
+  /* Base State: Invisible */
+  opacity: 0;
+  /* Action: Enter smoothly */
+  animation: fadeIn 0.6s ease-out forwards;
+  /* The Loop (Choreography) */
+}
+.category-card:nth-child(1),
+.product-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.category-card:nth-child(2),
+.product-card:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.category-card:nth-child(3),
+.product-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.category-card:nth-child(4),
+.product-card:nth-child(4) {
+  animation-delay: 0.25s;
+}
+.category-card:nth-child(5),
+.product-card:nth-child(5) {
+  animation-delay: 0.3s;
+}
+.category-card:nth-child(6),
+.product-card:nth-child(6) {
+  animation-delay: 0.35s;
+}
+.category-card:nth-child(7),
+.product-card:nth-child(7) {
+  animation-delay: 0.4s;
+}
+.category-card:nth-child(8),
+.product-card:nth-child(8) {
+  animation-delay: 0.45s;
+}
+.category-card:nth-child(9),
+.product-card:nth-child(9) {
+  animation-delay: 0.5s;
+}
+.category-card:nth-child(10),
+.product-card:nth-child(10) {
+  animation-delay: 0.55s;
+}
+.category-card:nth-child(11),
+.product-card:nth-child(11) {
+  animation-delay: 0.6s;
+}
+.category-card:nth-child(12),
+.product-card:nth-child(12) {
+  animation-delay: 0.65s;
+}
+.category-card:nth-child(13),
+.product-card:nth-child(13) {
+  animation-delay: 0.7s;
+}
+.category-card:nth-child(14),
+.product-card:nth-child(14) {
+  animation-delay: 0.75s;
+}
+.category-card:nth-child(15),
+.product-card:nth-child(15) {
+  animation-delay: 0.8s;
+}
+.category-card:nth-child(16),
+.product-card:nth-child(16) {
+  animation-delay: 0.85s;
+}
+.category-card:nth-child(17),
+.product-card:nth-child(17) {
+  animation-delay: 0.9s;
+}
+.category-card:nth-child(18),
+.product-card:nth-child(18) {
+  animation-delay: 0.95s;
+}
+.category-card:nth-child(19),
+.product-card:nth-child(19) {
+  animation-delay: 1s;
+}
+.category-card:nth-child(20),
+.product-card:nth-child(20) {
+  animation-delay: 1.05s;
+}
+
+.category-card,
+.product-card {
+  /* Base height logic */
+  min-height: 200px;
+}
+
+.product-card {
+  min-height: clamp(300px, 35vh, 400px);
+  height: auto;
+  padding: clamp(15px, 1.8vw, 20px);
+  gap: clamp(10px, 1.2vw, 15px);
+}
+@media (max-width: 768px) and (orientation: landscape) {
+  .product-card {
+    min-height: 250px;
+    /* More compact */
+    padding: 10px;
+    gap: 8px;
+  }
+  .product-card .product-image {
+    height: 140px;
+    /* Squatter image */
+  }
+}
+
+/* Card Elements */
+.product-name,
+.category-name {
+  font-family: var(--font-primary);
+  color: var(--text-color);
+  /* Theme Color */
+  text-align: center;
+  font-size: var(--text-h3);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.category-name {
+  color: var(--text-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.product-name {
+  order: 1;
+  /* Level 1: Fixed space */
+  height: clamp(1.92rem, 2.88vw + 0.8rem, 2.56rem);
+  /* Level 2: Adaptive content */
+  font-size: clamp(0.69rem, 1.46vw + 0.406rem, 0.975rem);
+  line-height: clamp(1.2, 1.5vw + 1rem, 1.4);
+  display: block;
+  overflow: visible;
+  word-wrap: break-word;
+  /* Ensure wrapping */
+}
+
+/* Ingredients */
+.product-ingredients {
+  font-size: var(--text-xs);
+  color: var(--color-ingredientes, var(--text-color));
+  /* Adapts to Theme */
+  text-align: justify;
+  font-style: italic;
+  order: 3;
+  flex-grow: 1;
+  margin-bottom: var(--spacing-lg);
+  /* Responsive sizing */
+  font-size: clamp(0.7rem, 1.5vw + 0.3rem, var(--text-xs));
+  line-height: clamp(1.2, 1.3vw + 1rem, 1.4);
+}
+
+/* Media (Image/Video) Container */
+.product-media {
+  width: 100%;
+  min-height: 180px;
+  border-radius: var(--btn-radius);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  order: 2;
+  margin-bottom: var(--spacing-lg);
+}
+
+.product-image,
+.video-thumbnail,
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  border-radius: var(--btn-radius);
+}
+
+/* Category Image Specifics */
+.category-image {
+  width: 80%;
+  height: 120px;
+  object-fit: contain;
+  background: white;
+  margin-bottom: 10px;
+}
+
+/* Licores Special Logic */
+.product-card.liquor-card .product-name {
+  /* Larger font, no truncation */
+  font-size: clamp(0.63rem, 1.35vw + 0.375rem, 0.9rem);
+  line-height: clamp(1.15, 1.8vw + 0.9rem, 1.35);
+  display: block;
+  height: clamp(1.62rem, 2.16vw + 0.864rem, 2.376rem);
+  min-height: unset;
+}
+.product-card.liquor-card .product-image {
+  height: clamp(120px, 15vw + 2vh, 200px);
+  width: 100%;
+  object-fit: contain;
+  background: white;
+}
+.product-card.liquor-card .product-media {
+  min-height: clamp(120px, 15vw + 2vh, 200px);
+  height: auto;
+}
+.product-card.liquor-card {
+  /* Liquor Price Layout (Columnar) */
+}
+.product-card.liquor-card .product-prices {
+  /* Override default flex-wrap center */
+  flex-direction: column;
+  gap: clamp(3px, 1.5%, 8px);
+  min-height: clamp(75px, 25%, 140px);
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.product-card.liquor-card .price-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 2%, 10px);
+  width: 100%;
+}
+.product-card.liquor-card .price-item .price-label {
+  font-size: clamp(0.55rem, 3% + 0.1rem, 0.8rem);
+  min-width: clamp(35px, 20%, 60px);
+  text-align: left;
+  /* Ensure alignment */
+  color: var(--text-color);
+  font-weight: 500;
+}
+.product-card.liquor-card .price-item .price-button {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  min-width: 50px;
+  flex: 1;
+  /* Reset specific overrides if needed */
+}
+
+/* Price Buttons (Standard) */
+.product-prices {
+  display: flex;
+  flex-direction: column;
+  /* Or row wrapping */
+  gap: var(--spacing-sm);
+  margin-top: auto;
+  order: 4;
+  width: 100%;
+  /* Standard Card: prices stack or wrap? Original cards.css says wrap, but earlier product-table-v2 said column. 
+     Let's stick to centralized buttons.css or define here. 
+     Re-using logic from cards.css line 380: flex-wrap with center justify */
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.price-button {
+  padding: 8px 10px;
+  font: 700 0.77rem "Montserrat", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  /* Variable-driven aesthetics */
+  background: transparent;
+  border: 1.4px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--glow-shadow);
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Interactive States (Standardized Protocol) */
+}
+.price-button:hover, .price-button.active {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+.price-button:active {
+  transform: scale(0.98);
+}
+.price-button {
+  /* Grid-specific context (keeps card layout logic) */
+  padding: var(--spacing-sm);
+  text-align: center;
+}
+
+/* =============================================================================
+   🎛️ PANEL B: TABLE VIEW (Listas)
+   Source: _tables.scss
+   Refactored: Dec 15, 2025 (Twins Architecture)
+   ============================================================================= */
+/* =============================================================================
+   📍 THE ORCHESTRATOR (SASS MIXINS)
+   =============================================================================
+   Centralized responsive logic to replace manual media queries.
+   Usage: @include mobile-portrait { ... }
+   ============================================================================= */
+/* Mobile Portrait (Grid: 2 cols, Table: Compact) */
+/* Mobile Landscape (Often treated as small tablet) */
+/* Tablet Portrait */
+/* Tablet Landscape / Small Desktop */
+/* Standard Desktop */
+/* Wide Desktop (Large screens, 5-col grids) */
+/* 4. Legacy "Squish" Protocol (Nuclear Option) Helper */
+/* Use this for rules that MUST override everything else on tiny screens */
+/* 5. Legacy Compatibility Layer (Backwards Compatibility) */
+/* Maps old 'respond-to' calls to new semantic mixins */
+/* =================================================================
+   6. ANIMATION SYSTEMS (Robustness Layer)
+   ================================================================= */
+/**
+ * @mixin stagger-children
+ * Automates the "Curtain Effect" logic (Anti-Pile Up).
+ * @param $count: Number of items to support (default: 20)
+ * @param $initial-delay: Start time offset (default: 0.05s)
+ * @param $step: Increment per item (default: 0.05s)
+ */
+/* =================================================================
+   7. UI SYSTEMS (Standardization Layer)
+   ================================================================= */
+/**
+ * @mixin contour-hover-protocol
+ * The "Natural Protocol" for interactive elements.
+ * Ensures persistence by centralizing the recipe (Border + Glow only).
+ */
+/**
+ * @mixin glass-button-system
+ * The universal blueprint for "Glassmorphism" buttons.
+ * Guarantees identical styling across sidebars, prices, and menus.
+ */
+/* 1. THE SHELL (Shared Properties) */
+/* 1. MINISTRY OF AESTHETICS (Shared Identity) */
+.liquor-table, .standard-table {
+  /* Physics */
+  border-collapse: separate;
+  border-spacing: 0 var(--spacing-sm);
+  position: relative;
+  margin: var(--table-margin, var(--spacing-xxl)) auto;
+  /* Visuals */
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-2);
+  /* The Border Guard */
+}
+.liquor-table::before, .standard-table::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+}
+.liquor-table, .standard-table {
+  /* Common Header Text */
+}
+.liquor-table th, .standard-table th {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-body);
+  color: var(--primary-color);
+  text-align: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  /* Base padding */
+  border-bottom: 2px solid var(--border-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.liquor-table th:first-child, .standard-table th:first-child {
+  text-align: left;
+  padding-left: 10px;
+}
+.liquor-table, .standard-table {
+  /* Common Body Text */
+}
+.liquor-table td, .standard-table td {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  /* Base padding */
+  background: transparent;
+  transition: all 0.3s ease;
+  text-align: center;
+  vertical-align: middle;
+}
+.liquor-table td:first-child, .standard-table td:first-child {
+  text-align: left;
+  padding-left: 10px;
+}
+.liquor-table td.product-name, .standard-table td.product-name {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-body);
+  color: var(--primary-color);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.liquor-table, .standard-table {
+  /* Staggered Animation */
+}
+.liquor-table tr, .standard-table tr {
+  /* Base State: Invisible */
+  opacity: 0;
+  /* Action: Enter smoothly */
+  animation: fadeIn 0.6s ease-out forwards;
+  /* The Loop (Choreography) */
+}
+.liquor-table tr:nth-child(1), .standard-table tr:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.liquor-table tr:nth-child(2), .standard-table tr:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.liquor-table tr:nth-child(3), .standard-table tr:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.liquor-table tr:nth-child(4), .standard-table tr:nth-child(4) {
+  animation-delay: 0.25s;
+}
+.liquor-table tr:nth-child(5), .standard-table tr:nth-child(5) {
+  animation-delay: 0.3s;
+}
+.liquor-table tr:nth-child(6), .standard-table tr:nth-child(6) {
+  animation-delay: 0.35s;
+}
+.liquor-table tr:nth-child(7), .standard-table tr:nth-child(7) {
+  animation-delay: 0.4s;
+}
+.liquor-table tr:nth-child(8), .standard-table tr:nth-child(8) {
+  animation-delay: 0.45s;
+}
+.liquor-table tr:nth-child(9), .standard-table tr:nth-child(9) {
+  animation-delay: 0.5s;
+}
+.liquor-table tr:nth-child(10), .standard-table tr:nth-child(10) {
+  animation-delay: 0.55s;
+}
+.liquor-table tr:nth-child(11), .standard-table tr:nth-child(11) {
+  animation-delay: 0.6s;
+}
+.liquor-table tr:nth-child(12), .standard-table tr:nth-child(12) {
+  animation-delay: 0.65s;
+}
+.liquor-table tr:nth-child(13), .standard-table tr:nth-child(13) {
+  animation-delay: 0.7s;
+}
+.liquor-table tr:nth-child(14), .standard-table tr:nth-child(14) {
+  animation-delay: 0.75s;
+}
+.liquor-table tr:nth-child(15), .standard-table tr:nth-child(15) {
+  animation-delay: 0.8s;
+}
+.liquor-table tr:nth-child(16), .standard-table tr:nth-child(16) {
+  animation-delay: 0.85s;
+}
+.liquor-table tr:nth-child(17), .standard-table tr:nth-child(17) {
+  animation-delay: 0.9s;
+}
+.liquor-table tr:nth-child(18), .standard-table tr:nth-child(18) {
+  animation-delay: 0.95s;
+}
+.liquor-table tr:nth-child(19), .standard-table tr:nth-child(19) {
+  animation-delay: 1s;
+}
+.liquor-table tr:nth-child(20), .standard-table tr:nth-child(20) {
+  animation-delay: 1.05s;
+}
+.liquor-table tr:nth-child(21), .standard-table tr:nth-child(21) {
+  animation-delay: 1.1s;
+}
+.liquor-table tr:nth-child(22), .standard-table tr:nth-child(22) {
+  animation-delay: 1.15s;
+}
+.liquor-table tr:nth-child(23), .standard-table tr:nth-child(23) {
+  animation-delay: 1.2s;
+}
+.liquor-table tr:nth-child(24), .standard-table tr:nth-child(24) {
+  animation-delay: 1.25s;
+}
+.liquor-table tr:nth-child(25), .standard-table tr:nth-child(25) {
+  animation-delay: 1.3s;
+}
+.liquor-table tr:nth-child(26), .standard-table tr:nth-child(26) {
+  animation-delay: 1.35s;
+}
+.liquor-table tr:nth-child(27), .standard-table tr:nth-child(27) {
+  animation-delay: 1.4s;
+}
+.liquor-table tr:nth-child(28), .standard-table tr:nth-child(28) {
+  animation-delay: 1.45s;
+}
+.liquor-table tr:nth-child(29), .standard-table tr:nth-child(29) {
+  animation-delay: 1.5s;
+}
+.liquor-table tr:nth-child(30), .standard-table tr:nth-child(30) {
+  animation-delay: 1.55s;
+}
+.liquor-table, .standard-table {
+  /* --- TITLE ROW DEFENSE (Shared) --- */
+}
+.liquor-table tr.title-row td, .standard-table tr.title-row td {
+  width: auto;
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+  background: transparent;
+  pointer-events: none;
+  border-bottom: none;
+  /* NO SEPARATOR for Title */
+}
+.liquor-table, .standard-table {
+  /* --- PRODUCT NAME RESET (Shared) --- */
+}
+.liquor-table td.product-name, .standard-table td.product-name {
+  display: table-cell;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  line-height: 1.2;
+  vertical-align: middle;
+  font: 600 1rem "Montserrat", sans-serif;
+  color: var(--primary-color);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.liquor-table tr:hover td, .standard-table tr:hover td {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* 1.1 SPACING MODIFIERS (Global Utilities) */
+table.table-compact {
+  border-spacing: 0 var(--spacing-sm);
+  /* Force Compact spacing between rows */
+}
+table.table-compact td {
+  padding-top: 8px;
+  /* Compact Padding */
+  padding-bottom: 8px;
+  /* Separator inherited from Standard Table (User requested it) */
+}
+
+table.table-spacious {
+  border-spacing: 0 20px;
+  /* Force Spacious */
+}
+
+/* 2. SYSTEM: STANDARD TABLE (Food, Services) */
+/* Optimized for: Thumbnails, Ingredients, Single Prices */
+/* 2. SYSTEM: STANDARD TABLE (Food, Services) */
+/* Cloned from .liquor-table logic for robustness */
+/* Optimized for: Thumbnails, Ingredients (45%), Video (10%) */
+.standard-table {
+  /* 1. MINISTRY OF STRUCTURE (Standard) */
+  width: 100%;
+  max-width: 1400px;
+  padding: 20px 10px;
+  /* Generous Horizontal Padding */
+  table-layout: fixed;
+  border-spacing: 0 20px;
+  /* Default Spacious */
+  /* Title Row Defense inherited from %table-core */
+  /* COL 1: Nombre (25%) */
+}
+.standard-table col:nth-child(1),
+.standard-table th:nth-child(1) {
+  width: 25%;
+  text-align: center;
+}
+.standard-table td:nth-child(1) {
+  width: 25%;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+  text-align: left;
+  /* Clean Left Alignment */
+  text-align: left;
+  /* Clean Left Alignment */
+  padding: 18px 20px;
+  /* Reduced by 30% from 25px */
+  /* VISUAL SEPARATOR */
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+  height: auto;
+  /* Product Name Logic inherited from %table-core */
+}
+.standard-table {
+  /* COL 2: Ingredientes (42%) */
+}
+.standard-table col:nth-child(2),
+.standard-table th:nth-child(2) {
+  width: 42%;
+  text-align: center;
+}
+.standard-table td:nth-child(2) {
+  width: 42%;
+  text-align: justify;
+  text-justify: inter-word;
+  text-justify: inter-word;
+  padding: 18px 20px;
+  /* Reduced by 30% */
+  /* VISUAL SEPARATOR */
+  border-bottom: 1px solid var(--border-color);
+  /* Explicitly target the class to override inheritance */
+}
+.standard-table td:nth-child(2).product-ingredients {
+  color: var(--color-ingredientes, var(--text-color));
+}
+.standard-table td:nth-child(2) {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+.standard-table {
+  /* COL 3: Video/Thumb (13%) */
+}
+.standard-table col:nth-child(3),
+.standard-table th:nth-child(3) {
+  width: 13%;
+  text-align: center;
+}
+.standard-table td:nth-child(3) {
+  width: 13%;
+  text-align: center;
+  vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
+  padding: 18px 5px;
+  /* Reduced by 30% */
+  /* VISUAL SEPARATOR */
+  border-bottom: 1px solid var(--border-color);
+}
+.standard-table {
+  /* COL 4: Precio (20%) */
+}
+.standard-table col:nth-child(4),
+.standard-table th:nth-child(4) {
+  width: 20%;
+  text-align: center;
+}
+.standard-table td:nth-child(4) {
+  width: 20%;
+  text-align: center;
+  text-align: center;
+  vertical-align: middle;
+  padding: 18px 5px;
+  /* Reduced by 30% */
+  /* VISUAL SEPARATOR */
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.standard-table {
+  /* Video/Thumbnail Specifics */
+}
+.standard-table td .video-thumb,
+.standard-table td.image-icon img {
+  width: 100%;
+  /* Fill container */
+  max-width: 125px;
+  /* Constraint Increased 25% */
+  height: auto;
+  aspect-ratio: 16/9;
+  /* Landscape Video Ratio */
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.3s ease;
+}
+.standard-table td .video-thumb:hover,
+.standard-table td.image-icon img:hover {
+  transform: scale(1.05);
+}
+.standard-table {
+  /* Responsive Logic */
+}
+@media (min-width: 481px) and (max-width: 1024px) and (orientation: portrait) {
+  .standard-table {
+    padding: 8px 4px;
+    font-size: 0.8rem;
+  }
+  .standard-table td:nth-child(1) {
+    padding: 0 10px;
+  }
+  .standard-table {
+    /* Reduce padding */
+  }
+  .standard-table td:nth-child(2) {
+    padding: 0 10px;
+  }
+  .standard-table td.product-name {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 480px) and (orientation: portrait) {
+  .standard-table {
+    /* Mobile Stack Logic would go here if needed, 
+       but currently inherited logic + overrides control it */
+  }
+  .standard-table th,
+  .standard-table td {
+    padding: 5px 2px;
+  }
+}
+
+/* 3. SYSTEM: VISUAL TABLE (Liquor, Products) */
+/* Optimized for: Large Isolated Images, Stacked Prices, No Ingredients */
+/* 
+   GLOBAL PRICE SYSTEM (Shared) 
+   Must be declared before nested items or at root.
+*/
+/* --- Ghost Grid Price Container --- */
+.stacked-price-container {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  justify-content: space-between;
+  width: 75%;
+  column-gap: var(--spacing-sm);
+  row-gap: var(--spacing-sm);
+  align-items: center;
+  max-width: none;
+  margin: 0 auto;
+  padding: var(--spacing-xs) 0;
+}
+
+/* Price Item */
+.price-chip {
+  display: contents;
+}
+.price-chip .price-label-mini {
+  font-size: var(--text-sm);
+  color: var(--text-color);
+  text-transform: capitalize;
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+  padding-left: var(--spacing-xs);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-sm);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+.price-chip {
+  /* .price-button removed from here to use global definition */
+}
+
+/* UNIVERSAL PRICE BUTTON */
+.price-button {
+  padding: 8px 10px;
+  font: 700 0.77rem "Montserrat", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  /* Variable-driven aesthetics */
+  background: transparent;
+  border: 1.4px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--glow-shadow);
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Interactive States (Standardized Protocol) */
+}
+.price-button:hover, .price-button.active {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+.price-button:active {
+  transform: scale(0.98);
+}
+.price-button {
+  /* Layout Overrides for Table Context */
+  min-width: 90px;
+  width: 75%;
+  margin: 0 auto;
+  display: block;
+  /* Responsive adjustments specific to table */
+}
+.price-chip .price-button {
+  width: 100%;
+  margin: 0;
+  margin-bottom: 8px;
+  justify-self: end;
+}
+
+.liquor-table {
+  /* 1. MINISTRY OF STRUCTURE (Liquor) */
+  /* Compact, Fixed Layout, Strict control */
+  width: 95%;
+  /* Slight margin for breath */
+  max-width: 1080px;
+  /* Optimally Compact */
+  padding: 10px 5px;
+  /* Tighter padding */
+  table-layout: fixed;
+  /* Strict columns */
+  border-spacing: 0 8px;
+  border-spacing: 0 8px;
+  /* Tighter vertical */
+  /* Title Row Defense inherited from %table-core */
+  /* COL 1: Nombre (40%) */
+}
+.liquor-table col:nth-child(1),
+.liquor-table th:nth-child(1) {
+  text-align: center;
+  /* Enforce Header Centering */
+  width: 40%;
+  /* SYMMETRY: Matched to Price Column */
+}
+.liquor-table td:nth-child(1) {
+  width: 40%;
+  /* SYMMETRY */
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+  text-align: justify;
+  /* Justified per request */
+  text-justify: inter-word;
+  /* Browser hint */
+  /* FIXED PADDING: Removed 12.5% constraint -> Text can breathe */
+  padding: 5px 40px;
+  vertical-align: middle;
+  height: auto;
+  color: var(--primary-color) !important;
+  /* Force Royal Blue */
+  /* VISUAL SEPARATOR */
+  border-bottom: 1px solid var(--border-color);
+  /* Product Name Logic inherited from %table-core */
+}
+.liquor-table {
+  /* COL 2: Imagen (20%) */
+  /* COL 2: Imagen (20%) */
+}
+.liquor-table col:nth-child(2),
+.liquor-table th:nth-child(2) {
+  width: 20%;
+  /* SYMMETRY: Expanded to fit layout */
+  vertical-align: middle;
+  text-align: center;
+}
+.liquor-table td:nth-child(2) {
+  width: 20%;
+  vertical-align: middle;
+  text-align: center;
+  /* VISUAL SEPARATOR for TD */
+  border-bottom: 1px solid var(--border-color);
+}
+.liquor-table {
+  /* RESET: Header should not have bottom border (if conflict) */
+}
+.liquor-table th:nth-child(2) {
+  border-bottom: 2px solid var(--border-color);
+  /* Maintain header style */
+}
+.liquor-table {
+  /* Image Styling */
+}
+.liquor-table td.image-icon img {
+  width: 95px;
+  height: 95px;
+  object-fit: contain;
+  background: transparent;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+  animation: glow 2s infinite;
+  transition: transform 0.3s ease;
+}
+.liquor-table td.image-icon img:hover {
+  transform: scale(1.2);
+  box-shadow: var(--glow-shadow-hover);
+  background: rgba(255, 255, 255, 0.1);
+}
+.liquor-table {
+  /* COL 3: Precios Stacked (40%) */
+}
+.liquor-table col:nth-child(3),
+.liquor-table th:nth-child(3) {
+  width: 40%;
+  text-align: center;
+  /* Header Centered */
+}
+.liquor-table td:nth-child(3) {
+  width: 40%;
+  vertical-align: middle;
+  text-align: center;
+  /* Inner Container handles justification */
+  padding: 0 10px;
+  /* VISUAL SEPARATOR */
+  border-bottom: 1px solid var(--border-color);
+}
+.liquor-table {
+  /* Responsive Logic for Visual Table */
+}
+@media (max-width: 480px) {
+  .liquor-table {
+    /* Adjust columns for mobile */
+  }
+  .liquor-table th:nth-child(1),
+  .liquor-table td:nth-child(1) {
+    width: 35% !important;
+    font-size: 0.7rem !important;
+  }
+  .liquor-table th:nth-child(2),
+  .liquor-table td:nth-child(2) {
+    width: 15% !important;
+  }
+  .liquor-table th:nth-child(3),
+  .liquor-table td:nth-child(3) {
+    width: 50% !important;
+  }
+  .liquor-table td.image-icon img {
+    width: 40px;
+    height: 40px;
+  }
+  .liquor-table .price-chip .price-label-mini {
+    font-size: 0.7rem;
+  }
+  .liquor-table .price-chip .price-button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    min-width: 60px;
+  }
+}
+
+/* 7. Layout & Utilities */
+/* ==========================================================================
+   Layout: Containers
+   ========================================================================== */
+/* Main App Container */
+.app-container {
+  width: 100%;
+  max-width: var(--table-max-width, 1400px);
+  min-height: 100vh;
+  position: relative;
+  margin: 0 auto;
+  /* Smart centered padding */
+  padding: 0 max(var(--spacing-xl), (100vw - var(--table-max-width, 1400px)) / 2);
+  transition: all var(--transition-time) ease-in-out;
+  box-sizing: border-box;
+  /* Adjust padding when top nav is visible */
+}
+.top-nav-bar.top-nav-visible ~ .app-container .main-content-screen,
+.app-container .main-content-screen.with-top-nav {
+  padding-top: calc(56px + var(--spacing-xl));
+  /* HEADER (56px) + GAP (20px) */
+}
+.app-container {
+  /* === MIGRATED LEGACY RULE: EDGE-TO-EDGE MOBILE === */
+}
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: hidden;
+  }
+}
+.app-container {
+  /* Screen Container */
+}
+.app-container .screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.app-container {
+  /* Main Content Screen */
+}
+.app-container .main-content-screen {
+  position: relative;
+  padding: var(--spacing-xl);
+  justify-content: flex-start;
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  /* === MIGRATED LEGACY RULE: FULL WIDTH CONTENT === */
+}
+@media (max-width: 768px) {
+  .app-container .main-content-screen {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+.app-container {
+  /* Content Wrapper - THE UNIFICATION ENGINE */
+}
+.app-container .content-wrapper {
+  display: flex;
+  width: 100%;
+  gap: 0;
+  position: relative;
+  margin-top: 0;
+  padding-right: 0;
+  /* Default */
+  transition: padding-right 0.3s ease;
+  /* Smooth layout shift */
+  box-sizing: border-box;
+}
+.app-container {
+  /* Content Container */
+}
+.app-container .content-container {
+  flex: 1;
+  padding: 0;
+  margin-right: 0;
+  width: 100%;
+  /* Ensure it takes available space */
+  /* ADDED: Centering for internal elements (tables/grids) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* UNIVERSAL CHILD CENTERING FIX */
+}
+.app-container .content-container > * {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  /* Removed max-width constraint to prevent double-boxing.
+  App-container already handles the global max-width (1400px). */
+  /* Mobile Fix: Allow left alignment if overflowing */
+}
+@media (max-width: 768px) {
+  .app-container .content-container > * {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+.app-container {
+  /* Flex Container for Content + Sidebar */
+}
+.app-container .content-container-flex {
+  display: flex;
+  align-items: flex-start;
+  /* CHANGED: flex-start -> center to fix left-alignment */
+  justify-content: center;
+  width: 100%;
+  gap: var(--spacing-xl);
+}
+.app-container .content-container-flex .hamburger-btn {
+  left: unset;
+  margin-right: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  position: sticky;
+  top: var(--spacing-xl);
+  z-index: var(--sidebar-z-index);
+}
+.app-container {
+  /* =================================================================
+  MIGRATED SECTION STYLES (from legacy containers.css)
+  ================================================================= */
+  /* =================================================================
+  MIGRATED SECTION STYLES
+  Consolidated for cleaner maintenance.
+  These classes provide spacing/borders for specific product sections.
+  ================================================================= */
+}
+.app-container .refrescos-section,
+.app-container .jarras-section,
+.app-container .vasos-section,
+.app-container .cervezas-botella-section,
+.app-container .tarros-section,
+.app-container .vasos-cerveza-section {
+  margin-bottom: var(--spacing-xxl);
+}
+.app-container .refrescos-section:not(:last-child),
+.app-container .jarras-section:not(:last-child),
+.app-container .vasos-section:not(:last-child),
+.app-container .cervezas-botella-section:not(:last-child),
+.app-container .tarros-section:not(:last-child),
+.app-container .vasos-cerveza-section:not(:last-child) {
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: var(--spacing-xl);
+}
+.app-container .refrescos-section h2,
+.app-container .jarras-section h2,
+.app-container .vasos-section h2,
+.app-container .cervezas-botella-section h2,
+.app-container .tarros-section h2,
+.app-container .vasos-cerveza-section h2 {
+  color: var(--primary-color);
+  font-size: var(--text-h3);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  text-align: center;
+  /* Removed redundant border resets */
+}
+.app-container {
+  /* Page Header */
+}
+.app-container .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* Relative to container */
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.app-container {
+  /* ===== MIGRATED SECTIONS ===== */
+}
+.app-container .saved-orders {
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+}
+.app-container .saved-orders h3 {
+  color: var(--primary-color);
+  font-family: var(--font-primary);
+  font-size: var(--text-h3);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-xs);
+}
+.app-container .saved-order-items {
+  margin-bottom: var(--spacing-md);
+}
+.app-container .saved-order-item {
+  padding: var(--spacing-xs) 0;
+  margin-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--border-color);
+}
+.app-container .section-wrapper, .app-container .refrescos-section,
+.app-container .jarras-section,
+.app-container .vasos-section,
+.app-container .cervezas-botella-section,
+.app-container .tarros-section,
+.app-container .vasos-cerveza-section {
+  margin-bottom: 2rem;
+}
+.app-container .section-wrapper:not(:last-child), .app-container .refrescos-section:not(:last-child),
+.app-container .jarras-section:not(:last-child),
+.app-container .vasos-section:not(:last-child),
+.app-container .cervezas-botella-section:not(:last-child),
+.app-container .tarros-section:not(:last-child),
+.app-container .vasos-cerveza-section:not(:last-child) {
+  border-bottom: 2px solid var(--color-gray-300);
+  padding-bottom: 1.5rem;
+}
+.app-container .section-wrapper h2, .app-container .refrescos-section h2,
+.app-container .jarras-section h2,
+.app-container .vasos-section h2,
+.app-container .cervezas-botella-section h2,
+.app-container .tarros-section h2,
+.app-container .vasos-cerveza-section h2 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  text-align: center;
+  border-left: none;
+  padding-left: 0;
+}
+.app-container {
+  /* Apply wrapper to legacy classes */
+}
+/* =================================================================
+   VISIBILITY HELPERS (Required by app-init.js)
+   ================================================================= */
+.screen-hidden {
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.screen-visible {
+  /* Restore flow */
+  display: flex !important;
+  /* Main screens are usually flex */
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Specific override for main content which might need block */
+.main-content-screen.screen-visible {
+  display: block !important;
+}
+
+/* =================================================================
+   TRANSITION HELPERS (ScreenManager.js Support)
+   ================================================================= */
+.fade-out {
+  animation: fadeOut 1s ease-out forwards !important;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* ==========================================================================
+   Layout: Universal Sidebar System
+   ========================================================================== */
+/* 1. The Unified Overlay (Backdrop) */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--surface-glass-3);
+  backdrop-filter: blur(var(--blur-md, 10px));
+  z-index: calc(var(--z-modal, 2000) - 1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-time) ease, visibility var(--transition-time) ease;
+  pointer-events: none;
+}
+.sidebar-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* 2. Desktop Grid Logic (Legacy Restoration) */
+/* 2. Desktop Grid Logic (Legacy Restoration) - DISABLED FOR PHOENIX PROTOCOL */
+/* This logic used 1024px, causing the conflict with the 1280px Layout Shell. */
+/* 
+body:has(#order-sidebar.active) .app-container,
+body:has(.order-sidebar.is-open) .app-container {
+    @include desktop {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 30px;
+        max-width: 100%;
+        width: 100%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        .content-wrapper {
+            padding-right: 20px !important;
+            width: 100%;
+            overflow-x: hidden;
+        }
+    }
+}
+*/
+/* 3. The Sidebar Shell (Mixin) */
+#order-sidebar,
+.order-sidebar, .settings-menu, #drawer-menu,
+.drawer-menu {
+  position: fixed;
+  background: var(--card-bg);
+  /* Adapts to Theme (Dark/Light) */
+  backdrop-filter: blur(var(--blur-lg, 15px));
+  -webkit-backdrop-filter: blur(var(--blur-lg, 15px));
+  border: 1px solid var(--border-color);
+  box-shadow: var(--glow-shadow);
+  z-index: var(--z-modal, 2000);
+  transition: transform var(--transition-time) cubic-bezier(0.4, 0, 0.2, 1), opacity var(--transition-time) ease;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* Active State (Unified) */
+}
+.active#order-sidebar,
+.active.order-sidebar, .active.settings-menu, .active#drawer-menu,
+.active.drawer-menu, .is-open#order-sidebar,
+.is-open.order-sidebar, .is-open.settings-menu, .is-open#drawer-menu,
+.is-open.drawer-menu {
+  transform: translate(0, 0) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* 4. Components */
+/* A. Navigation Drawer (Left) */
+#drawer-menu,
+.drawer-menu {
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  border-right: 1px solid var(--border-color);
+  border-left: none;
+  transform: translateX(-100%);
+}
+@media (max-width: 480px) and (orientation: portrait) {
+  #drawer-menu,
+  .drawer-menu {
+    width: 80vw;
+  }
+}
+#drawer-menu,
+.drawer-menu {
+  /* Internal Layout */
+}
+#drawer-menu .drawer-content,
+.drawer-menu .drawer-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+#drawer-menu .drawer-logo-container,
+.drawer-menu .drawer-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+#drawer-menu .drawer-logo,
+.drawer-menu .drawer-logo {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
+  display: block;
+}
+#drawer-menu .drawer-footer,
+.drawer-menu .drawer-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  opacity: 0.8;
+  font-style: italic;
+}
+#drawer-menu,
+.drawer-menu {
+  /* Button Styles (Unified) */
+}
+#drawer-menu .nav-button,
+.drawer-menu .nav-button {
+  padding: 8px 10px;
+  font: 700 0.77rem "Playfair Display", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  /* Variable-driven aesthetics */
+  background: transparent;
+  border: 1.4px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--glow-shadow);
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Interactive States (Standardized Protocol) */
+}
+#drawer-menu .nav-button:hover, #drawer-menu .nav-button.active,
+.drawer-menu .nav-button:hover,
+.drawer-menu .nav-button.active {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+#drawer-menu .nav-button:active,
+.drawer-menu .nav-button:active {
+  transform: scale(0.98);
+}
+#drawer-menu .nav-button,
+.drawer-menu .nav-button {
+  width: 100%;
+  /* Override alignment for vertical menus */
+  text-align: left;
+}
+
+/* B. Settings Menu (Right) */
+.settings-menu {
+  /* Ensure it floats above everything */
+  z-index: 2005 !important;
+  border-right: none;
+  border-left: 1px solid var(--border-color);
+  left: auto !important;
+  right: 0;
+  transform: translateX(100%);
+}
+.settings-menu.active, .settings-menu.is-open {
+  transform: translateX(0);
+}
+.settings-menu {
+  /* Settings Internal Layout */
+}
+.settings-menu .settings-panel {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.settings-menu .back-button {
+  margin: 0 auto;
+  display: block;
+}
+
+/* Shared Button Styles (Standardized) */
+.language-btn,
+.theme-btn {
+  padding: 8px 10px;
+  font: 700 0.77rem "Playfair Display", serif;
+  text-transform: none;
+  transition: all 0.3s ease;
+  /* Variable-driven aesthetics */
+  background: transparent;
+  border: 1.4px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--glow-shadow);
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Interactive States (Standardized Protocol) */
+}
+.language-btn:hover, .language-btn.active,
+.theme-btn:hover,
+.theme-btn.active {
+  border-color: var(--price-color) !important;
+  box-shadow: var(--glow-shadow-hover) !important;
+  /* Strict Constraints: No internal shifts */
+  transform: none;
+  color: inherit;
+  background-color: transparent;
+}
+.language-btn:active,
+.theme-btn:active {
+  transform: scale(0.98);
+}
+.language-btn,
+.theme-btn {
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+/* C. Order Sidebar (Right/Bottom) */
+#order-sidebar,
+.order-sidebar {
+  /* DEFAULT (MOBILE/TABLET): Floating Bottom/Overlay Styles */
+  /* This applies UP TO 1279px. Desktop (1280px+) matches Grid Shell. */
+}
+@media (max-width: 1279px) {
+  #order-sidebar,
+  .order-sidebar {
+    top: auto;
+    /* Reset top */
+    bottom: 0;
+    right: 0 !important;
+    left: 0;
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    border-radius: 20px 20px 0 0;
+    margin: 0;
+    transform: translateY(100%);
+    padding: 15px;
+    background: var(--card-bg);
+    /* Adapts to theme (was hardcoded black) */
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+  }
+  #order-sidebar.active, #order-sidebar.is-open,
+  .order-sidebar.active,
+  .order-sidebar.is-open {
+    transform: translateY(0);
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+#order-sidebar,
+.order-sidebar {
+  /* DESKTOP (1280px+): Handled entirely by _layout-shell.scss */
+  /* We strip all positioning logic here to avoid conflicts. */
+  /* Internal Components (Legacy Styles Restored) */
+}
+#order-sidebar .drawer-title,
+.order-sidebar .drawer-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+#order-sidebar .order-items-scroll,
+.order-sidebar .order-items-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Remove gap if using borders */
+  padding-right: 5px;
+  /* Custom Scrollbar */
+}
+#order-sidebar .order-items-scroll::-webkit-scrollbar,
+.order-sidebar .order-items-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+#order-sidebar .order-items-scroll::-webkit-scrollbar-track,
+.order-sidebar .order-items-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+#order-sidebar .order-items-scroll::-webkit-scrollbar-thumb,
+.order-sidebar .order-items-scroll::-webkit-scrollbar-thumb {
+  background: var(--price-color);
+  border-radius: 4px;
+}
+#order-sidebar .order-item,
+.order-sidebar .order-item {
+  /* Removed "Button-like" styles (background/border) */
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Separator */
+  border-radius: 0;
+  padding: 12px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* Legacy Internal Styles */
+}
+#order-sidebar .order-item .order-item-header,
+.order-sidebar .order-item .order-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+#order-sidebar .order-item .order-item-name,
+.order-sidebar .order-item .order-item-name {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+  width: 100%;
+  word-wrap: break-word;
+  hyphens: auto;
+  font-size: 0.9rem;
+}
+#order-sidebar .order-item .order-item-price,
+.order-sidebar .order-item .order-item-price {
+  color: var(--price-color);
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+#order-sidebar .order-item .order-item-customization,
+.order-sidebar .order-item .order-item-customization {
+  color: var(--text-color);
+  /* Adapts to Theme (Blue/White) */
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 5px;
+  width: 100%;
+}
+#order-sidebar .order-item,
+.order-sidebar .order-item {
+  /* The Red "X" (Legacy .remove-order-item) */
+}
+#order-sidebar .order-item .remove-btn,
+#order-sidebar .order-item .remove-order-item,
+.order-sidebar .order-item .remove-btn,
+.order-sidebar .order-item .remove-order-item {
+  font-size: 0.9rem;
+  margin-left: 5px;
+  background: transparent;
+  border: none;
+  color: var(--color-error, #ff4d4d);
+  cursor: pointer;
+  padding: 4px;
+}
+#order-sidebar .order-item .remove-btn:hover,
+#order-sidebar .order-item .remove-order-item:hover,
+.order-sidebar .order-item .remove-btn:hover,
+.order-sidebar .order-item .remove-order-item:hover {
+  opacity: 0.8;
+}
+#order-sidebar .order-summary,
+.order-sidebar .order-summary {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid var(--border-color);
+  flex-shrink: 0;
+}
+#order-sidebar .order-summary .total-row,
+.order-sidebar .order-summary .total-row {
+  display: flex;
+  justify-content: space-between;
+}
+#order-sidebar .order-summary .total-row h4,
+#order-sidebar .order-summary .total-row span,
+.order-sidebar .order-summary .total-row h4,
+.order-sidebar .order-summary .total-row span {
+  font: 1.2rem "Montserrat", sans-serif;
+  color: var(--price-color);
+  text-align: right;
+  margin: 0;
+}
+#order-sidebar,
+.order-sidebar {
+  /* Legacy Order Actions Structure */
+}
+#order-sidebar .order-actions,
+.order-sidebar .order-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+#order-sidebar .order-actions .nav-button,
+.order-sidebar .order-actions .nav-button {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* User Requirement: Match Left Sidebar (Theme Aware) */
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
+}
+#order-sidebar .order-actions .nav-button:hover,
+.order-sidebar .order-actions .nav-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--price-color);
+  color: var(--price-color);
+}
+
+/* End #order-sidebar */
+/* =============================================================================
+   App Shell Layout (Phoenix Protocol)
+   =============================================================================
+   Enforces Grid Layout ONLY for Desktop (1280px+) to match SidebarManager.js
+   Prevents the "Tablet Limbo" crash.
+   ============================================================================= */
+/* 1. Base Mobile/Tablet State (< 1280px) */
+/* Behaves as normal Flow/Flex (Legacy Mode) */
+.app-container {
+  /* Ensure stacking context */
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+/* 2. Desktop State (>= 1280px) */
+@media (min-width: 1280px) {
+  .app-container {
+    display: grid;
+    /* height: 100vh; */
+    /* DISABLED: Let body scroll */
+    /* overflow: hidden; */
+    /* DISABLED: Let body scroll */
+    min-height: 100vh;
+    /* Ensure full height */
+    /* Grid Layout: Nav (Spacer Removed) + Content + Sidebar */
+    grid-template-columns: 0px 1fr 0px;
+    grid-template-areas: "nav content sidebar";
+    gap: 0;
+    /* Override legacy padding */
+    padding: 0 !important;
+    max-width: 100% !important;
+    /* Fix: 100vw causes overflow with scrollbars */
+  }
+  /* When Sidebar is OPEN (Triggered by SidebarManager) */
+  .app-container[data-sidebar-state=open] {
+    /* Expand 3rd column */
+    grid-template-columns: 0px 1fr 350px;
+    /* 350px width for Order Sidebar */
+  }
+  /* Assign Areas */
+  /* Navigation Bar (Left sidebar) - RELEASED FROM GRID */
+  /* It remains 'fixed' (Overlay) to avoid the "Freeze" issue. */
+  /* The 'nav' area in the grid remains as a spacer or for the Hamburger button. */
+  /* Main Content */
+  .app-container .main-content-screen {
+    grid-area: content;
+    overflow-y: visible;
+    /* RELEASE SCROLL to Body */
+    height: auto;
+    /* ALIGNMENT FIX: Top padding matches Sidebar top (Height 56px + Gap 20px = 76px) */
+    padding: calc(56px + var(--spacing-xl)) var(--spacing-xl) var(--spacing-xl) var(--spacing-xl);
+  }
+  /* Order Sidebar (Right) */
+  .app-container #order-sidebar {
+    grid-area: sidebar;
+    /* Positioning & Sizing */
+    position: sticky;
+    top: calc(56px + var(--spacing-xl) + var(--spacing-xl));
+    /* Matches Content (Header 56 + Gap 20 + Margin 20) */
+    right: var(--spacing-xl);
+    width: calc(100% - var(--spacing-xl));
+    height: auto;
+    max-height: calc(100vh - (56px + var(--spacing-xl) + var(--spacing-xl) + var(--spacing-xl)));
+    /* 100vh - Top(96) - Bottom(20) */
+    margin: 0;
+    align-self: start;
+    /* Visual Style */
+    background-color: transparent;
+    background: var(--card-bg);
+    /* Adapts to Theme */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: none;
+    transform: none;
+    z-index: 10;
+    /* State Management (Natural Toggle) */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .app-container #order-sidebar.active, .app-container #order-sidebar.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .app-container #order-sidebar {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Clean corners */
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-xl) var(--spacing-lg);
+    /* 1. Scrollable List (Body) */
+  }
+  .app-container #order-sidebar .order-items-scroll {
+    display: block;
+    /* Natural flow */
+    height: auto;
+    max-height: 50vh;
+    /* Primary Limit: 50% of viewport height */
+    min-height: 60px;
+    /* Ensure never fully collapses */
+    overflow-y: auto;
+    /* Internal Scrolling */
+    padding-right: var(--spacing-xs);
+    /* Scrollbar Styling */
+  }
+  .app-container #order-sidebar .order-items-scroll::-webkit-scrollbar {
+    width: var(--spacing-xs);
+  }
+  .app-container #order-sidebar .order-items-scroll::-webkit-scrollbar-track {
+    background: var(--input-bg);
+  }
+  .app-container #order-sidebar .order-items-scroll::-webkit-scrollbar-thumb {
+    background: var(--price-color);
+    border-radius: var(--radius-sm);
+  }
+  .app-container #order-sidebar {
+    /* 2. Fixed Footer (Buttons) */
+  }
+  .app-container #order-sidebar .order-summary {
+    flex: 0 0 auto;
+    /* Fixed Size */
+    width: 100%;
+  }
+  .app-container #order-sidebar .order-actions {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 0;
+    /* Button Layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+}
+/* ==========================================================================
+   UTILITIES: The Utility Belt (Phase 3.5)
+   Standardized helper classes based on Design Tokens.
+   ========================================================================== */
+/* 1. SPACING MODULES (Using variables.css tokens)
+   Format: .u-[m|p][t|r|b|l|x|y]-{size}
+   Sizes: xs, sm, md, lg, xl, xxl
+   ========================================================================== */
+/* Margins */
+.u-m-xs {
+  margin: var(--spacing-xs) !important;
+}
+
+.u-mt-xs {
+  margin-top: var(--spacing-xs) !important;
+}
+
+.u-mr-xs {
+  margin-right: var(--spacing-xs) !important;
+}
+
+.u-mb-xs {
+  margin-bottom: var(--spacing-xs) !important;
+}
+
+.u-ml-xs {
+  margin-left: var(--spacing-xs) !important;
+}
+
+.u-mx-xs {
+  margin-left: var(--spacing-xs) !important;
+  margin-right: var(--spacing-xs) !important;
+}
+
+.u-my-xs {
+  margin-top: var(--spacing-xs) !important;
+  margin-bottom: var(--spacing-xs) !important;
+}
+
+/* Paddings */
+.u-p-xs {
+  padding: var(--spacing-xs) !important;
+}
+
+.u-pt-xs {
+  padding-top: var(--spacing-xs) !important;
+}
+
+.u-pr-xs {
+  padding-right: var(--spacing-xs) !important;
+}
+
+.u-pb-xs {
+  padding-bottom: var(--spacing-xs) !important;
+}
+
+.u-pl-xs {
+  padding-left: var(--spacing-xs) !important;
+}
+
+.u-px-xs {
+  padding-left: var(--spacing-xs) !important;
+  padding-right: var(--spacing-xs) !important;
+}
+
+.u-py-xs {
+  padding-top: var(--spacing-xs) !important;
+  padding-bottom: var(--spacing-xs) !important;
+}
+
+/* Margins */
+.u-m-sm {
+  margin: var(--spacing-sm) !important;
+}
+
+.u-mt-sm {
+  margin-top: var(--spacing-sm) !important;
+}
+
+.u-mr-sm {
+  margin-right: var(--spacing-sm) !important;
+}
+
+.u-mb-sm {
+  margin-bottom: var(--spacing-sm) !important;
+}
+
+.u-ml-sm {
+  margin-left: var(--spacing-sm) !important;
+}
+
+.u-mx-sm {
+  margin-left: var(--spacing-sm) !important;
+  margin-right: var(--spacing-sm) !important;
+}
+
+.u-my-sm {
+  margin-top: var(--spacing-sm) !important;
+  margin-bottom: var(--spacing-sm) !important;
+}
+
+/* Paddings */
+.u-p-sm {
+  padding: var(--spacing-sm) !important;
+}
+
+.u-pt-sm {
+  padding-top: var(--spacing-sm) !important;
+}
+
+.u-pr-sm {
+  padding-right: var(--spacing-sm) !important;
+}
+
+.u-pb-sm {
+  padding-bottom: var(--spacing-sm) !important;
+}
+
+.u-pl-sm {
+  padding-left: var(--spacing-sm) !important;
+}
+
+.u-px-sm {
+  padding-left: var(--spacing-sm) !important;
+  padding-right: var(--spacing-sm) !important;
+}
+
+.u-py-sm {
+  padding-top: var(--spacing-sm) !important;
+  padding-bottom: var(--spacing-sm) !important;
+}
+
+/* Margins */
+.u-m-md {
+  margin: var(--spacing-md) !important;
+}
+
+.u-mt-md {
+  margin-top: var(--spacing-md) !important;
+}
+
+.u-mr-md {
+  margin-right: var(--spacing-md) !important;
+}
+
+.u-mb-md {
+  margin-bottom: var(--spacing-md) !important;
+}
+
+.u-ml-md {
+  margin-left: var(--spacing-md) !important;
+}
+
+.u-mx-md {
+  margin-left: var(--spacing-md) !important;
+  margin-right: var(--spacing-md) !important;
+}
+
+.u-my-md {
+  margin-top: var(--spacing-md) !important;
+  margin-bottom: var(--spacing-md) !important;
+}
+
+/* Paddings */
+.u-p-md {
+  padding: var(--spacing-md) !important;
+}
+
+.u-pt-md {
+  padding-top: var(--spacing-md) !important;
+}
+
+.u-pr-md {
+  padding-right: var(--spacing-md) !important;
+}
+
+.u-pb-md {
+  padding-bottom: var(--spacing-md) !important;
+}
+
+.u-pl-md {
+  padding-left: var(--spacing-md) !important;
+}
+
+.u-px-md {
+  padding-left: var(--spacing-md) !important;
+  padding-right: var(--spacing-md) !important;
+}
+
+.u-py-md {
+  padding-top: var(--spacing-md) !important;
+  padding-bottom: var(--spacing-md) !important;
+}
+
+/* Margins */
+.u-m-lg {
+  margin: var(--spacing-lg) !important;
+}
+
+.u-mt-lg {
+  margin-top: var(--spacing-lg) !important;
+}
+
+.u-mr-lg {
+  margin-right: var(--spacing-lg) !important;
+}
+
+.u-mb-lg {
+  margin-bottom: var(--spacing-lg) !important;
+}
+
+.u-ml-lg {
+  margin-left: var(--spacing-lg) !important;
+}
+
+.u-mx-lg {
+  margin-left: var(--spacing-lg) !important;
+  margin-right: var(--spacing-lg) !important;
+}
+
+.u-my-lg {
+  margin-top: var(--spacing-lg) !important;
+  margin-bottom: var(--spacing-lg) !important;
+}
+
+/* Paddings */
+.u-p-lg {
+  padding: var(--spacing-lg) !important;
+}
+
+.u-pt-lg {
+  padding-top: var(--spacing-lg) !important;
+}
+
+.u-pr-lg {
+  padding-right: var(--spacing-lg) !important;
+}
+
+.u-pb-lg {
+  padding-bottom: var(--spacing-lg) !important;
+}
+
+.u-pl-lg {
+  padding-left: var(--spacing-lg) !important;
+}
+
+.u-px-lg {
+  padding-left: var(--spacing-lg) !important;
+  padding-right: var(--spacing-lg) !important;
+}
+
+.u-py-lg {
+  padding-top: var(--spacing-lg) !important;
+  padding-bottom: var(--spacing-lg) !important;
+}
+
+/* Margins */
+.u-m-xl {
+  margin: var(--spacing-xl) !important;
+}
+
+.u-mt-xl {
+  margin-top: var(--spacing-xl) !important;
+}
+
+.u-mr-xl {
+  margin-right: var(--spacing-xl) !important;
+}
+
+.u-mb-xl {
+  margin-bottom: var(--spacing-xl) !important;
+}
+
+.u-ml-xl {
+  margin-left: var(--spacing-xl) !important;
+}
+
+.u-mx-xl {
+  margin-left: var(--spacing-xl) !important;
+  margin-right: var(--spacing-xl) !important;
+}
+
+.u-my-xl {
+  margin-top: var(--spacing-xl) !important;
+  margin-bottom: var(--spacing-xl) !important;
+}
+
+/* Paddings */
+.u-p-xl {
+  padding: var(--spacing-xl) !important;
+}
+
+.u-pt-xl {
+  padding-top: var(--spacing-xl) !important;
+}
+
+.u-pr-xl {
+  padding-right: var(--spacing-xl) !important;
+}
+
+.u-pb-xl {
+  padding-bottom: var(--spacing-xl) !important;
+}
+
+.u-pl-xl {
+  padding-left: var(--spacing-xl) !important;
+}
+
+.u-px-xl {
+  padding-left: var(--spacing-xl) !important;
+  padding-right: var(--spacing-xl) !important;
+}
+
+.u-py-xl {
+  padding-top: var(--spacing-xl) !important;
+  padding-bottom: var(--spacing-xl) !important;
+}
+
+/* Margins */
+.u-m-xxl {
+  margin: var(--spacing-xxl) !important;
+}
+
+.u-mt-xxl {
+  margin-top: var(--spacing-xxl) !important;
+}
+
+.u-mr-xxl {
+  margin-right: var(--spacing-xxl) !important;
+}
+
+.u-mb-xxl {
+  margin-bottom: var(--spacing-xxl) !important;
+}
+
+.u-ml-xxl {
+  margin-left: var(--spacing-xxl) !important;
+}
+
+.u-mx-xxl {
+  margin-left: var(--spacing-xxl) !important;
+  margin-right: var(--spacing-xxl) !important;
+}
+
+.u-my-xxl {
+  margin-top: var(--spacing-xxl) !important;
+  margin-bottom: var(--spacing-xxl) !important;
+}
+
+/* Paddings */
+.u-p-xxl {
+  padding: var(--spacing-xxl) !important;
+}
+
+.u-pt-xxl {
+  padding-top: var(--spacing-xxl) !important;
+}
+
+.u-pr-xxl {
+  padding-right: var(--spacing-xxl) !important;
+}
+
+.u-pb-xxl {
+  padding-bottom: var(--spacing-xxl) !important;
+}
+
+.u-pl-xxl {
+  padding-left: var(--spacing-xxl) !important;
+}
+
+.u-px-xxl {
+  padding-left: var(--spacing-xxl) !important;
+  padding-right: var(--spacing-xxl) !important;
+}
+
+.u-py-xxl {
+  padding-top: var(--spacing-xxl) !important;
+  padding-bottom: var(--spacing-xxl) !important;
+}
+
+/* 2. FLEXBOX MODULES
+   ========================================================================== */
+.u-flex {
+  display: flex !important;
+}
+
+.u-flex-column {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.u-flex-center {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.u-flex-between {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.u-flex-align-c {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.u-flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.u-gap-sm {
+  gap: var(--spacing-sm) !important;
+}
+
+.u-gap-md {
+  gap: var(--spacing-md) !important;
+}
+
+/* 3. VISIBILITY & SCREEN MODULES
+   ========================================================================== */
+.u-hidden {
+  display: none !important;
+}
+
+.u-block {
+  display: block !important;
+}
+
+.u-flex-display {
+  display: flex !important;
+}
+
+/* Screen Management (From display.css) */
+.u-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.u-screen-hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.u-screen-visible {
+  display: flex !important;
+  opacity: 1 !important;
+  z-index: 20 !important;
+}
+
+/* Transitions (Standardized) */
+.u-fade-in {
+  animation: fadeIn var(--transition-time) ease-in-out forwards;
+}
+
+.u-fade-out {
+  animation: fadeOut var(--transition-time) ease-in-out forwards;
+}
+
+/* 4. TEXT MODULES
+   ========================================================================== */
+.u-text-center {
+  text-align: center !important;
+}
+
+.u-text-right {
+  text-align: right !important;
+}
+
+.u-text-left {
+  text-align: left !important;
+}
+
+.u-text-price {
+  color: var(--price-color) !important;
+  font-weight: 700 !important;
+}
+
+.u-text-muted {
+  color: var(--text-muted) !important;
+  font-size: var(--text-xs) !important;
+}
+
+.u-text-uppercase {
+  text-transform: uppercase !important;
+}
+
+/* 5. MISC UTILITIES
+   ========================================================================== */
+.u-full-width {
+  width: 100% !important;
+}
+
+.u-full-height {
+  height: 100% !important;
+}
+
+.u-pointer {
+  cursor: pointer !important;
+}
+
+.u-no-border {
+  border: none !important;
+}
+
+.u-radius-md {
+  border-radius: var(--radius-md) !important;
+}
+
+.u-overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   Responsive Utilities (The Output)
+   ========================================================================== */
+/* This file will be populated with BEMIT responsive suffixes */
+/* ==========================================================================
+   _shame.scss - The Hall of Shame
+   ==========================================================================
+   This file contains specific overrides and hacks that are temporary fixes.
+   Each entry must be documented with:
+   1. Why it is needed (what zombi it fights).
+   2. When it can be removed.
+
+   DO NOT USE THIS FILE FOR PERMANENT STYLES.
+   ========================================================================== */
+
+/*# sourceMappingURL=main.css.map */

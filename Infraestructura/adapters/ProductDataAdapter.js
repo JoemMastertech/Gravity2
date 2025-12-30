@@ -1,0 +1,538 @@
+import ProductData from '../data-providers/product-data.js';
+import BaseAdapter from './BaseAdapter.js';
+import AppConfig from '../../Shared/core/AppConfig.js';
+import { formatPrice, formatProductName } from '../../Shared/utils/formatters.js';
+import DataSyncService from '../../Shared/services/DataSyncService.js';
+import { SYNC_CONFIG } from '../../Shared/config/constants.js';
+import Logger from '../../Shared/utils/logger.js';
+import { validateProducts } from '../../src/schemas/product.schema.js';
+
+/**
+ * Product Data Adapter - Infrastructure implementation of ProductRepositoryPort
+ * Adapts the existing ProductData to the domain port interface
+ * Part of Hexagonal Architecture - Infrastructure layer adapter
+ */
+class ProductDataAdapter extends BaseAdapter {
+  constructor() {
+    super();
+    this.productData = ProductData;
+
+    // Initialize Supabase configuration
+    this.supabaseUrl = AppConfig.get('database.supabaseUrl');
+    this.supabaseKey = AppConfig.get('database.supabaseKey');
+
+    // Initialize sync service
+    this.syncService = new DataSyncService(this);
+
+    // Start auto-sync if enabled
+    if (SYNC_CONFIG.AUTO_UPDATE_ENABLED) {
+      this.syncService.startAutoSync();
+    }
+  }
+
+  /**
+   * Generic method to fetch products for a category
+   * @param {string} tableName - Supabase table name
+   * @param {string} [localKey] - Key in local productData (defaults to tableName)
+   * @returns {Promise<Array>}
+   * @private
+   */
+  async _getGenericCategory(tableName, localKey = tableName) {
+    // ... implementation ... (preserving method signature, looking for where to insert plator fuertes mapper)
+    // Actually, I should insert _mapPlatoFuerteItem separately or near getPlatosFuertes.
+    // Let's check where getPlatosFuertes is. I'll use a separate chunk for it.
+    try {
+      const data = await this._fetchFromSupabase(tableName);
+      return data.length > 0 ? data : this.productData[localKey] || [];
+    } catch (error) {
+      Logger.error(`Error in get${tableName.charAt(0).toUpperCase() + tableName.slice(1)}:`, error);
+      return this.productData[localKey] || [];
+    }
+  }
+
+  /**
+   * Fetch data from Supabase table with immediate local data return
+   * @param {string} tableName - Name of the Supabase table
+   * @returns {Promise<Array>} Array of records from the table
+   * @private
+   */
+  async _fetchFromSupabase(tableName) {
+    // Check if we have local data
+    let localData = this.productData[tableName];
+
+    // If no local data (or empty array), we MUST wait for the fetch
+    // This is critical for new categories that don't have hardcoded fallback data
+    if (!localData || (Array.isArray(localData) && localData.length === 0)) {
+      Logger.info(`No local data for '${tableName}', waiting for Supabase fetch...`);
+      await this._updateFromSupabaseBackground(tableName);
+      // Refresh local data after fetch
+      localData = this.productData[tableName] || [];
+    } else {
+      // If we have data, return immediately and update in background
+      this._updateFromSupabaseBackground(tableName);
+    }
+
+    return localData;
+  }
+
+  /**
+   * Update data from Supabase in background without blocking UI
+   * @param {string} tableName - Name of the Supabase table
+   * @private
+   */
+  async _updateFromSupabaseBackground(tableName) {
+    try {
+      const response = await fetch(`${this.supabaseUrl}/rest/v1/${tableName}`, {
+        method: 'GET',
+        headers: {
+          'apikey': this.supabaseKey,
+          'Authorization': `Bearer ${this.supabaseKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 404) {
+        Logger.debug(`Tabla '${tableName}' no encontrada en Supabase. Manteniendo datos locales.`);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      Logger.info(`Datos actualizados en background desde Supabase tabla '${tableName}': ${data.length} registros`);
+
+      // Normalize and cache the fresh data
+      const normalizedData = this._normalizeSupabaseData(data, tableName);
+      if (normalizedData && normalizedData.length > 0) {
+        // Update local data for next immediate load
+        this.productData[tableName] = normalizedData;
+
+        // Cache for persistence
+        const SimpleCache = (await import('../../Shared/utils/simpleCache.js')).default;
+        SimpleCache.set(`supabase_${tableName}`, normalizedData, 3600000); // 1 hour cache
+
+        Logger.info(`Cache actualizado para tabla '${tableName}'`);
+      }
+    } catch (error) {
+      Logger.debug(`Background sync failed for ${tableName}:`, error.message);
+      // Silent failure - doesn't affect user experience
+    }
+  }
+
+  /**
+   * Normalize Supabase data to match manual data structure
+   * Uses Zod Schema for robust validation and shielding
+   * @param {Array} data - Raw data from Supabase
+   * @param {string} tableName - Name of the table
+   * @returns {Array} Normalized data
+   * @private
+   */
+  _normalizeSupabaseData(data, tableName) {
+    if (!Array.isArray(data)) return [];
+
+    try {
+      // Use the Zod schema to validate and normalize data
+      // This handles all the snake_case checks, defaults, and type coercion
+      // Pass tableName to select the correct schema (Liquor vs Generic)
+      const validatedData = validateProducts(data, tableName);
+
+      Logger.debug(`[Zod Shielding] Validated ${validatedData.length} items for ${tableName}`);
+      return validatedData;
+    } catch (error) {
+      Logger.error(`[Zod Shielding] Validation failed for ${tableName}`, error);
+      // Fallback: Return raw data but warned, or empty array? 
+      // Safe Programming: Return empty array to prevent UI crashes, 
+      // or attempt to return basics?
+      // Zod's safeParse inside validateProducts should prevent this catch from ever firing
+      // for individual items (it filters bad ones typically or uses defaults).
+      // If we are here, something catastrophic happened.
+      return [];
+    }
+  }
+
+  /**
+   * Get all cocktails (async with Supabase)
+   * @returns {Promise<Array>} Array of cocktail objects
+   */
+  async getCocteles() {
+    return this._getGenericCategory('cocteleria', 'cocteles');
+  }
+
+  /**
+   * Get all beverages (refrescos) (async with Supabase)
+   * @returns {Promise<Array>} Array of beverage objects
+   */
+  async getRefrescos() {
+    return this._getGenericCategory('refrescos');
+  }
+
+  /**
+   * Get all liquors (async with Supabase)
+   * @returns {Promise<Array>} Array of liquor objects
+   */
+  async getLicores() {
+    try {
+      // Fetch from multiple liquor tables and combine them
+      const [vodka, whisky, tequila, ron, brandy, cognac, digestivos, ginebra, mezcal, licores] = await Promise.all([
+        this._fetchFromSupabase('vodka'),
+        this._fetchFromSupabase('whisky'),
+        this._fetchFromSupabase('tequila'),
+        this._fetchFromSupabase('ron'),
+        this._fetchFromSupabase('brandy'),
+        this._fetchFromSupabase('cognac'),
+        this._fetchFromSupabase('digestivos'),
+        this._fetchFromSupabase('ginebra'),
+        this._fetchFromSupabase('mezcal'),
+        this._fetchFromSupabase('licores')
+      ]);
+
+      const allLiquors = [...vodka, ...whisky, ...tequila, ...ron, ...brandy, ...cognac, ...digestivos, ...ginebra, ...mezcal, ...licores];
+      return allLiquors.length > 0 ? allLiquors : this.productData.licores || [];
+    } catch (error) {
+      Logger.error('Error in getLicores:', error);
+      return this.productData.licores || [];
+    }
+  }
+
+
+
+  /**
+   * Get all beers (async with Supabase)
+   * @returns {Promise<Array>} Array of beer objects
+   */
+  async getCervezas() {
+    return this._getGenericCategory('cervezas');
+  }
+
+  /**
+   * Get all pizzas (async with Supabase)
+   * @returns {Promise<Array>} Array of pizza objects
+   */
+  async getPizzas() {
+    return this._getGenericCategory('pizzas');
+  }
+
+  /**
+   * Get all wings (alitas) (async with Supabase)
+   * @returns {Promise<Array>} Array of wing objects
+   */
+  async getAlitas() {
+    return this._getGenericCategory('alitas');
+  }
+
+  /**
+   * Get all soups (async with Supabase)
+   * @returns {Promise<Array>} Array of soup objects
+   */
+  async getSopas() {
+    return this._getGenericCategory('sopas');
+  }
+
+  /**
+   * Get all salads (async with Supabase)
+   * @returns {Promise<Array>} Array of salad objects
+   */
+  async getEnsaladas() {
+    return this._getGenericCategory('ensaladas');
+  }
+
+  /**
+   * Get all meats (async with Supabase)
+   * @returns {Promise<Array>} Array of meat objects
+   */
+  async getCarnes() {
+    // Try both table names for backward compatibility during transition
+    const data = await this._fetchFromSupabase('cortes_de_carne');
+    if (data && data.length > 0) return data;
+
+    return this._getGenericCategory('carnes');
+  }
+
+  /**
+   * Get all main courses (platos fuertes) (async with Supabase)
+   * @returns {Promise<Array>} Array of main course objects
+   */
+  async getPlatosFuertes() {
+    const data = await this._getGenericCategory('platos_fuertes');
+    return data.map(item => this._mapPlatoFuerteItem(item));
+  }
+
+  /**
+   * Helper: Map raw DB dishes to UI schema
+   * @private
+   */
+  _mapPlatoFuerteItem(item) {
+    return {
+      id: item.id,
+      nombre: item.nombre,
+      ingredientes: item.ingredientes,
+      video: item.video,
+      precio: item.precio, // Usually matches, but explicit return is safer
+      imagen: item.thumbnail || item.imagen, // Map thumbnail to imagen
+      categoria: 'platos fuertes'
+    };
+  }
+
+  /**
+   * Get all coffee products (async with Supabase)
+   * @returns {Promise<Array>} Array of coffee objects
+   */
+  async getCafe() {
+    return this._getGenericCategory('cafe', 'cafes');
+  }
+
+  /**
+   * Get all sparkling wines (async with Supabase)
+   * @returns {Promise<Array>} Array of sparkling wine objects
+   */
+  async getEspumosos() {
+    return this._getGenericCategory('espumosos');
+  }
+
+  /**
+   * Get all desserts (async with Supabase)
+   * @returns {Promise<Array>} Array of dessert objects
+   */
+  async getPostres() {
+    return this._getGenericCategory('postres');
+  }
+
+  /**
+   * Get product by ID
+   * @param {string} id - Product identifier
+   * @returns {Object|null} Product object or null if not found
+   */
+  getProductById(id) {
+    // Search across all categories
+    const categories = [
+      'cocteles', 'refrescos', 'licores', 'cervezas',
+      'pizzas', 'alitas', 'sopas', 'ensaladas', 'carnes',
+      'cafes', 'postres'
+    ];
+
+    for (const category of categories) {
+      const products = this.productData[category] || [];
+      const product = products.find(p => p.id === id);
+      if (product) {
+        return product;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get products by category (async with Supabase)
+   * @param {string} category - Product category
+   * @returns {Promise<Array>} Array of products in the category
+   */
+  async getProductsByCategory(category) {
+    const normalizedCategory = category.toLowerCase();
+
+    // Map category to appropriate method
+    const categoryMethods = {
+      'cocteles': () => this.getCocteles(),
+      'cocteleria': () => this.getCocteles(),
+      'refrescos': () => this.getRefrescos(),
+      'licores': () => this.getLicores(),
+      'vodka': () => this.getLiquorSubcategory('vodka'),
+      'vodkas': () => this.getLiquorSubcategory('vodka'),
+      'whisky': () => this.getLiquorSubcategory('whisky'),
+      'whiskies': () => this.getLiquorSubcategory('whisky'),
+      'tequila': () => this.getLiquorSubcategory('tequila'),
+      'tequilas': () => this.getLiquorSubcategory('tequila'),
+      'ron': () => this.getLiquorSubcategory('ron'),
+      'rones': () => this.getLiquorSubcategory('ron'),
+      'brandy': () => this.getLiquorSubcategory('brandy'),
+      'brandies': () => this.getLiquorSubcategory('brandy'),
+      'cognac': () => this.getLiquorSubcategory('cognac'),
+      'cognacs': () => this.getLiquorSubcategory('cognac'),
+      'digestivos': () => this.getLiquorSubcategory('digestivos'),
+      'ginebra': () => this.getLiquorSubcategory('ginebra'),
+      'ginebras': () => this.getLiquorSubcategory('ginebra'),
+      'mezcal': () => this.getLiquorSubcategory('mezcal'),
+      'mezcales': () => this.getLiquorSubcategory('mezcal'),
+      'cervezas': () => this.getCervezas(),
+      'espumosos': () => this.getLiquorSubcategory('espumosos'), // Fix: Use generic liquor method
+      'pizzas': () => this.getPizzas(),
+      'alitas': () => this.getAlitas(),
+      'sopas': () => this.getSopas(),
+      'ensaladas': () => this.getEnsaladas(),
+      'carnes': () => this.getCarnes(),
+      'carnes': () => this.getCarnes(),
+      'platos-fuertes': () => this.getPlatosFuertes(),
+      'cafe': () => this.getCafe(),
+      'café': () => this.getCafe(),
+      'postres': () => this.getPostres(),
+      'snacks': () => this._getGenericCategory('snacks'),
+      'bebidas': () => this._getGenericCategory('bebidas')
+    };
+
+    if (categoryMethods[normalizedCategory]) {
+      return await categoryMethods[normalizedCategory]();
+    }
+
+    // Fallback to direct Supabase query if no specific method exists
+    try {
+      const data = await this._fetchFromSupabase(normalizedCategory);
+      return data.length > 0 ? data : this.productData[normalizedCategory] || [];
+    } catch (error) {
+      Logger.error(`Error in getProductsByCategory for ${category}:`, error);
+      return [];
+    }
+  }
+
+  /**
+   * Get all snacks (async with Supabase)
+   * @returns {Promise<Array>} Array of snack objects
+   */
+  async getSnacks() {
+    return this._getGenericCategory('snacks');
+  }
+
+  /**
+   * Search products by name or ingredients
+   * @param {string} query - Search query
+   * @returns {Array} Array of matching products
+   */
+  searchProducts(query) {
+    if (!query || typeof query !== 'string') {
+      return [];
+    }
+
+    const searchTerm = query.toLowerCase();
+    const results = [];
+
+    const categories = [
+      'cocteles', 'refrescos', 'licores', 'cervezas',
+      'pizzas', 'alitas', 'sopas', 'ensaladas', 'carnes',
+      'cafes', 'postres'
+    ];
+
+    for (const category of categories) {
+      const products = this.productData[category] || [];
+      const matches = products.filter(product => {
+        const nameMatch = product.nombre && product.nombre.toLowerCase().includes(searchTerm);
+        const ingredientsMatch = product.ingredientes && product.ingredientes.toLowerCase().includes(searchTerm);
+        return nameMatch || ingredientsMatch;
+      });
+      results.push(...matches);
+    }
+
+    return results;
+  }
+
+  /**
+   * Get all available categories
+   * @returns {Array} Array of category names
+   */
+  getAvailableCategories() {
+    return this.getStandardCategories();
+  }
+
+  /**
+   * Get total count of products across all categories
+   * @returns {number} Total number of products
+   */
+  getTotalProductCount() {
+    const categories = this.getAvailableCategories();
+    return categories.reduce((total, category) => {
+      const products = this.productData[category] || [];
+      return total + products.length;
+    }, 0);
+  }
+
+  /**
+   * Get liquor categories for navigation (async with Supabase)
+   * @returns {Promise<Array>} Array of liquor category objects
+   */
+  async getLicoresCategories() {
+    return this._getGenericCategory('licores', 'licoresCategories');
+  }
+
+  /**
+   * Get products by liquor subcategory (async with Supabase)
+   * @param {string} subcategory - Liquor subcategory (whiskies, tequilas, etc.)
+   * @returns {Promise<Array>} Array of products in the subcategory
+   */
+  async getLiquorSubcategory(subcategory) {
+    const data = await this._getGenericCategory(subcategory);
+    return data.map(item => this._mapLiquorItem(item, subcategory));
+  }
+
+  /**
+   * Helper: Map raw DB liquor item to UI schema (camelCase)
+   * @private
+   */
+  _mapLiquorItem(item, subcategory) {
+    // If item already has camelCase props (from local fallback), use them.
+    // Otherwise map from snake_case DB columns.
+    return {
+      id: item.id,
+      nombre: item.nombre,
+      imagen: item.imagen,
+      precioBotella: item.precioBotella || item.precio_botella,
+      precioLitro: item.precioLitro || item.precio_litro,
+      precioCopa: item.precioCopa || item.precio_copa,
+      pais: item.pais,
+      mixersBotella: item.mixersBotella || item.mixers_botella,
+      mixersLitro: item.mixersLitro || item.mixers_litro,
+      mixersCopa: item.mixersCopa || item.mixers_copa,
+      categoria: subcategory
+    };
+  }
+
+  /**
+   * Force immediate synchronization of all data
+   * @returns {Promise<void>}
+   */
+  async forceSyncNow() {
+    if (this.syncService) {
+      await this.syncService.forceSyncNow();
+    }
+  }
+
+  /**
+   * Get synchronization status
+   * @returns {Object} Sync status information
+   */
+  getSyncStatus() {
+    return this.syncService ? this.syncService.getSyncStatus() : {
+      isRunning: false,
+      lastSyncTime: null,
+      autoUpdateEnabled: false
+    };
+  }
+
+  /**
+   * Start automatic synchronization
+   */
+  startAutoSync() {
+    if (this.syncService) {
+      this.syncService.startAutoSync();
+    }
+  }
+
+  /**
+   * Stop automatic synchronization
+   */
+  stopAutoSync() {
+    if (this.syncService) {
+      this.syncService.stopAutoSync();
+    }
+  }
+
+  /**
+   * Clean up resources
+   */
+  destroy() {
+    if (this.syncService) {
+      this.syncService.destroy();
+    }
+  }
+
+}
+
+export default ProductDataAdapter;

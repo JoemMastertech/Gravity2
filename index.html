@@ -1,0 +1,243 @@
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Master Technology Bar - Coctelería Premium</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Master Technology Bar - Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
+  <meta name="keywords" content="coctelería, bar, cócteles, bebidas premium, tecnología, Master Technology Bar">
+  <meta name="author" content="Master Technology Bar">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://localhost:8000/">
+  <meta property="og:title" content="Master Technology Bar - Coctelería Premium">
+  <meta property="og:description"
+    content="Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
+  <meta property="og:image"
+    content="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo5.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="http://localhost:8000/">
+  <meta property="twitter:title" content="Master Technology Bar - Coctelería Premium">
+  <meta property="twitter:description"
+    content="Experiencia premium en coctelería con tecnología avanzada. Descubre nuestros cócteles únicos y ambiente innovador.">
+  <meta property="twitter:image"
+    content="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo5.webp">
+
+  <!-- Cache Control -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;900&family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <!-- CSS fuente para desarrollo (sin pipeline) -->
+  <!-- CSS Source (Vite auto-compiles SCSS) -->
+  <link rel="stylesheet" href="Shared/styles/main.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.47.10",
+        "zod": "https://cdn.jsdelivr.net/npm/zod@3.23.8/+esm"
+      }
+    }
+  </script>
+  <!-- Runtime feature flags -->
+  <!-- Runtime feature flags handled by Vite -->
+  <script src="Shared/libs/purify.min.js"></script>
+  <script type="module" src="Shared/config/settings-manager.js"></script>
+
+</head>
+
+<body>
+  <!-- Early Theme Injector: Applies user preference BEFORE initial paint to avoid FOUC/Flash of Red -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'light-blue';
+      const savedVideo = localStorage.getItem('selectedVideoUrl') || 'https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoazul.mp4';
+      document.body.setAttribute('data-theme', savedTheme);
+      window.__initialThemeApplied = true;
+      // Pre-set video source if possible
+      window.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('background-video');
+        if (video) {
+          const source = video.querySelector('source');
+          if (source) source.src = savedVideo;
+          video.load();
+        }
+      });
+    })();
+  </script>
+
+  <!-- Background video (Source set by Early Injector) -->
+  <video id="background-video" autoplay muted loop playsinline>
+    <source src="" type="video/mp4">
+  </video>
+
+  <!-- Top Navigation Bar (Moved to root for fixed-position stability) -->
+  <div id="top-nav-bar" class="top-nav-bar top-nav-hidden">
+    <div class="top-nav-content">
+      <div class="nav-left">
+        <button id="hamburger-btn" class="hamburger-btn hamburger-hidden">☰</button>
+        <button id="top-back-btn" class="top-nav-btn back-btn-hidden" title="Volver a Licores">←</button>
+      </div>
+      <div class="nav-center">
+        <span id="nav-title"></span>
+      </div>
+      <div class="nav-buttons-container">
+        <button id="view-toggle-btn" class="nav-button top-nav-btn view-toggle-btn">🔲</button>
+        <button id="settings-btn" class="nav-button top-nav-btn">⚙️</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="app-container">
+    <!-- Drawer moved to bottom of body -->
+
+    <!-- Settings moved to bottom of body -->
+
+    <div class="screen welcome-screen">
+      <h1 class="welcome-text" data-translate="main.welcome">¡BIENVENIDOS!</h1>
+    </div>
+    <div class="screen logo-screen screen-hidden">
+      <div class="logo-container">
+        <img
+          src="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/logos/Logo%203.jpeg"
+          alt="Master Technology Bar Logo" class="logo">
+        <h2 class="title-text" data-translate="main.title">Master Technology Bar</h2>
+      </div>
+    </div>
+    <div class="screen category-title-screen screen-hidden">
+      <h2 class="category-title" data-translate="categories.cocktails">Coctelería</h2>
+    </div>
+    <div class="screen main-content-screen screen-hidden" data-category="cocteleria">
+      <div class="page-header">
+        <!-- Page title removed from here as it's now integrated into tables -->
+      </div>
+      <div class="content-wrapper">
+        <div class="content-container-flex">
+          <div id="content-container"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Order Sidebar (Right) -->
+    <div id="order-sidebar" class="order-sidebar">
+      <div class="drawer-content">
+        <h3 class="drawer-title">Tu Orden</h3>
+        <div id="order-items" class="order-items-scroll">
+          <!-- Order items injected here -->
+        </div>
+        <div class="drawer-footer">
+          <div class="order-summary">
+            <div class="total-row">
+              <span>Total:</span>
+              <span id="order-total-amount" class="total-amount">$0.00</span>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button id="complete-order-btn" class="nav-button primary-btn" data-translate="menu.create_order">
+              Completar
+            </button>
+            <button id="cancel-order-btn" class="nav-button secondary-btn" data-translate="menu.cancel_order">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals (Dynamically injected) -->
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="drawer-menu" class="drawer-menu">
+    <div class="drawer-content">
+      <!-- Navigation buttons added dynamically -->
+    </div>
+  </div>
+
+  <!-- Settings Menu -->
+  <div id="settings-menu" class="drawer-menu settings-menu">
+    <div class="drawer-content">
+      <!-- Main Settings Panel -->
+      <div id="main-settings-panel" class="settings-panel">
+        <button id="settings-back-btn" class="back-button">←</button>
+        <h3 class="settings-title"></h3>
+        <button id="languages-option" class="nav-button" data-translate="settings.languages">Idiomas</button>
+        <button id="dark-mode-option" class="nav-button" data-translate="settings.dark_mode">Modo Oscuro</button>
+        <button id="light-mode-option" class="nav-button" data-translate="settings.light_mode">Modo Claro</button>
+      </div>
+
+      <!-- Languages Panel -->
+      <div id="languages-panel" class="settings-panel u-hidden">
+        <button id="back-to-main" class="back-button">←</button>
+        <h3 class="settings-title" data-translate="settings.languages">Idiomas</h3>
+        <button class="nav-button language-btn" data-lang="es" data-translate="languages.spanish">Español</button>
+        <button class="nav-button language-btn" data-lang="en" data-translate="languages.english">Inglés</button>
+        <button class="nav-button language-btn" data-lang="fr" data-translate="languages.french">Francés</button>
+        <button class="nav-button language-btn" data-lang="it" data-translate="languages.italian">Italiano</button>
+        <button class="nav-button language-btn" data-lang="zh" data-translate="languages.chinese">Chino</button>
+      </div>
+
+      <!-- Dark Mode Panel -->
+      <div id="dark-mode-panel" class="settings-panel u-hidden">
+        <button id="back-from-dark" class="back-button">←</button>
+        <h3 class="settings-title" data-translate="settings.dark_mode">Modo Oscuro</h3>
+        <button class="nav-button theme-btn" data-theme="dark-blue"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoolasazul.mp4"
+          data-translate="themes.dark_blue">Azul Oscuro</button>
+        <button class="nav-button theme-btn" data-theme="dark-red"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondorojo.mp4"
+          data-translate="themes.dark_red">Rojo Oscuro</button>
+      </div>
+
+      <!-- Light Mode Panel -->
+      <div id="light-mode-panel" class="settings-panel u-hidden">
+        <button id="back-from-light" class="back-button">←</button>
+        <h3 class="settings-title" data-translate="settings.light_mode">Modo Claro</h3>
+        <button class="nav-button theme-btn" data-theme="light-blue"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoazul.mp4"
+          data-translate="themes.light_blue">Azul Claro</button>
+        <button class="nav-button theme-btn" data-theme="light-white"
+          data-video="https://udtlqjmrtbcpdqknwuro.supabase.co/storage/v1/object/public/productos/recursos/fondos/fondoblanco.mp4"
+          data-translate="themes.white">Blanco</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Scripts -->
+
+  <!-- Order Sidebar (Right) - Now integrated in Grid -->
+  <!-- Moved to inside .app-container via script or manual internal placement -->
+  <!-- Wait, I need to DELETE it from here and INSERT it above -->
+
+  <!-- Load data providers -->
+
+  <script type="module" src="./Infraestructura/data-providers/product-data.js"></script>
+  <!-- Load UI components -->
+  <script type="module" src="./Interfaces/web/ui-adapters/components/product-table.js"></script>
+  <script type="module" src="./Interfaces/web/ui-adapters/screens/screen-manager.js"></script>
+  <!-- Load order system -->
+  <script type="module" src="./Interfaces/web/ui-adapters/components/order-system.js"></script>
+  <!-- Initialize app -->
+  <script type="module">
+    import AppInit from './Shared/config/app-init.js';
+
+    document.addEventListener('DOMContentLoaded', function () {
+      AppInit.initialize();
+    });
+  </script>
+</body>
+
+</html>
