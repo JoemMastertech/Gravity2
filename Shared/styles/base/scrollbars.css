@@ -31,7 +31,7 @@
             rgba(243, 246, 246, 0.4) 50%,
             rgba(243, 246, 246, 0.6) 100%);
     border-radius: 6px;
-    border: 1px solid rgba(0, 247, 255, 0.2);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
     transition: all 0.3s ease;
 }
 
@@ -41,46 +41,46 @@
             rgba(243, 246, 246, 0.25) 0%,
             rgba(243, 246, 246, 0.15) 50%,
             rgba(243, 246, 246, 0.25) 100%);
-    border: 1px solid rgba(0, 247, 255, 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg,
-            rgba(0, 247, 255, 0.8) 0%,
-            rgba(0, 247, 255, 0.6) 50%,
-            rgba(0, 247, 255, 0.8) 100%);
-    border-color: rgba(0, 247, 255, 0.5);
-    box-shadow: 0 0 8px rgba(0, 247, 255, 0.3);
+            rgba(var(--accent-rgb), 0.8) 0%,
+            rgba(var(--accent-rgb), 0.6) 50%,
+            rgba(var(--accent-rgb), 0.8) 100%);
+    border-color: rgba(var(--accent-rgb), 0.5);
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.3);
 }
 
 /* Hover vertical - sutil pero visible */
 ::-webkit-scrollbar-thumb:vertical:hover {
     background: linear-gradient(180deg,
-            rgba(0, 247, 255, 0.4) 0%,
-            rgba(0, 247, 255, 0.3) 50%,
-            rgba(0, 247, 255, 0.4) 100%);
-    border-color: rgba(0, 247, 255, 0.3);
-    box-shadow: 0 0 4px rgba(0, 247, 255, 0.2);
+            rgba(var(--accent-rgb), 0.4) 0%,
+            rgba(var(--accent-rgb), 0.3) 50%,
+            rgba(var(--accent-rgb), 0.4) 100%);
+    border-color: rgba(var(--accent-rgb), 0.3);
+    box-shadow: 0 0 4px rgba(var(--accent-rgb), 0.2);
 }
 
 ::-webkit-scrollbar-thumb:active {
     background: linear-gradient(180deg,
-            rgba(0, 247, 255, 1) 0%,
-            rgba(0, 247, 255, 0.8) 50%,
-            rgba(0, 247, 255, 1) 100%);
-    border-color: rgba(0, 247, 255, 0.8);
-    box-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
+            rgba(var(--accent-rgb), 1) 0%,
+            rgba(var(--accent-rgb), 0.8) 50%,
+            rgba(var(--accent-rgb), 1) 100%);
+    border-color: rgba(var(--accent-rgb), 0.8);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.5);
 }
 
 /* Active vertical - mÃ¡s visible al usar */
 ::-webkit-scrollbar-thumb:vertical:active {
     background: linear-gradient(180deg,
-            rgba(0, 247, 255, 0.6) 0%,
-            rgba(0, 247, 255, 0.5) 50%,
-            rgba(0, 247, 255, 0.6) 100%);
-    border-color: rgba(0, 247, 255, 0.5);
-    box-shadow: 0 0 6px rgba(0, 247, 255, 0.3);
+            rgba(var(--accent-rgb), 0.6) 0%,
+            rgba(var(--accent-rgb), 0.5) 50%,
+            rgba(var(--accent-rgb), 0.6) 100%);
+    border-color: rgba(var(--accent-rgb), 0.5);
+    box-shadow: 0 0 6px rgba(var(--accent-rgb), 0.3);
 }
 
 ::-webkit-scrollbar-corner {

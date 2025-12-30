@@ -150,9 +150,11 @@ sequenceDiagram
   - `Shared/styles/components/_button-system.scss`: **[The Action System]**.
   - `Shared/styles/components/_modal-system.scss`: **[The Modal Foundation]**.
   - `Interfaces/web/ui-adapters/components/ModalSystem.js`: **[The Builder Engine]**.
-- **Legacy (Deprecated/Transitioning)**:
-  - `Shared/styles/components/_modals.scss` (Old static modals).
-  - `Shared/styles/components/_modals_custom.scss` (Partially migrated).
+- **System (Modern Architecture)**: 
+  - `Shared/styles/settings/_tokens.scss`: **[The DNA]** Spacing, Colors, Elevations.
+  - `Shared/styles/components/_button-system.scss`: **[The Action System]**.
+  - `Shared/styles/components/_modal-system.scss`: **[The Modal Foundation]**.
+  - `Interfaces/web/ui-adapters/components/ModalSystem.js`: **[The Builder Engine]**.
 - **Views**:
   - `Shared/styles/views/_view-grid.scss` (The Grid).
   - `Shared/styles/views/_view-table.scss` (The logic-heavy Tables).
@@ -191,7 +193,8 @@ sequenceDiagram
     - **Natural Configuration**: All styles delegated to `_modal-system.scss` (Utility classes).
     - **Zero Inline Styles**: No direct style manipulation in JS.
     - **Visuals**: Static Cyan Glow (Premium) & Symmetric Buttons (`btn-contrast`).
-    - **Unified Launch Protocol**: `OrderUI.js` implements `_launchCustomizationModal`, standardizing the Confirmation-First layout and simplified titles for all product types.
+    - **Unified Launch Protocol**: `OrderUI.js` implements `_launchCustomizationModal` (Cortes/Meat) and `_showIngredientsCustomizationModal` (Food/Snacks/Platos), standardizing the Premium aesthetics for all product types.
+- **Legacy Purge (Dec 13, 2025)**: All `_legacy` files and unused `<template>` tags have been permanently removed from the project.
 
 ### 1. Product Rendering
 - **Source**: `ui-adapters/components/product-table.js`

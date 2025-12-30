@@ -126,7 +126,7 @@
     height: 22px;
     border-radius: 50% !important;
     border: 1.2px solid var(--border-color) !important;
-    background: #000 !important;
+    background: var(--color-black) !important;
     color: var(--text-color) !important;
     display: flex;
     align-items: center;

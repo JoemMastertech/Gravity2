@@ -38,16 +38,18 @@
     --color-error-dark: #b91c1c;
 
     --primary-color: var(--color-gray-100);
-    --accent-color: #00f7ff;
+    --accent-rgb: 0, 247, 255;
+    /* Default Cyan */
+    --accent-color: rgb(var(--accent-rgb));
     --background-color: var(--color-black);
     --text-color: var(--color-gray-200);
-    --price-color: #00f7ff;
+    --price-color: var(--accent-color);
 
     /* Component Colors */
     --card-bg: rgba(0, 0, 0, 0.7);
-    --border-color: #00f7ff40;
-    --glow-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-    --glow-shadow-hover: 0 0 20px rgba(0, 247, 255, 0.6);
+    --border-color: rgba(var(--accent-rgb), 0.25);
+    --glow-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(var(--accent-rgb), 0.6);
 
     /* Layout Variables */
     --transition-time: 0.3s;
@@ -74,41 +76,46 @@
 
 /* Tema Dark Blue (por defecto) */
 [data-theme="dark-blue"] {
-    --primary-color: #f3f6f6;
-    --accent-color: #00f7ff;
+    --accent-rgb: 0, 247, 255;
+    /* Default Cyan */
+    --accent-color: rgb(var(--accent-rgb));
     --background-color: #000;
     --text-color: #ECE9D8;
-    --price-color: #00f7ff;
+    --price-color: var(--accent-color);
     --card-bg: rgba(0, 0, 0, 0.7);
-    --border-color: #00f7ff40;
-    --glow-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-    --glow-shadow-hover: 0 0 20px rgba(0, 247, 255, 0.6);
+    --border-color: rgba(var(--accent-rgb), 0.25);
+    --glow-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(var(--accent-rgb), 0.6);
 }
 
 /* Tema Dark Red */
 [data-theme="dark-red"] {
     --primary-color: #f3f6f6;
-    --accent-color: #ff4d4d;
+    --accent-rgb: 255, 77, 77;
+    /* Red */
+    --accent-color: rgb(var(--accent-rgb));
     --background-color: #000;
     --text-color: #ECE9D8;
-    --price-color: #ff4d4d;
+    --price-color: var(--accent-color);
     --card-bg: rgba(0, 0, 0, 0.7);
-    --border-color: #ff4d4d40;
-    --glow-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
-    --glow-shadow-hover: 0 0 20px rgba(255, 77, 77, 0.6);
+    --border-color: rgba(var(--accent-rgb), 0.25);
+    --glow-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(var(--accent-rgb), 0.6);
 }
 
 /* Light Blue Theme - now uses bright blue color */
 [data-theme="light-blue"] {
     --primary-color: #f3f6f6;
-    --accent-color: #85C7FF;
+    --accent-rgb: 133, 199, 255;
+    /* Light Blue */
+    --accent-color: rgb(var(--accent-rgb));
     --background-color: #000;
     --text-color: #ECE9D8;
-    --price-color: #85C7FF;
+    --price-color: var(--accent-color);
     --card-bg: rgba(0, 0, 0, 0.7);
-    --border-color: #85C7FF40;
-    --glow-shadow: 0 0 10px rgba(133, 199, 255, 0.3);
-    --glow-shadow-hover: 0 0 20px rgba(133, 199, 255, 0.6);
+    --border-color: rgba(var(--accent-rgb), 0.25);
+    --glow-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(var(--accent-rgb), 0.6);
 }
 
 /* Light White Theme */
@@ -117,6 +124,8 @@
     --primary-color: #0047AB;
     /* Royal Blue */
     --primary-rgb: 0, 71, 171;
+    --accent-rgb: 0, 71, 171;
+    /* Royal Blue */
     --accent-color: #3b82f6;
     --background-color: #ffffff;
     --text-color: #0047AB;
@@ -126,12 +135,12 @@
     --price-color: #1e40af;
     /* Keeps current blue/black contrast */
     --card-bg: rgba(255, 255, 255, 0.9);
-    --border-color: #0047AB40;
+    --border-color: rgba(var(--accent-rgb), 0.25);
     /* Royal Blue Border */
     --btn-price-bg: #85C7FF;
     /* Light Royal Blue Background for Price Buttons */
-    --glow-shadow: 0 0 10px rgba(0, 71, 171, 0.3);
-    --glow-shadow-hover: 0 0 20px rgba(0, 71, 171, 0.6);
+    --glow-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
+    --glow-shadow-hover: 0 0 20px rgba(var(--accent-rgb), 0.6);
 
     /* Semantic Glass Tiers for Light Mode */
     --surface-glass-1: rgba(255, 255, 255, 0.4);

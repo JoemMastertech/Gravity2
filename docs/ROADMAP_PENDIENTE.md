@@ -11,15 +11,14 @@ Este documento detalla los cabos sueltos identificados tras la auditoría de las
 - [x] **Limpieza de index.html**: Eliminar todos los tags `<template>` de modales una vez migrados.
 - [x] **Visuales**: Asegurar que todos tengan el resplandor cian estandarizado y botones `.btn-contrast`.
 
-## 🥩 2. Blindaje de Validaciones (Fase 11)
-**Estado actual:** La validación de términos de cocción existe pero no es "impenetrable".
-- [ ] **Enforcement**: Asegurar que el botón "Confirmar" del nuevo modal de carne esté deshabilitado (`disabled`) hasta que se seleccione un término.
-- [ ] **Feedback**: Usar el nuevo sistema de feedback visual (glow rojo) si se intenta saltar el paso.
+- [x] **Enforcement**: El botón "Confirmar" regresó a su estado natural (siempre activo), priorizando la validación visual por vibración y color rojo.
+- [x] **Feedback**: Se validó el funcionamiento del glow rojo (`.u-validation-error`) en el motor de modales.
 
 ## 🛡️ 3. Operación "Cero Overrides" (Fase 7)
 **Estado actual:** Quedan ~122 declaraciones `!important` y muchas clases manuales en el JS.
-- [ ] **Reducción de !important**: Atacar los archivos `_view-table.scss` y `_view-grid.scss` para eliminar hacks de posicionamiento.
-- [ ] **Migración a Utility Belt**: Reemplazar manipulaciones de estilo manuales en `OrderUI.js` (ej: `.className = 'hamburger-hidden'`) por clases estandarizadas `.u-hidden`.
+- [x] **Limpieza de Vistas**: Los archivos `_view-table.scss` y `_view-grid.scss` ya están 100% libres de `!important` y usan Mixins/Tokens.
+- [ ] **Reducción de !important en Layout**: Atacar `_containers.scss` y `_sidebars.scss` para eliminar hacks de posicionamiento residuales.
+- [ ] **Color Purge**: Eliminar colores "quemados" (ej. `#00f7ff`) en archivos de utilerías y base, delegando todo a `var(--accent-color)`.
 - [ ] **Refactor de ScreenManager**: Asegurar que las transiciones de pantalla usen el sistema de animación por tokens en lugar de JS directo.
 
 ## 🧹 4. Desmantelamiento de Código Legacy

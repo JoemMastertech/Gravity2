@@ -54,7 +54,7 @@
 .form-select:focus {
     background: var(--input-bg-focus);
     border-color: var(--input-border-focus);
-    box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+    box-shadow: 0 0 15px var(--accent-color);
     /* Accent Glow */
     transform: translateY(-1px);
 }

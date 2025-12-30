@@ -30,7 +30,6 @@
   max-width: 300px;
   height: auto;
   animation: fadeIn 1s ease-in-out;
-  /* filter: drop-shadow(0 0 10px rgba(0, 247, 255, 0.3)); */
   transition: all var(--transition-time) ease;
 }
 
@@ -46,7 +45,7 @@
 
 /* .logo:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 20px rgba(0, 247, 255, 0.6));
+  filter: drop-shadow(0 0 20px var(--accent-color));
 } */
 
 /* Logo especÃ­fico para la pÃ¡gina */

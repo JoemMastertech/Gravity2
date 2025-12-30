@@ -13,7 +13,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--surface-glass-2);
     /* Deep Dark Overlay */
     backdrop-filter: blur(5px);
     /* Glass Effect */
@@ -35,7 +35,7 @@
 /* 2. The Container (The Shell)
    ----------------------------------------------------------------------------- */
 .sys-modal-container {
-    background: var(--card-bg, rgba(20, 20, 20, 0.95));
+    background: var(--card-bg);
     border: 1.5px solid var(--price-color);
     /* Vibrant premium border */
     border-radius: var(--radius-lg, 16px);
@@ -166,8 +166,8 @@
         font-family: 'Playfair Display', serif;
         font-size: 1.35rem;
         line-height: 1.2;
-        color: var(--primary-color, #fff);
-        text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        color: var(--primary-color);
+        text-shadow: 0 0 10px var(--accent-color);
     }
 
     .close-btn {
@@ -178,7 +178,7 @@
         border: 1.5px solid transparent;
         /* Removed permanent outline */
         border-radius: 50%;
-        color: var(--primary-color, #fff);
+        color: var(--primary-color);
         /* Default to White */
         font-size: 1.1rem;
         width: 32px;
@@ -196,14 +196,14 @@
 
         &:hover {
             transform: scale(1.1);
-            color: #ff4d4d;
+            color: var(--color-error);
             /* Red on hover */
-            border-color: #ff4d4d;
+            border-color: var(--color-error);
             /* Red outline on hover */
             background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
-            /* Red glow effect */
-            text-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+            box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.5);
+            /* Pulse Shadow matches accent color */
+            text-shadow: 0 0 5px rgba(var(--accent-rgb), 0.3);
         }
     }
 }
@@ -214,7 +214,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #000;
+    background: var(--color-black);
     border-radius: var(--radius-md);
     overflow: hidden;
 
@@ -222,7 +222,7 @@
         max-width: 100%;
         display: block;
         object-fit: contain;
-        background: #000;
+        background: var(--color-black);
         transition: all 0.3s ease;
     }
 
@@ -279,8 +279,8 @@
     /* Integration with Button System */
     /* Standardize the "Matte Black" button look */
     .btn-contrast {
-        background: #000 !important;
-        color: #fff !important;
+        background: var(--color-black) !important;
+        color: var(--color-white) !important;
         border: 1.4px solid var(--border-color) !important;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         transition: all 0.3s ease;
@@ -345,8 +345,8 @@
 /* 8. Validation Effects (Phase 11)
    ----------------------------------------------------------------------------- */
 .u-validation-error {
-    border-color: var(--error-color, #ff4d4d) !important;
-    box-shadow: 0 0 15px rgba(255, 77, 77, 0.4) !important;
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4) !important;
     animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
 }
 

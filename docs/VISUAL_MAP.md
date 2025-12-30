@@ -266,8 +266,10 @@ El sistema de navegación (`app-init.js`, `ScreenManager.js`) depende de estas c
 ---
 
 ## 🎛️ SYSTEM D: MODAL ARCHITECTURE (v2)
-**Source:** `Shared/styles/components/_modal-system.scss` & `_modals_custom.scss`
-**Status:** ✅ REFACTORED (Dec 25, 2025)
+**Source:** `Shared/styles/components/_modal-system.scss` 
+**Status:** ✅ 100% UNIFIED (Dec 29, 2025)
+
+The Modal System is now the sole authority for all user interaction overlays. All legacy files and static templates have been purged.
 
 The Modal System has been rebuilt to follow a "Natural Configuration" philosophy (No Inline Styles, No `!important`).
 

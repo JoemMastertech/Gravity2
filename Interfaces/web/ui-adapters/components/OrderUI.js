@@ -32,7 +32,7 @@ export class OrderUI {
         return element;
     }
 
-    // Modals (Legacy bridge removed)
+    // Unified Modal System
 
     showValidationModal(message) {
         Logger.info('[OrderUI] showValidationModal called with:', message);

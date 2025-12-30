@@ -18,8 +18,8 @@
 @import "utilities/display.css";
 :root {
   /* ----------------------------------------------------------------------
-     1. TYPOGRAPHY SYSTEM (The Voice)
-     ---------------------------------------------------------------------- */
+      1. TYPOGRAPHY SYSTEM (The Voice)
+      ---------------------------------------------------------------------- */
   /* Font Families */
   --font-primary: 'Montserrat', sans-serif;
   --font-secondary: 'Roboto', sans-serif;
@@ -41,8 +41,8 @@
   --text-xs: 0.75rem;
   /* 12px */
   /* ----------------------------------------------------------------------
-     2. SEMANTIC COLOR SYSTEM (The Mood)
-     ---------------------------------------------------------------------- */
+      2. SEMANTIC COLOR SYSTEM (The Mood)
+      ---------------------------------------------------------------------- */
   /* Text Colors */
   --text-primary: var(--color-white);
   --text-secondary: var(--color-gray-200);
@@ -56,8 +56,8 @@
   --input-border-focus: var(--accent-color);
   --input-placeholder: rgba(255, 255, 255, 0.3);
   /* ----------------------------------------------------------------------
-     3. BUTTON SYSTEM
-     ---------------------------------------------------------------------- */
+      3. BUTTON SYSTEM
+      ---------------------------------------------------------------------- */
   /* Structure */
   --btn-height-std: auto;
   /* Legacy: Padding-based */
@@ -79,8 +79,8 @@
   --btn-font-size: 1rem;
   --btn-font-size-sm: 0.875rem;
   /* ----------------------------------------------------------------------
-     2. SURFACE SYSTEM (Glassmorphism Levels)
-     ---------------------------------------------------------------------- */
+      2. SURFACE SYSTEM (Glassmorphism Levels)
+      ---------------------------------------------------------------------- */
   /* Level 1: Subtle (Cards) */
   --surface-glass-1: rgba(0, 0, 0, 0.4);
   /* Level 2: Standard (Modals/Sidebars) */
@@ -88,15 +88,15 @@
   /* Level 3: Heavy (Overlays) */
   --surface-glass-3: rgba(0, 0, 0, 0.9);
   /* ----------------------------------------------------------------------
-     3. EFFECTS SYSTEM (Animation & Depth)
-     ---------------------------------------------------------------------- */
+      3. EFFECTS SYSTEM (Animation & Depth)
+      ---------------------------------------------------------------------- */
   /* Transitions */
   --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   /* Shadows (Elevations) */
   --elevation-1: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --elevation-2: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --elevation-glow: 0 0 15px var(--accent-color, #00f7ff);
+  --elevation-glow: 0 0 15px var(--accent-color);
 }
 
 /* 2. Base (Must come first) */
@@ -295,7 +295,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--surface-glass-2);
   /* Deep Dark Overlay */
   backdrop-filter: blur(5px);
   /* Glass Effect */
@@ -316,7 +316,7 @@
 /* 2. The Container (The Shell)
    ----------------------------------------------------------------------------- */
 .sys-modal-container {
-  background: var(--card-bg, rgba(20, 20, 20, 0.95));
+  background: var(--card-bg);
   border: 1.5px solid var(--price-color);
   /* Vibrant premium border */
   border-radius: var(--radius-lg, 16px);
@@ -443,8 +443,8 @@
   font-family: "Playfair Display", serif;
   font-size: 1.35rem;
   line-height: 1.2;
-  color: var(--primary-color, #fff);
-  text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--accent-color);
 }
 .sys-modal-header .close-btn {
   grid-column: 3;
@@ -453,7 +453,7 @@
   border: 1.5px solid transparent;
   /* Removed permanent outline */
   border-radius: 50%;
-  color: var(--primary-color, #fff);
+  color: var(--primary-color);
   /* Default to White */
   font-size: 1.1rem;
   width: 32px;
@@ -470,14 +470,14 @@
 }
 .sys-modal-header .close-btn:hover {
   transform: scale(1.1);
-  color: #ff4d4d;
+  color: var(--color-error);
   /* Red on hover */
-  border-color: #ff4d4d;
+  border-color: var(--color-error);
   /* Red outline on hover */
   background: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
-  /* Red glow effect */
-  text-shadow: 0 0 5px rgba(255, 77, 77, 0.3);
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.5);
+  /* Pulse Shadow matches accent color */
+  text-shadow: 0 0 5px rgba(var(--accent-rgb), 0.3);
 }
 
 /* 9. Media Content Protocol (Universal Alignment)
@@ -486,7 +486,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000;
+  background: var(--color-black);
   border-radius: var(--radius-md);
   overflow: hidden;
 }
@@ -494,7 +494,7 @@
   max-width: 100%;
   display: block;
   object-fit: contain;
-  background: #000;
+  background: var(--color-black);
   transition: all 0.3s ease;
 }
 .media-modal-wrapper {
@@ -549,8 +549,8 @@
   /* Standardize the "Matte Black" button look */
 }
 .sys-modal-footer .btn-contrast {
-  background: #000 !important;
-  color: #fff !important;
+  background: var(--color-black) !important;
+  color: var(--color-white) !important;
   border: 1.4px solid var(--border-color) !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
@@ -617,8 +617,8 @@
 /* 8. Validation Effects (Phase 11)
    ----------------------------------------------------------------------------- */
 .u-validation-error {
-  border-color: var(--error-color, #ff4d4d) !important;
-  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4) !important;
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4) !important;
   animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
@@ -688,7 +688,7 @@
 .form-select:focus {
   background: var(--input-bg-focus);
   border-color: var(--input-border-focus);
-  box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+  box-shadow: 0 0 15px var(--accent-color);
   /* Accent Glow */
   transform: translateY(-1px);
 }
@@ -2626,7 +2626,7 @@ body:has(.order-sidebar.is-open) .app-container {
   margin-left: 5px;
   background: transparent;
   border: none;
-  color: var(--color-error, #ff4d4d);
+  color: var(--color-error);
   cursor: pointer;
   padding: 4px;
 }
